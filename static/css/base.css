@@ -1,0 +1,41 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    margin: 0px auto;
+    font-family: Helvetica, sans-serif;
+    background: #fefefe;
+    color: #444;
+}
+
+div#main {
+    margin: 0px 10px;
+}
+
+div#main a {
+    text-decoration: none;
+    color: #336
+}
+
+#content h2 {
+    text-align: center;
+    margin: 20px 0px 50px 0px;
+}
+
+#content h3 {
+    text-align: center;
+    margin: 20px;
+}
+
+.sep {
+    clear: both;
+    border-bottom: 1px dashed #ccd;
+}
+
+#login a {
+    display: block;
+    float: right;
+    padding: 10px;
+}

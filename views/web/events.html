@@ -1,0 +1,4 @@
+{{ extend "layout.html" }}
+{{ for event in events: }}
+<a href="{{= URL (r = request, f = 'stats', args = [str (event['_id'])]) }}">{{= event['event_name'] }}</a>
+{{ pass }}

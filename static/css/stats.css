@@ -1,0 +1,31 @@
+@LOCWIDTH: 250px;
+@NEGINDENT: 20px;
+
+#location {
+    float: right;
+    width: @LOCWIDTH;
+}
+
+#stats {
+    margin-right: @LOCWIDTH + 25px;
+}
+
+#stats p {
+    margin-bottom: 20px;
+    padding-left: @NEGINDENT;
+    text-indent: -@NEGINDENT;
+}
+
+#location .loc {
+    display: block;
+    width: 250px;
+    height: 250px;
+}
+
+#location figcaption {
+    text-align: center;
+    font-size: .8em;
+    font-family: arial, sans-serif;
+    color: #999;
+    margin: 5px;
+}

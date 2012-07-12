@@ -112,8 +112,17 @@ event_fields=[
     {'name':'reference','label':'Reference'}
     ]
 
+def get_all_events ():
+    events = []
+    results = mongo.event.find ()
+    for item in results:
+        events.append (item)
+    return events
 
-def insert_case(attr):
+def get_event (id):
+    return mongo.event.find_one ({'_id': ObjectId (id)})
+
+def insert_event (attr):
     values={}
     
     for field in event_fields:

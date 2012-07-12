@@ -1,4 +1,4 @@
-def index():
+def insert():
     ''' USAGE example: insert_case(mongo,{'name':"Cambodia 2012", 'pathogen':"Hand, foot, and mouth"})'''
     fields=[]
     for field in event_fields:
@@ -23,7 +23,22 @@ def index():
     fields.append(INPUT(_value="Enter", _type="submit"))
     form=FORM(fields)
     if form.accepts(request,session):
-#        return(str(form.vars))
-        insert_case(form.vars)
+        insert_event (form.vars)
+        return "OK"
     else:
-        return(dict(form=form))
+        return {'form': form}
+
+def events():
+    return {'events': get_all_events ()}
+
+
+def stats():
+    id = request.args (0)
+    if not id:
+        raise HTTP (400, 'Missing Event ID')
+    event = get_event (id);
+    request.title = 'Stats for %s' % event['event_name']
+    return {
+        'event_fields': event_fields,
+        'event': event
+        }
