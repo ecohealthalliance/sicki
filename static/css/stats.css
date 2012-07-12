@@ -16,6 +16,12 @@
     text-indent: -@NEGINDENT;
 }
 
+#stats b {
+    font-family: Trebuchet MS, arial, sans-serif;
+    color: #7597d0;
+    padding-right: 10px;
+}
+
 #location .loc {
     display: block;
     width: 250px;
