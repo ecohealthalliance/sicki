@@ -1,5 +1,6 @@
 def insert():
-    ''' USAGE example: insert_case(mongo,{'name':"Cambodia 2012", 'pathogen':"Hand, foot, and mouth"})'''
+    ''' USAGE example: insert_event (mongo,{'name':"Cambodia 2012", 'pathogen':"Hand, foot, and mouth"})'''
+    require_logged_in ()
     fields=[]
     for field in event_fields:
         if field.has_key('label'):

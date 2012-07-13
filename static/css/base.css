@@ -39,3 +39,9 @@ div#main a {
     float: right;
     padding: 10px;
 }
+
+#insert-new-event {
+    margin: 20px;
+    font-size: 1.25em;
+    font-weight: bold;
+}

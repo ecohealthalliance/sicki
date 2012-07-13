@@ -1,4 +1,9 @@
 {{ extend "layout.html" }}
+{{ if check_logged_in (): }}
+<div id="insert-new-event">
+  <a href="{{= URL (r = request, f = 'insert') }}">Insert New Event</a>
+</div>
+{{ pass }}
 {{ for event in events: }}
-<a href="{{= URL (r = request, f = 'stats', args = [str (event['_id'])]) }}">{{= event['event_name'] }}</a>
+<a href="{{= URL (r = request, f = 'stats', args = [str (event['_id'])]) }}">{{= event['event_name'] }}</a><br />
 {{ pass }}

@@ -28,6 +28,7 @@ def user():
         @auth.requires_permission('read','table name',record_id)
     to decorate functions that need access control
     """
+    from os import getcwd
     from uuid import uuid4
     if deployment_settings.dev_mode.enabled:
         psswd = uuid4 ().hex

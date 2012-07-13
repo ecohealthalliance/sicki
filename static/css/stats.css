@@ -11,15 +11,21 @@
 }
 
 #stats p {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     padding-left: @NEGINDENT;
     text-indent: -@NEGINDENT;
 }
 
-#stats b {
-    font-family: Trebuchet MS, arial, sans-serif;
-    color: #7597d0;
-    padding-right: 10px;
+#stats label {
+    display: inline-block;
+    /*font-family: Trebuchet MS, arial, sans-serif;*/
+    /*color: #7597d0;*/
+    /*color: #aaa;*/
+    font-weight: bold;
+    margin-right: 20px;
+    font-size: 1.25em;
+    width: 200px;
+    text-align: right;
 }
 
 #location .loc {

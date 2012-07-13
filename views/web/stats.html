@@ -10,13 +10,8 @@
     
     <section id="stats">
       {{for field in event_fields: }}
-      <p><b>{{= field.get ('label') or field.get ('name') }}</b>{{= event[field['name']] }}</p>
+      <p><label>{{= field.get ('label') or field.get ('name') }}</label>{{= event[field['name']] }}</p>
       {{ pass }}
-      <!--<p><b>In sit:</b> Amet neque ante, et pretium erat. Maecenas egestas fermentum vulputate.</p>
-      <p><b>Vestibulum:</b> luctus commodo dui, quis semper urna cursus et. Mauris vel nisl eget massa gravida sollicitudin. Etiam aliquam rhoncus tortor, vitae facilisis neque suscipit accumsan.</p>
-      <p><b>Maecenas egestas:</b> fermentum vulputate.</p>
-      <p><b>Mauris vel:</b> nisl eget massa gravida sollicitudin. Etiam aliquam rhoncus tortor, vitae facilisis neque suscipit accumsan.</p>
-      <p><b>rhoncus:</b> tortor, vitae facilisis neque suscipit accumsan.</p>-->
     </section>
   </section>
   

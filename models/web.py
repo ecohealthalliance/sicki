@@ -116,7 +116,7 @@ def get_all_events ():
     events = []
     results = mongo.event.find ()
     for item in results:
-        events.append (item)
+       events.append (item)
     return events
 
 def get_event (id):
