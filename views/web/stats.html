@@ -3,10 +3,10 @@
     <header>
       <h2>{{= event['event_name'] }}</h2>
     </header>
-    <section id="location">
+    <!--<section id="location">
       <img class="loc" src="{{= URL (r = request, c = 'static', f='temp/screen.png') }}" />
       <figcaption>Outbreak Location</figcaption>
-    </section>
+    </section>-->
     
     <section id="stats">
       {{for field in event_fields: }}
