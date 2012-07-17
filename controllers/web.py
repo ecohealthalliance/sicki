@@ -2,32 +2,36 @@ def insert():
     ''' USAGE example: insert_event (mongo,{'name':"Cambodia 2012", 'pathogen':"Hand, foot, and mouth"})'''
     require_logged_in ()
     fields=[]
+    id = request.args (0)
+    if id:
+        event = get_event (id)
+    else:
+        event = {}
     for field in event_fields:
-        if field.has_key('label'):
+        fields.append (LABEL (field.get ('label') or field['name']))
+        fields.append (format_input (field, event))
+        fields.append (BR ())
+
+        '''if field.has_key('label'):
             label = field['label']
         else:
             label = field['name']
-        fields.append(LABEL(label))
+        fields.append(LABEL(label))'''
 
-        if field.has_key('set'):
-            options = map(lambda x : OPTION(x,_value=x),field['set'])
-            fields.append(SELECT(options,_name=field['name']))
-        elif field.has_key('units'):
-            fields.append(INPUT(_name=field['name'],_type='text'))
-            options = map(lambda x : OPTION(x,_value=x),field['units'])
-            fields.append(SELECT(options,_name=field['name']+'_units'))
-        else:
-            fields.append(INPUT(_name=field['name'],_type='text'))
-
-
-        fields.append(BR())
     fields.append(INPUT(_value="Enter", _type="submit"))
     form=FORM(fields)
-    if form.accepts(request,session):
-        insert_event (form.vars)
-        return "OK"
+    form_okay = form.accepts(request,session)
+    if form_okay  and not id:
+        id = insert_event (form.vars)
+        redirect ( URL (r = request, f = 'stats', args = [id]))        
+    elif form_okay:
+        update_event (id, form.vars)
+        redirect ( URL (r = request, f = 'stats', args = [id]))
     else:
         return {'form': form}
+
+def edit():
+    pass
 
 def events():
     return {'events': get_all_events ()}

@@ -1,5 +1,10 @@
 {{ extend "layout.html" }}
   <section id="content">
+    {{if check_logged_in (): }}
+    <div id="insert-new-event">
+      <a href="{{= URL (r = request, f = 'insert', args = [str (event['_id'])]) }}">Edit This Event</a>
+    </div>    
+    {{ pass }}
     <header>
       <h2>{{= event['event_name'] }}</h2>
     </header>
@@ -7,10 +12,11 @@
       <img class="loc" src="{{= URL (r = request, c = 'static', f='temp/screen.png') }}" />
       <figcaption>Outbreak Location</figcaption>
     </section>-->
-    
+
     <section id="stats">
       {{for field in event_fields: }}
-      <p><label>{{= field.get ('label') or field.get ('name') }}</label>{{= event[field['name']] }}</p>
+      {{ key = field['name'] }}
+      <p><label>{{= field.get ('label') or key }}</label>{{= format_field (field, event[key]) }}</p>
       {{ pass }}
     </section>
   </section>

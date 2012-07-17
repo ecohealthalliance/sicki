@@ -94,18 +94,18 @@ event_fields=[
     {'name':'disease','label':'Disease'},
     {'name':'start_date','label':'Start Date'},
     {'name':'end_date','label':'End Date'},
-    {'name':'host_age', 'label':'Host Age','set':host_age},
-    {'name':'host_use','label':'Host Use', 'set':host_use},
-    {'name':'transition_model','label':'Transition Model','set':transition_model},
-    {'name':'zoonotic_type','label':'Zoonotic Type', 'set':zoonotic_type},
+    {'name':'host_age', 'label':'Host Age','type': 'set', 'set':host_age},
+    {'name':'host_use','label':'Host Use', 'type': 'set', 'set':host_use},
+    {'name':'transition_model','label':'Transition Model', 'type': 'set', 'set':transition_model},
+    {'name':'zoonotic_type','label':'Zoonotic Type', 'type': 'set', 'set':zoonotic_type},
     {'name':'number_infected','label':'Number Infected'},
     {'name':'prevalence','label':'Prevalence'},
-    {'name':'duration','label':'Duration', 'units':time_period},
+    {'name':'duration','label':'Duration', 'type': 'value_units', 'units':time_period},
     {'name':'symptoms_reported','label':'Symptoms Reported'},
-    {'name':'host_sex','label':'Host Sex', 'set':host_sex},
+    {'name':'host_sex','label':'Host Sex', 'type': 'set', 'set':host_sex},
     {'name':'sample_type','label':'Sample Type','set':sample_type},
-    {'name':'driver','label':'Driver','set':driver},
-    {'name':'domestication_status','label':'Domestication Status','set':domestication_status},
+    {'name':'driver','label':'Driver','type': 'set', 'set':driver},
+    {'name':'domestication_status','label':'Domestication Status', 'type': 'set', 'set':domestication_status},
     {'name':'number_deaths','label':'Number of deaths'},
     {'name':'contact','label':'Contact'},
     {'name':'notes','label':'Notes'},
@@ -122,9 +122,42 @@ def get_all_events ():
 def get_event (id):
     return mongo.event.find_one ({'_id': ObjectId (id)})
 
-def insert_event (attr):
-    values={}
-    
+def format_input (field, event = {}):
+    field_type = field.get ('type')    
+    if field_type == 'set':
+        options = map(lambda x : OPTION(x,_value=x),field['set'])
+        return SELECT(options, _name = field['name'])
+    elif field_type == 'value_units':
+        if event[field['name']]:
+            val = event[field['name']].get ('value')
+            units = event[field['name']].get ('units')
+        else:
+            val = None
+            units = None
+        def map_units (x):
+            if x == units:
+                return  OPTION (x, _value=x, _selected = 'selected')
+            else:
+                return  OPTION (x, _value=x)
+
+        value = INPUT (_name = field['name'], _type='text', _value = val)
+        options = map (map_units, field['units'])
+        units = SELECT (options, _name = field['name'] + '_units')        
+        return SPAN (value, units)
+    else:
+        return INPUT(_name=field['name'],_type='text', _value = event.get (field['name']) or '')
+
+def format_field (field, value):
+    field_type = field.get ('type')
+    if field_type == 'set':
+        return str (value)
+    elif field_type == 'value_units':
+        return value['value'] + ' ' + value['units']
+    else:
+        return str (value)
+
+def format_event (attr):
+    values= {}
     for field in event_fields:
         key = field['name']
         if attr.has_key(field['name']):
@@ -134,6 +167,14 @@ def insert_event (attr):
                 values[field['name']] = attr.get(key)
         else:
             values[field['name']]=None
-    mongo.event.insert(values)
+    return values
+
+def insert_event (attr):
+    values = format_event (attr)
+    return mongo.event.insert (values)
+
+def update_event (id, attr):
+    values = format_event (attr)
+    mongo.event.update ({'_id': ObjectId (id)}, {'$set': values})
 
 
