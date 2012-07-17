@@ -2,7 +2,7 @@
   <section id="content">
     {{if check_logged_in (): }}
     <div id="insert-new-event">
-      <a href="{{= URL (r = request, f = 'insert', args = [str (event['_id'])]) }}">Edit This Event</a>
+      <a href="{{= URL (r = request, f = 'insert', args = [str (event['_id'])]) }}">Edit This Event</a> | <a href="{{= URL (r = request, f = 'delete', args = [str (event['_id'])]) }}">Delete This Event</a>
     </div>    
     {{ pass }}
     <header>

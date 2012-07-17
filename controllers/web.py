@@ -1,12 +1,12 @@
 def insert():
     ''' USAGE example: insert_event (mongo,{'name':"Cambodia 2012", 'pathogen':"Hand, foot, and mouth"})'''
     require_logged_in ()
-    fields=[]
     id = request.args (0)
     if id:
         event = get_event (id)
     else:
         event = {}
+    fields=[]
     for field in event_fields:
         fields.append (LABEL (field.get ('label') or field['name']))
         fields.append (format_input (field, event))
@@ -30,12 +30,28 @@ def insert():
     else:
         return {'form': form}
 
-def edit():
-    pass
+def delete():
+    require_logged_in ()
+    id = request.args (0)
+    if not id:
+        raise HTTP (400, 'Event Id Requied')
+    confirm = request.vars.get ('confirm')
+    if confirm:
+        delete_event (id)
+        redirect (URL (r = request, f ='events'))
+    else:
+        event = get_event (id);
+        request.title = 'Delete event %s' % event['event_name']
+        return {
+            'event': event
+            }
 
 def events():
-    return {'events': get_all_events ()}
-
+    sort = get_sort_field (request.vars.get ('sort'))
+    return {
+        'events': get_all_events (sort),
+        'sort': sort
+        }
 
 def stats():
     id = request.args (0)

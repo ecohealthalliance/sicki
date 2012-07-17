@@ -112,11 +112,22 @@ event_fields=[
     {'name':'reference','label':'Reference'}
     ]
 
-def get_all_events ():
+def get_sort_field (name):
+    for field in event_fields:
+        if name == field['name']:
+            return field
+    return None
+
+def get_event_fields ():
+    return event_fields
+
+def get_all_events (sort = None):
     events = []
     results = mongo.event.find ()
     for item in results:
        events.append (item)
+    if sort:
+        events.sort (key = lambda event: event[sort['name']])
     return events
 
 def get_event (id):
@@ -172,6 +183,9 @@ def format_event (attr):
 def insert_event (attr):
     values = format_event (attr)
     return mongo.event.insert (values)
+
+def delete_event (id):
+    mongo.event.remove ({'_id': ObjectId (id)})
 
 def update_event (id, attr):
     values = format_event (attr)

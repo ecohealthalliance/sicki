@@ -4,6 +4,26 @@
   <a href="{{= URL (r = request, f = 'insert') }}">Insert New Event</a>
 </div>
 {{ pass }}
+
+<div class="event-sort">
+  Sort By: <select id="sort_events">
+    <option value=""></option>
+    {{ for field in get_event_fields (): }}
+    <option value="{{= field['name']}}" {{if sort == field: }} selected="selected" {{ pass }}>{{= field.get ('label') or field['name'] }}</option>
+    {{ pass }}
+  </select>
+</div>
+
 {{ for event in events: }}
-<a href="{{= URL (r = request, f = 'stats', args = [str (event['_id'])]) }}">{{= event['event_name'] }}</a><br />
+<div class="event-link"><a href="{{= URL (r = request, f = 'stats', args = [str (event['_id'])]) }}">{{= event['event_name'] }}</a> {{ if sort: }}({{= sort.get('label') or sort['name'] }}: {{= format_field (sort, event[sort['name']]) }}){{ pass }}</div>
 {{ pass }}
+
+<script type="text/javascript">
+  $ ('#sort_events').change (function () {
+    var val = $ (this).val ();
+    var base = '{{= URL (r = request) }}'
+    if (val.length)
+      base += '?sort=' + val
+    window.location.href = base;
+  });
+</script>
