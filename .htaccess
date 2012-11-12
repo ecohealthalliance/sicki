@@ -1,0 +1,5 @@
+AuthType Basic
+AuthName "Restricted Files"
+AuthBasicProvider file
+AuthUserFile /etc/apache2/passwd/sicki
+Require user sicki

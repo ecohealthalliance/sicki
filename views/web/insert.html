@@ -1,2 +1,99 @@
 {{ extend "layout.html" }}
-{{=form}}
+<section id="content" class="edit">
+  <div style="float: right; width: 50%">
+    <label>References</label><br />
+    <div id="refs">
+      {{ for ref in event['references']: }}
+         <p><a href="#" class="remove_ref" id="{{= str (ref) }}"> - </a>{{= mongo.refs.find_one ({
+	         '_id': ref
+	     })['title'] 
+         }}</p>
+      {{ pass }}
+    </div>
+    <input id="ref_bar" type="text" autocomplete="off" />
+    <div id="qrefs">
+    </div>
+  </div>
+  <section id="stats", style='width:auto;float:none;'>
+    <form method="POST">
+      <input name="submitted" type="hidden" value="submitted" />
+      {{for field in event_fields: }}
+      {{ key = field['name'] }}
+      <p><label>{{= field.get ('label') or key }}</label>{{= format_input (field, event) }}</p>
+      {{ pass }}
+      <p><input type="submit" value="Submit" /></p>
+    </form>
+  </section>
+</section>
+
+<script type="text/javascript">
+$('document').ready (function () {
+    $ ('.append_field').click (function () {
+	var count = $ (this).next ().val (); 
+	new_field = $ (this).next ().next ().clone ();
+	new_field.children ().filter ('input').each (function (i, elem) {
+	    $ (elem).attr ('value', '');
+	    var new_name = $ (elem).attr ('name').replace (/_\d+$/, '_' + count);
+	    $ (elem).attr ('name', new_name);
+	});
+	$ (this).parent ().append (new_field);
+	$ (this).next ().val (parseInt (count) + 1); 
+	return false;
+    });
+
+    $ ('#ref_bar').keyup (function () {
+	var query = $(this).val ();
+	$.ajax ({
+	    url: '/{{= request.application }}/ref/query',
+	    dataType: 'json',
+	    data: {
+		q: query
+	    },
+	    success: function (data) {
+		$ ('#qrefs').children ().remove ();
+		for (var i = 0; i < data.length; i ++) {
+		    var elem = $ ('<p><a href="#" class="add_ref"> + </a>' + data[i].name + '</p>')
+		    elem.data ('ref', data[i]);
+		    $('#qrefs').append (elem);
+		}
+		$ ('.add_ref').click (function () {
+		    var ref = $(this).parent ().data ('ref');
+		    $.ajax ({
+			url: '/{{= request.application }}/ref/append',
+			data: {
+			    ref_id: ref.id,
+			    event_id: '{{= request.args (0) }}'
+			},
+			success: function () {
+			    var remove = $ ('<a href="#" class="remove_ref" id="' +ref.id + '"> - </a>');
+			    bind_remove_event (remove);
+			    $('#refs').append ($ ('<p></p>').append (remove).append (ref.name));
+			}
+		    });
+		    return false;
+		});
+	    }
+	});
+    });
+
+    var bind_remove_event = function (elem) {
+	elem.click (function () {
+	    $.ajax ({
+		url: '/{{= request.application }}/ref/remove',
+		data: {
+		    ref_id: elem.attr ('id'),
+		    event_id: '{{= request.args (0) }}'
+		},
+		success: function (data) {
+		    elem.parent ().remove ();
+		}
+	    });
+	    return false;
+	});
+    };
+
+    $('.remove_ref').each (function (i, elem) {
+	bind_remove_event ($ (elem));
+    });
+});
+</script>

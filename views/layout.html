@@ -3,10 +3,42 @@
   <head>
     <title>{{= request.title or 'The Sicki Project' }}</title>
     <link rel="stylesheet/less" type="text/css" href="{{= URL (r = request, c = 'static', f = 'css/base.css') }}" />
-    <link rel="stylesheet/less" type="text/css" href="{{= URL (r = request, c = 'static', f = 'css/head.css') }}" />
     <link rel="stylesheet/less" type="text/css" href="{{= URL (r = request, c = 'static', f = 'css/stats.css') }}" />
     <script type="text/javascript" src="{{= URL (r= request, c = 'static', f = 'js/less.js')}}"></script>
     <script type="text/javascript" src="{{= URL (r= request, c = 'static', f = 'js/jquery-1.7.2.min.js')}}"></script>
+    <script type="text/javascript" src="{{= URL (r= request, c = 'static', f ='webgl_maps/js/jquery.hotkeys.js') }}"></script>
+    <script type="text/javascript" src="{{= URL (r= request, c = 'static', f ='webgl_maps/js/jquery.mousewheel.js') }}"></script>
+
+
+
+	<script type="text/javascript" src="{{= URL (r= request, c = 'static', f ='webgl_maps/js/webgl-debug.js') }}"></script>
+	<script type="text/javascript" src="{{= URL (r= request, c = 'static', f ='webgl_maps/js/rAF.js') }}"></script>
+	<script type="text/javascript" src="{{= URL (r= request, c = 'static', f ='webgl_maps/js/util.js') }}"></script>
+	<script type="text/javascript" src="{{= URL (r= request, c = 'static', f ='webgl_maps/js/vect.js') }}"></script>
+	<script type="text/javascript" src="{{= URL (r= request, c = 'static', f ='webgl_maps/js/shader-utils.js') }}"></script>
+	<script type="text/javascript" src="{{= URL (r= request, c = 'static', f ='webgl_maps/js/camera.js') }}"></script>
+	<script type="text/javascript" src="{{= URL (r= request, c = 'static', f ='webgl_maps/js/panner.js') }}"></script>
+	<script type="text/javascript" src="{{= URL (r= request, c = 'static', f ='webgl_maps/js/events.js') }}"></script>
+	<script type="text/javascript" src="{{= URL (r= request, c = 'static', f ='webgl_maps/js/engine.js') }}"></script>
+	<script type="text/javascript" src="{{= URL (r= request, c = 'static', f ='webgl_maps/js/buffer.js') }}"></script>
+	<script type="text/javascript" src="{{= URL (r= request, c = 'static', f ='webgl_maps/js/select.js') }}"></script>
+	<script type="text/javascript" src="{{= URL (r= request, c = 'static', f ='webgl_maps/js/trapezoid.js') }}"></script>
+	<script type="text/javascript" src="{{= URL (r= request, c = 'static', f ='webgl_maps/js/range.js') }}"></script>
+	<script type="text/javascript" src="{{= URL (r= request, c = 'static', f ='webgl_maps/js/feature.js') }}"></script>
+	<script type="text/javascript" src="{{= URL (r= request, c = 'static', f ='webgl_maps/js/point.js') }}"></script>
+	<script type="text/javascript" src="{{= URL (r= request, c = 'static', f ='webgl_maps/js/polygon.js') }}"></script>
+	<script type="text/javascript" src="{{= URL (r= request, c = 'static', f ='webgl_maps/js/line.js') }}"></script>
+	<script type="text/javascript" src="{{= URL (r= request, c = 'static', f ='webgl_maps/js/grid.js') }}"></script>
+	<script type="text/javascript" src="{{= URL (r= request, c = 'static', f ='webgl_maps/js/ascii.js') }}"></script>
+	<script type="text/javascript" src="{{= URL (r= request, c = 'static', f ='webgl_maps/js/selector.js') }}"></script>
+	<script type="text/javascript" src="{{= URL (r= request, c = 'static', f ='webgl_maps/js/raster.js') }}"></script>
+	<script type="text/javascript" src="{{= URL (r= request, c = 'static', f ='webgl_maps/js/tile.js') }}"></script>
+	<script type="text/javascript" src="{{= URL (r= request, c = 'static', f ='webgl_maps/js/geojson.js') }}"></script>
+	<script type="text/javascript" src="{{= URL (r= request, c = 'static', f ='webgl_maps/js/range_bar.js') }}"></script>
+	<script type="text/javascript" src="{{= URL (r= request, c = 'static', f ='webgl_maps/js/slider.js') }}"></script>
+	<script type="text/javascript" src="{{= URL (r= request, c = 'static', f ='webgl_maps/js/map.js') }}"></script>
+
+    <script type="text/javascript" src="{{= URL (r= request, c = 'static', f ='webgl_maps/webgl_maps.js') }}"></script>
   </head>
   <body>
     <div id="main">
@@ -18,9 +50,9 @@
       <div class="sep"></div>
       <div>
 	<header id="title">
-	  <h1>The Sicki Project</h1>
+	  <div class="title">The Sicki Project</div>
 	  <nav>
-	    <a href="#">Main</a><a href="{{= URL (r = request, c = 'web', f = 'events') }}">Events</a><a href="#">Diseases</a>
+	    <a href="{{= URL (r = request, c = 'web', f = 'events') }}">Events</a><a href="{{= URL (r = request, c = 'web', f = 'event_map') }}">Event Map</a><a href="{{= URL (r = request, c = 'web', f = 'refs') }}">References</a>
 	  </nav>
 	</header>
       </div>

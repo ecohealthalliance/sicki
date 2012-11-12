@@ -85,10 +85,21 @@ time_period=[
     'Years'
     ]
 
+
 event_fields=[
-    {'name':'event_name','label':'Event Name','required':True},
-    {'name':'pathogen','label':'Pathogen'},
-    {'name':'coinfection','label':'Co-Infection'},
+    {'name':'event_name','label':'Event Name','type': 'hidden', 'required': True},
+    {'name':'pathogens','label':'Pathogen(s)', 'type':'nested', 'children':
+         [{'name':'reported_name','label':'Reported name'},
+          {'name':'drug_resistance','label':'Drug resistance'},
+          {'name':'authority','label':'Authority'},
+          {'name':'tax_order','label':'Taxanomic Order'},
+          {'name':'class','label':'Class'},
+          {'name':'family','label':'Family'},
+          {'name':'genus','label':'Genus'},
+          {'name':'species','label':'Species'},
+          {'name':'sub_species','label':'Sub-species'},
+          {'name':'primary','label':'Primary?'}]
+     },
     {'name':'location','label':'Location'},
     {'name':'host','label':'Host'},
     {'name':'disease','label':'Disease'},
@@ -100,7 +111,7 @@ event_fields=[
     {'name':'zoonotic_type','label':'Zoonotic Type', 'type': 'set', 'set':zoonotic_type},
     {'name':'number_infected','label':'Number Infected'},
     {'name':'prevalence','label':'Prevalence'},
-    {'name':'duration','label':'Duration', 'type': 'value_units', 'units':time_period},
+    {'name':'duration','label':'Duration', 'type': 'value_units', 'units': time_period},
     {'name':'symptoms_reported','label':'Symptoms Reported'},
     {'name':'host_sex','label':'Host Sex', 'type': 'set', 'set':host_sex},
     {'name':'sample_type','label':'Sample Type','set':sample_type},
@@ -109,7 +120,11 @@ event_fields=[
     {'name':'number_deaths','label':'Number of deaths'},
     {'name':'contact','label':'Contact'},
     {'name':'notes','label':'Notes'},
-    {'name':'reference','label':'Reference'}
+    #{'name':'reference','label':'Reference'},
+    {'name':'map', 'type': 'hidden'},
+    {'name':'data_quality_orig', 'type': 'hidden'},
+    {'name':'data_quality', 'type': 'hidden'}
+
     ]
 
 def get_sort_field (name):
@@ -123,28 +138,48 @@ def get_event_fields ():
 
 def get_all_events (sort = None):
     events = []
-    results = mongo.event.find ()
+    results = mongo.events.find ()
     for item in results:
        events.append (item)
+
+    def key_func (event):
+        val = event.get (sort['name'])
+        if val:
+            val = val.lower ()
+        return val
+
     if sort:
-        events.sort (key = lambda event: event[sort['name']])
+        events.sort (key = key_func)
     return events
 
 def get_event (id):
-    return mongo.event.find_one ({'_id': ObjectId (id)})
+    return mongo.events.find_one ({'_id': ObjectId (id)})
+
+def merge_request_event (attr):
+    vals = {}
+    for field in event_fields:
+        key = field['name']
+        if request.vars.has_key (key):
+            vals[key] = pack_field (field, request.vars)
+        elif attr.has_key (key):
+            vals[key] = attr[key]
+    vals['references'] = attr.get ('references') or []
+    return vals
 
 def format_input (field, event = {}):
+    key = field['name']
     field_type = field.get ('type')    
     if field_type == 'set':
         options = map(lambda x : OPTION(x,_value=x),field['set'])
-        return SELECT(options, _name = field['name'])
+        return SELECT(options, _name = key)
     elif field_type == 'value_units':
-        if event[field['name']]:
-            val = event[field['name']].get ('value')
-            units = event[field['name']].get ('units')
+        if event.get (key):
+            val = event[key].get ('value') or ''
+            units = event[key].get ('units') or ''
         else:
-            val = None
-            units = None
+            val = ''
+            units = ''
+
         def map_units (x):
             if x == units:
                 return  OPTION (x, _value=x, _selected = 'selected')
@@ -155,40 +190,107 @@ def format_input (field, event = {}):
         options = map (map_units, field['units'])
         units = SELECT (options, _name = field['name'] + '_units')        
         return SPAN (value, units)
+    elif field_type == 'nested':
+        i = 0
+
+        if event.get (key):
+            children = event[key]
+        else:
+            children = []
+
+        def format_nested (x, i):
+            sub_inputs = []
+            sub_inputs.append (INPUT (_type="hidden", _name="%s_%d" % (field['name'], i), _value="true"))
+            for sub_field in field['children']:
+                sub_key = '%s_%s_%d' % (field['name'], sub_field['name'], i)
+                sub_inputs.append(LABEL(sub_field.get('label') or sub_field['name']))
+                sub_inputs.append(INPUT(_name=sub_key,_type='text',_value = x.get(sub_field['name']) or ''))
+                sub_inputs.append(BR())
+            
+            return DIV (sub_inputs, _class = "nested")
+
+        child_list = [A ("Add  Sub Item", _href="#", _class="append_field"), INPUT(_name="%s_num" % field['name'], _type="hidden", _value=len (children))]
+        for i, child in enumerate(children):
+            child_list.append(format_nested (child, i))
+
+        #i += 1
+        #child_list.append (format_nested ({}, i))
+        return DIV(child_list)
+
     else:
-        return INPUT(_name=field['name'],_type='text', _value = event.get (field['name']) or '')
+        val = event.get (key) or ''
+        return INPUT(_name=field['name'],_type='text', _value = val)
+
+def validate_event (attr):
+    for field in event_fields:
+        key = field['name']
+        if field.get ('required') and not attr.get (key):
+            return False
+    return True            
 
 def format_field (field, value):
+    if not value:
+        return ''
     field_type = field.get ('type')
     if field_type == 'set':
-        return str (value)
+        return unicode (value)
     elif field_type == 'value_units':
         return value['value'] + ' ' + value['units']
+    elif field_type == 'nested':
+        items = []
+        for val in value:
+            item = []
+            for sub_field in field['children']:
+                key = sub_field['name']
+                item.append (DIV (B (sub_field.get ('label') or sub_field['name']), val.get(sub_field['name']) or ''))
+            items.append (DIV (item, _class="nested"))
+        return DIV (items)
     else:
-        return str (value)
+        return unicode (value)
+
+def pack_field (field, attr):
+    key = field['name']
+    if attr.has_key(field['name']):
+        if field.has_key('units'):            
+            return {'value': attr.get(key), 'units': attr.get (key + '_units')}
+        else:
+            return attr.get(key)
+
+    if field.get ('type') == 'nested':
+        def field_exists (i):
+            for sub_field in field['children']:
+                if attr.get('%s_%s_%d' % (field['name'], sub_field['name'], i)):
+                    return True
+            return False
+
+        def add_item (item, i):
+            for sub_field in field['children']:
+                item[sub_field['name']] = attr.get ('%s_%s_%d' % (field['name'], sub_field['name'], i))
+
+        values = []
+        i = 0
+        for i in range (0, int (attr['%s_num' % field['name']])):
+            if field_exists (i):
+                item = {}
+                add_item (item, i)
+                values.append (item)
+        return values
+    else:
+        return None
 
 def format_event (attr):
     values= {}
     for field in event_fields:
-        key = field['name']
-        if attr.has_key(field['name']):
-            if field.has_key('units'):            
-                values[field['name']] = {'value':attr.get(key),'units':attr.get(key+'_units')}
-            else:
-                values[field['name']] = attr.get(key)
-        else:
-            values[field['name']]=None
+        values[field['name']] = pack_field (field, attr)
     return values
 
 def insert_event (attr):
     values = format_event (attr)
-    return mongo.event.insert (values)
+    return mongo.events.insert (values)
 
 def delete_event (id):
-    mongo.event.remove ({'_id': ObjectId (id)})
+    mongo.events.remove ({'_id': ObjectId (id)})
 
 def update_event (id, attr):
     values = format_event (attr)
-    mongo.event.update ({'_id': ObjectId (id)}, {'$set': values})
-
-
+    mongo.events.update ({'_id': ObjectId (id)}, {'$set': values})

@@ -1,15 +1,7 @@
 def index():
+    redirect (URL (r = request, c = 'web', f = 'events'))
     return dict()
 """    redirect (URL(r=request,c='default'))  """
-
-def about():
-    return dict()
-
-def privacy():
-    return dict()
-
-def terms():
-    return dict()
 
 def register():
     redirect (URL (r = request, c = 'default', f = 'index'))
