@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{= request.title or 'The Sicki Project' }}</title> 
+    <link rel="stylesheet" type="text/css" href="{{= URL (r = request, c = 'static', f = 'css/base.css') }}" /> 
+    <script type="text/javascript" src="{{= URL (r= request, c = 'static', f = 'js/jquery.min.js')}}"></script> 
+    <script type="text/javascript" src="{{= URL (r= request, c = 'static', f = 'js/wigglemaps/wigglemaps.js')}}"></script> 
+    <script type="text/javascript" src="{{= URL (r= request, c = 'static', f = 'js/jquery.html.js')}}"></script> 
+    <script type="text/javascript" src="{{= URL (r= request, c = 'static', f = 'js/scrim.js')}}"></script> 
+    <script type="text/javascript" src="{{= URL (r= request, c = 'static', f = 'js/template.js')}}"></script> 
+    <script type="text/javascript" src="{{= URL (r = request, c = 'eid', f = 'view.js', args = [request.args (0)]) }}"></script>
+  </head>
+  <body>
+    {{ include "login.html" }}
+    <div id="submit-prop-wrapper">
+      <div id="submit-prop"></div>
+    </div>
+    <div id="main"> 
+      <div id="title"></div>
+      <div id="stats">
+	<h2>Disease Stats</h2>
+      </div>
+      <div id="right">
+	<div id="map"></div>
+	<div id="proposals">
+	  <h2>Proposals</h2>
+	</div>
+      </div>
+  </body>
+</html>

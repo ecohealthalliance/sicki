@@ -1,10 +1,21 @@
-def index():
-    redirect (URL (r = request, c = 'web', f = 'events'))
-    return dict()
-"""    redirect (URL(r=request,c='default'))  """
+# -*- coding: utf-8 -*-
+# this file is released under public domain and you can use without limitations
 
-def register():
-    redirect (URL (r = request, c = 'default', f = 'index'))
+#########################################################################
+## This is a samples controller
+## - index is the default action of any application
+## - user is required for authentication and authorization
+## - download is for downloading files uploaded in the db (does streaming)
+## - call exposes all registered services (none by default)
+#########################################################################
+
+def index():
+    """
+    example action using the internationalization operator T and flash
+    rendered by views/default/index.html or views/generic.html
+    """
+    response.flash = "Welcome to web2py!"
+    return dict(message=T('Hello World'))
 
 def user():
     """
@@ -20,66 +31,41 @@ def user():
         @auth.requires_permission('read','table name',record_id)
     to decorate functions that need access control
     """
-    from os import getcwd
-    from uuid import uuid4
-    if deployment_settings.dev_mode.enabled:
-        psswd = uuid4 ().hex
-        firstname = deployment_settings.dev_mode.firstname
-        lastname = deployment_settings.dev_mode.lastname
-        email = deployment_settings.dev_mode.email
-        auth.get_or_create_user ({'first_name': firstname, 'last_name': lastname, 'email': email, 'password': db.auth_user.password.validate (psswd)[0]})
-        db (db[auth.settings.table_user].email == email).update (first_name = firstname, last_name = lastname)
-        auth.login_bare (email, psswd)
-        redirect  (URL (scheme = 'http', r = request, c = 'default', f = 'index.html'))
-    if request.wsgi.environ.get ('wsgi.url_scheme') != 'https':
-        redirect (URL (scheme = 'https', args = request.args))
-    if request.args (0) == 'logout':
-        auth.logout (next = URL (scheme = 'http', r = request, c = 'default', f = 'index.html'))
-    elif request.args (0) == 'login':
-        if request.vars.has_key ('openid.mode'):
-            from openid.consumer import consumer
-            from openid.extensions import ax
-            cons = session['openid-consumer']
-            resp = cons.complete (request.vars, str (request.wsgi.environ['wsgi.url_scheme'] + '://' + request.wsgi.environ['HTTP_HOST'] + request.wsgi.environ['REQUEST_URI']))
-            if resp.status == consumer.SUCCESS:
-                psswd = uuid4 ().hex
-                ax_resp = resp.getSignedNS (ax.FetchRequest.ns_uri)
-                email = ax_resp['value.email']
-                try:
-                    firstname = ax_resp['value.firstname']
-                    lastname = ax_resp['value.lastname']
-                except:
-                    firstname = email
-                    lastname = ''
-                auth.get_or_create_user ({'first_name': firstname, 'last_name': lastname, 'email': email, 'password': db.auth_user.password.validate (psswd)[0]})
-                db (db[auth.settings.table_user].email == email).update (first_name = firstname, last_name = lastname)
-                auth.login_bare (email, psswd)
-                del session['openid-consumer']
-                redirect  (URL (scheme = 'http', r = request, c = 'default', f = 'index.html'))
-            elif resp.status == consumer.CANCEL:
-                return 'You must allow 3rd party access to login to this site'
-            elif resp.status == consumer.FAILURE:
-                return 'Login Failed'
-        else:
-            from openid.consumer.consumer import Consumer
-            from openid.store.filestore import FileOpenIDStore
-            from openid.extensions import ax
-            path = getcwd () + '/applications/' + request.application + '/.openid/'
-            store = FileOpenIDStore (path)
-            cons = Consumer (session, store)
-            req = cons.begin ('https://www.google.com/accounts/o8/id')
-            ax_req = ax.FetchRequest ()
-            ax_req.add (ax.AttrInfo (type_uri='http://axschema.org/contact/email', required=True, alias='email'))
-            ax_req.add (ax.AttrInfo (type_uri='http://axschema.org/namePerson/first', required=True, alias='firstname'))
-            ax_req.add (ax.AttrInfo (type_uri='http://axschema.org/namePerson/last', required=True, alias='lastname'))
-            req.addExtension (ax_req)
-            session['openid-consumer'] = cons
+    return dict(form=auth())
 
-            url = req.redirectURL (str (request.wsgi.environ['wsgi.url_scheme'] + '://' + request.wsgi.environ['HTTP_HOST']), return_to = str (request.wsgi.environ['wsgi.url_scheme'] + '://' + request.wsgi.environ['HTTP_HOST'] + request.wsgi.environ['REQUEST_URI']))
 
-            redirect (url)
-    else:
-        raise HTTP (400, "Bad Request")
+def download():
+    """
+    allows downloading of uploaded files
+    http://..../[app]/default/download/[filename]
+    """
+    return response.download(request,db)
 
-def missing():
-    return {'message': session['missing']}
+
+def call():
+    """
+    exposes services. for example:
+    http://..../[app]/default/call/jsonrpc
+    decorate with @services.jsonrpc the functions to expose
+    supports xml, json, xmlrpc, jsonrpc, amfrpc, rss, csv
+    """
+    return service()
+
+
+@auth.requires_signature()
+def data():
+    """
+    http://..../[app]/default/data/tables
+    http://..../[app]/default/data/create/[table]
+    http://..../[app]/default/data/read/[table]/[id]
+    http://..../[app]/default/data/update/[table]/[id]
+    http://..../[app]/default/data/delete/[table]/[id]
+    http://..../[app]/default/data/select/[table]
+    http://..../[app]/default/data/search/[table]
+    but URLs must be signed, i.e. linked with
+      A('table',_href=URL('data/tables',user_signature=True))
+    or with the signed load operator
+      LOAD('default','data.load',args='tables',ajax=True,user_signature=True)
+    """
+    return dict(form=crud())
+

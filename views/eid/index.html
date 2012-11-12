@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  </head>
+  <body>
+    {{ include "login.html" }}
+    {{ for event in events: }}
+    {{id = str (event['_id']) }}
+    {{name = event['event_name'] }}
+    <p><a href="{{= URL (r = request, c = 'eid', f = 'view', args = [id]) }}">{{= name }}</a></p>
+    {{ pass }}
+  </body>
+</html>
+

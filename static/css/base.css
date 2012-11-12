@@ -1,79 +1,131 @@
 body {
-    margin: 0px auto;
-    font-family: Helvetica, sans-serif;
-    background: #fefefe;
-    color: #444;
+    font-family: Helvetica;
+    margin: 0px;
+}
+#login-wrapper {
+    border-bottom: dashed 1px #ccc;
+    text-align: right;
+    padding: 15px;
 }
 
-header#title div.title {
-    font-size: 2em;
-    font-weight: bold;
-    margin: 15px 0px;
-}
-
-header#title nav {
-    border-radius: 10px;
-    margin-bottom: 15px;
-
-    background: #95a7d0; /* Old browsers */
-    background: -moz-linear-gradient(top, #95a7d0 0%, #7db9e8 100%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#95a7d0), color-stop(100%,#7db9e8)); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top, #95a7d0 0%,#7db9e8 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top, #95a7d0 0%,#7db9e8 100%); /* Opera 11.10+ */
-    background: -ms-linear-gradient(top, #95a7d0 0%,#7db9e8 100%); /* IE10+ */
-    background: linear-gradient(to bottom, #95a7d0 0%,#7db9e8 100%); /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#95a7d0', endColorstr='#7db9e8',GradientType=0 ); /* IE6-9 */
-}
-
-header#title nav a {
-    display: inline-block;
-    padding: 10px;
-    color: #336;
-}
-
-div#main {
-    margin: 0px 10px;
-}
-
-div#main a {
+a {
     text-decoration: none;
-    color: #336;
 }
 
-.event-sort, .event-link {
-    margin: 20px;
+#map {
+    height: 400px;
 }
 
-div.event-title {
-    text-align: center;
-    font-size: 1.75em;
-    font-weight: bold;
-    margin: 20px 0px 50px 0px;
+div#stats {
+    margin-left: 20px;
+    width: 400px;
+    position: absolute;
 }
 
-/*#content h2 {
-    text-align: center;
-    margin: 20px 0px 50px 0px;
+div#submit-prop-wrapper {
+    position: fixed;
+    width: 50%;
+    display: none;
+    top: 0px;
+    left: 0px;
+    background-color: white;
+    z-index: 3;
+    border: solid 1px black;
+    overflow-y: scroll;
 }
 
-#content h3 {
-    text-align: center;
-    margin: 20px;
+/*div#scrim {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,.75);
+    display: none;
+    z-index: 2;
 }*/
 
-.sep {
-    clear: both;
-    border-bottom: 1px dashed #ccd;
+div#title {
+    font-weight: bold;
+    text-align: center;
+    font-size: 1.75em;
+    margin: 20px 0px 50px 0px;
 }
 
-#login a {
-    display: block;
-    float: right;
+div#right {
+    margin-left: 420px;
+    margin-right: 20px;
+}
+
+div.stat {
+    margin: 20px;
+}
+
+div.sublist {
+    margin: 10px 0px;
+}
+
+div.editing {
+    margin: 10px 0px;
+    padding: 10px 20px;
+}
+
+div.editing input {
+    width: 200px;
+    padding: 2px;
+}
+
+a.control {
     padding: 10px;
 }
 
-#insert-new-event {
-    margin: 20px;
+div.controls {
+    margin: 10px 0px;
+}
+
+.greyed {
+    color: rgba(51,51,51,.8);
+}
+
+.ok {
+    background-color: rgba(0,255,0,.5)
+}
+
+.vote {
+    height: 25px;
+}
+
+.stat {
+    display: table-row;
+}
+
+.edit-title {
     font-size: 1.25em;
     font-weight: bold;
+    margin: 20px 0px;
 }
+
+.edit-wrapper, .wrapper, .label {
+    display: table-cell;
+}
+
+.label {
+    font-weight: bold;
+    font-size: 1.25em;
+    padding-right: 20px;
+    padding-left: 10px;
+    padding-bottom: 10px;
+    text-align: right
+}
+
+.sublabel {
+    font-weight: bold;
+    margin-top: 2px;
+}
+
+.subitem {
+    margin-left: 20px;
+}
+
+
+

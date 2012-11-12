@@ -1,0 +1,8 @@
+<div id="login-wrapper">
+  {{ url = URL (r = request) }}
+  {{ if not auth.user: }}
+  <a class="login" href="/{{= request.application }}/default/user/login?_next={{ response.write (url, escape = False) }}">Login</a>
+  {{ else: }}
+  {{= auth.user.first_name }} {{= auth.user.last_name }} <a class="login" href="/{{= request.application }}/default/user/login?_next={{ response.write (url, escape = False) }}">Logout</a>
+  {{ pass }}
+</div>
