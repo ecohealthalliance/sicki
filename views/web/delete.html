@@ -1,9 +1,0 @@
-{{ extend "layout.html" }}
-<div>
-  Confirm deletion of event <b>{{= event['event_name'] }}</b><br /><button id="confirm">Confirm</button>
-</div>
-<script type="text/javascript">
-  $('#confirm').click (function () {
-    window.location.href = '{{= URL (r = request, args = request.args, vars = {'confirm': 'yes'}) }}';
-  });
-</script>
