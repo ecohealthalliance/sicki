@@ -21,6 +21,8 @@ uploads/*
 .openid/*
 .tmp/*
 .raw/*
+static/tiles
+static/webgl_maps
 static/videos/*
 static/scripts/ext/.docs/*
 static/scripts/ext/.examples/*

@@ -1,4 +1,5 @@
 from gluon.tools import Crud
+import simplejson as json
 
 if deployment_settings.postgis.host:
     import psycopg2
@@ -81,3 +82,22 @@ class MongoWrapperIter:
             return MongoWrapper (val)
         else:
             return val
+
+class attr_dict (dict):
+    def __init__ (self, **attr):
+        dict.__init__ (self, **attr)
+
+    def __getattr__ (self, key):
+        try:
+            return self[key]
+        except KeyError:
+            return None
+
+    def default (self, key, default):
+        if self.has_key (key):
+            return
+        else:
+            self[key] = default
+
+    def json (self):
+        return json.dumps (self)

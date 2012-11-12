@@ -15,15 +15,15 @@
 </div>
 
 {{ for event in events: }}
-<div class="event-link"><a href="{{= URL (r = request, f = 'stats', args = [str (event['_id'])]) }}">{{= event['event_name'] }}</a> {{ if sort: }}({{= sort.get('label') or sort['name'] }}: {{= format_field (sort, event[sort['name']]) }}){{ pass }}</div>
+<div class="event-link"><a href="{{= URL (r = request, a = request.application, c = 'web', f = 'stats', args = [str (event['_id'])]) }}">{{= event.get ('event_name') }}</a> {{ if sort: }}({{= format_field (sort, event.get (sort['name'])) }}){{ pass }}</div>
 {{ pass }}
 
 <script type="text/javascript">
   $ ('#sort_events').change (function () {
-    var val = $ (this).val ();
-    var base = '{{= URL (r = request) }}'
-    if (val.length)
-      base += '?sort=' + val
+      var val = $ (this).val ();
+      var base = '{{= URL (r = request) }}';
+      if (val.length)
+	  base += '?sort=' + val
     window.location.href = base;
   });
 </script>

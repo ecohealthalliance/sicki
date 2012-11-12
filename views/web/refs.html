@@ -1,0 +1,48 @@
+{{ extend "layout.html" }}
+<div id="refs">
+  {{for ref in refs: }}
+  <p><a class="{{= ref['key'] }}" href="#">{{= ref['title'] }}</a></p>
+  {{ pass }}
+</div>
+<script type="text/javascript">
+    $ ('#refs a').click (function (event) {
+	var format_data = function (key, value) {
+	    if (key == 'creators') {
+		var authors = [];
+		for (var i = 0; i < value.length; i ++) {
+		    authors.push (value[i]['firstName'] + ' ' + value[i]['lastName'])
+		}
+		return '<p><b>' + key + ':</b> ' + authors.join (', ') + '</p>';
+	    }
+	    else if (key == 'tags') {
+		var tags = [];
+		for (var i = 0; i < value.length; i ++) {
+		    tags.push (value[i].tag)
+		}
+		return '<p><b>' + key + ':</b> ' + tags.join (', ') + '</p>';
+	    }
+	    else {
+		return '<p><b>' + key + ':</b> ' + value + '</p>';
+	    }
+	};
+	var link = $ (this);
+	if (link.parent ().next ().attr ('class') != 'ref') {
+	    $.ajax ({
+		url: '{{= URL (r = request, f = 'ref') }}/' + $ (this).attr ('class'),
+		dataType: 'json',
+		success: function (data) {
+		    var div = $('<div class="ref"></div>');
+		    for (var key in data) {
+			div.append (format_data (key, data[key]));
+		    }
+		    link.parent ().after (div);
+		}
+	    });
+	}
+	else {
+	    link.parent ().next ().toggle ();
+	}
+	event.preventDefault ();
+	return false;
+    });
+</script>

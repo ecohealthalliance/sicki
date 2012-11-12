@@ -1,13 +1,34 @@
-* {
-    margin: 0px;
-    padding: 0px;
-}
-
 body {
     margin: 0px auto;
     font-family: Helvetica, sans-serif;
     background: #fefefe;
     color: #444;
+}
+
+header#title div.title {
+    font-size: 2em;
+    font-weight: bold;
+    margin: 15px 0px;
+}
+
+header#title nav {
+    border-radius: 10px;
+    margin-bottom: 15px;
+
+    background: #95a7d0; /* Old browsers */
+    background: -moz-linear-gradient(top, #95a7d0 0%, #7db9e8 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#95a7d0), color-stop(100%,#7db9e8)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #95a7d0 0%,#7db9e8 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #95a7d0 0%,#7db9e8 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #95a7d0 0%,#7db9e8 100%); /* IE10+ */
+    background: linear-gradient(to bottom, #95a7d0 0%,#7db9e8 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#95a7d0', endColorstr='#7db9e8',GradientType=0 ); /* IE6-9 */
+}
+
+header#title nav a {
+    display: inline-block;
+    padding: 10px;
+    color: #336;
 }
 
 div#main {
@@ -16,10 +37,21 @@ div#main {
 
 div#main a {
     text-decoration: none;
-    color: #336
+    color: #336;
 }
 
-#content h2 {
+.event-sort, .event-link {
+    margin: 20px;
+}
+
+div.event-title {
+    text-align: center;
+    font-size: 1.75em;
+    font-weight: bold;
+    margin: 20px 0px 50px 0px;
+}
+
+/*#content h2 {
     text-align: center;
     margin: 20px 0px 50px 0px;
 }
@@ -27,7 +59,7 @@ div#main a {
 #content h3 {
     text-align: center;
     margin: 20px;
-}
+}*/
 
 .sep {
     clear: both;

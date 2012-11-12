@@ -7,7 +7,19 @@
 }
 
 #stats {
-    margin-right: @LOCWIDTH + 25px;
+    margin-right: 25px;
+    float: left;
+    width: 450px;
+}
+
+
+#stats .nested {
+    margin-left: 100px;
+    margin-bottom: 25px;
+}
+
+#right {
+    margin-left: 500px;
 }
 
 #stats p {
@@ -42,6 +54,16 @@
     margin: 5px;
 }
 
-.event-sort, .event-link {
-    margin: 20px;
+.ref {
+    margin-left:  50px;
+}
+
+.append_field {
+    margin-left: 100px;
+    font-weight: bold;
+    color: red !important;
+}
+
+.add_ref, .remove_ref {
+    color: red !important;
 }
