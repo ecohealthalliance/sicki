@@ -3,6 +3,16 @@
   {{ if not auth.user: }}
   <a class="login" href="/{{= request.application }}/default/user/login?_next={{ response.write (url, escape = False) }}">Login</a>
   {{ else: }}
-  {{= auth.user.first_name }} {{= auth.user.last_name }} <a class="login" href="/{{= request.application }}/default/user/login?_next={{ response.write (url, escape = False) }}">Logout</a>
+  {{= auth.user.first_name }} {{= auth.user.last_name }} <a class="login" href="/{{= request.application }}/default/user/logout?_next={{ response.write (url, escape = False) }}">Logout</a>
   {{ pass }}
+</div>
+<div class="header">
+  <div class="header-title">
+    The Sicki Project
+  </div>
+  <div class="nav">
+    <a href="{{= URL (r = request, c = 'eid', f = 'index.html') }}">EID Events</a>
+    <a href="{{= URL (r = request, c = 'eid', f = 'eid_map.html') }}">EID Event Map</a>
+    <a href="{{= URL (r = request, c = 'eid', f = 'refs.html') }}">References</a>
+  </div>
 </div>

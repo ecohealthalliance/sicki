@@ -6,8 +6,6 @@
 
     var event_fields = {{ response.write (json.dumps (event_fields), escape = False) }};
     
-    var event_proposals = {{ response.write (json.dumps (event_proposals), escape = False) }};
-    
     var event_lookup = {};
     $.each (event_fields, function (i, field) {
 	event_lookup[field.name] = field;
@@ -98,6 +96,8 @@
 	    height: $ (window).innerHeight () - 100
 	});
 
+	ref_list = new ReferenceList ('{{= request.application }}', $ ('#ref-query'), $ ('#ref-results'));
+
 	var displayField = function (field, value) {
 	    var template = Template (field, value);
 	    if (!template)
@@ -109,6 +109,7 @@
 	    var stat = $ ('<div class="stat" id="' + field.name + '"></div>').append (edit).append (format_label (field)).append (wrapper);
 
 	    edit.click (function () {
+		ref_list.reset ();
 		var input = template.input ();
 		var div = $ ('<div class="editing"></div>').append ('<div class="edit-title">' + field.label  + '</div>');
 		var submit = $ ('<a class="control" href="#">Submit</a>').click (function () {
@@ -117,7 +118,10 @@
 			//url: '{{= URL (r = request, c = 'eid', f = 'propose', args = [eid_id]) }}',
 			url: '/{{= request.application }}/eid/propose/{{= eid_id }}/' + field.name,
 			type: 'POST',
-			data: val,
+			data: {
+			    val: val,
+			    refs: JSON.stringify (ref_list.selected ())
+			},
 			dataType: 'text',
 			success: function (data) {
 			    /*div.children ().remove ();
@@ -159,20 +163,9 @@
 		$ ('#stats').append (stat);
 	});
 
-	$.each (event_proposals, function (i, prop) {
+	/*$.each (event_proposals, function (i, prop) {
 	    var field = event_lookup[prop.field];
 	    var template = Template (field, prop.value);
-	    /*var upvote = $ ('<a href="#"><img height="20" src="/{{= request.application}}/static/images/upvote.png" /></a>').click (function () {
-		$.ajax ({
-		    url: '/{{= request.application }}/eid/upvote/' + prop.id,
-		    type: 'POST',
-		    success: function () {
-			upvote.css ('color', 'red');
-			downvote.css ('color', '');
-		    }
-		    });
-		return false;
-	    });*/
 	    var up_src = (prop.voted == 1) ? 'upvote_green.png' : 'upvote.png';
 	    var upvote = $ ('<a href="' + '/{{= request.application }}/eid/upvote/' + prop.id + '"><img class="vote" src="/{{= request.application}}/static/images/' + up_src + '" /></a>');
 
@@ -180,41 +173,13 @@
 	    var downvote = $ ('<a href="' + '/{{= request.application }}/eid/downvote/' + prop.id + '"><img class="vote" src="/{{= request.application}}/static/images/' + down_src + '" /></a>');
 
 	    var unvote = $ ('<a href="/{{= request.application }}/eid/unvote/' + prop.id + '">(cancel)</a>')
-
-	    /*var unvote = $ ('<a href="#">X</a>').click (function () {
-		$.ajax ({
-		    url: '/{{= request.application }}/eid/unvote/' + prop.id,
-		    type: 'POST',
-		    success: function () {
-			downvote.css ('color', '');
-			upvote.css ('color', '');
-		    }
-		    });
-		return false;
-	    });
-
-	    if (prop.voted == 1)
-		upvote.css ('color', 'red');
-	    var downvote = $ ('<a href="#">&darr;</a>').click (function () {
-		$.ajax ({
-		    url: '/{{= request.application }}/eid/downvote/' + prop.id,
-		    type: 'POST',
-		    success: function () {
-			downvote.css ('color', 'red');
-			upvote.css ('color', '');
-		    }
-		    });
-		return false;
-	    });
-	    if (prop.voted == -1)
-		downvote.css ('color', 'red');*/
 	    
 	    {{ if has_role (admin_role): }}
 	    var accept = $ ('<a href="/{{= request.application }}/eid/accept/' + prop.id + '">(accept)</a>');
 	    {{ pass }}
 	    var wrapper = $ ('<div></div>').append (upvote).append (downvote).append (unvote).append ('(' + prop.up + ' up, ' + prop.down + ' down)'){{if has_role (admin_role): }}.append (accept){{ pass }}.append (template.html ());
 	    $ ('#proposals').append (wrapper);
-	})
+	})*/
 
 	/*$('.edit').click (function () {
 	    var parent = $ (this).parent ();
