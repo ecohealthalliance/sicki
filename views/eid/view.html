@@ -7,23 +7,34 @@
     <script type="text/javascript" src="{{= URL (r= request, c = 'static', f = 'js/wigglemaps/wigglemaps.js')}}"></script> 
     <script type="text/javascript" src="{{= URL (r= request, c = 'static', f = 'js/jquery.html.js')}}"></script> 
     <script type="text/javascript" src="{{= URL (r= request, c = 'static', f = 'js/scrim.js')}}"></script> 
-    <script type="text/javascript" src="{{= URL (r= request, c = 'static', f = 'js/template.js')}}"></script> 
+    <script type="text/javascript" src="{{= URL (r= request, c = 'static', f = 'js/template.js')}}"></script>
+    <script type="text/javascript" src="{{= URL (r= request, c = 'static', f = 'js/refs.js')}}"></script> 
     <script type="text/javascript" src="{{= URL (r = request, c = 'eid', f = 'view.js', args = [request.args (0)]) }}"></script>
   </head>
   <body>
     {{ include "login.html" }}
     <div id="submit-prop-wrapper">
+      <h2 class="edit-title">Propose Edit</h2>
       <div id="submit-prop"></div>
+      <div id="ref-prop">
+	<div class="edit-title">References</div>
+	<input id="ref-query" type="text" />
+	<div id="ref-results"></div>
+      </div>
     </div>
     <div id="main"> 
+      <div id="prop-link">
+	<a href="/{{= request.application }}/eid/proposals/{{= request.args[0] }}">View Proposals</a>
+	</div>
       <div id="title"></div>
       <div id="stats">
 	<h2>Disease Stats</h2>
       </div>
       <div id="right">
 	<div id="map"></div>
-	<div id="proposals">
-	  <h2>Proposals</h2>
+	<div id="wiki">
+	  <h2>Wiki <a href="/{{= request.application }}/wiki/blog/{{= request.args[0] }}/edit">(Edit)</a></h2>
+	  {{=plugin_wiki.render (page.body) }}
 	</div>
       </div>
   </body>

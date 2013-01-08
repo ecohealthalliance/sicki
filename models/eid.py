@@ -172,11 +172,12 @@ def format_field (field, event):
                 'props': []
                 })'''
 
-def propose_edit (eid_id, field, value):
+def propose_edit (eid_id, field, value, refs):
     return mongo.proposals.insert ({
             'eid': ObjectId (eid_id),
             'field': field,
             'value': value,
+            'refs': refs,
             'up': [],
             'down': [],
             })
@@ -198,6 +199,7 @@ def get_proposals (eid_id, user_id = None):
             result.append ({
                     'field': prop['field'],
                     'value': prop['value'],
+                    'refs': prop.get ('refs') or [],
                     'up': len (prop['up']),
                     'down': len (prop['down']),
                     'id': str (prop['_id']),

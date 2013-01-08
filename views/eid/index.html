@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <title>{{= request.title or 'The Sicki Project' }}</title>
+    <link rel="stylesheet" type="text/css" href="{{= URL (r = request, c = 'static', f = 'css/base.css') }}" /> 
+    <script type="text/javascript" src="{{= URL (r= request, c = 'static', f = 'js/jquery.min.js')}}"></script> 
   </head>
   <body>
     {{ include "login.html" }}
-    {{ for event in events: }}
-    {{id = str (event['_id']) }}
-    {{name = event['event_name'] }}
-    <p><a href="{{= URL (r = request, c = 'eid', f = 'view', args = [id]) }}">{{= name }}</a></p>
-    {{ pass }}
-  </body>
+    <div class="main">
+      {{ for event in events: }}
+      {{id = str (event['_id']) }}
+      {{name = event['event_name'] }}
+      <p><a href="{{= URL (r = request, c = 'eid', f = 'view', args = [id]) }}">{{= name }}</a></p>
+      {{ pass }}
+    </div>
+    </body>
 </html>
 
