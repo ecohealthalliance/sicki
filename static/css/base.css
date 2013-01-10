@@ -80,8 +80,13 @@ div.editing {
     padding: 10px 20px;
 }
 
-div.editing input {
+div.editing input.text {
     width: 200px;
+    padding: 2px;
+}
+
+div.editing input.unit_value {
+    width: 100px;
     padding: 2px;
 }
 

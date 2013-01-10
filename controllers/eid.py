@@ -1,7 +1,8 @@
 # GET /sicki/eid/
 @require_logged_in
 def index():
-    return {'events': get_all_events ()}
+    sort = request.vars.get ('sort')
+    return {'events': get_all_events (sort), 'sort': sort}
 
 @require_logged_in
 def fields():
@@ -14,11 +15,14 @@ def view():
     if not eid_id:
         raise HTTP (400, "Missing EID ID")
     #event = get_event (eid_id)
-    page = load_page (eid_id)
-    if not page:
-        insert_page (eid_id)
+    if request.extension == 'html':
         page = load_page (eid_id)
-    return {'event': get_event (eid_id), 'page': page}
+        if not page:
+            insert_page (eid_id)
+            page = load_page (eid_id)
+        return {'page': page}
+    elif request.extension == 'js':
+        return {'event': get_event (eid_id)}
 
 # GET /sicki/eid/proposals/<eid_id>
 @require_logged_in
@@ -36,7 +40,7 @@ def proposals():
 def propose():
     eid_id = request.args (0)
     field = request.args (1)
-    value = request.vars.get ('val')
+    value = json.loads (request.vars.get ('val'))
     refs = json.loads (request.vars.get ('refs'))
     #ensure_prop_eid (eid_id)
     id = propose_edit (eid_id, field, value, refs)
@@ -98,5 +102,6 @@ def ref():
     del result['_id']
     return json.dumps (result)
 
+@require_logged_in
 def eid_map():
     return {}
