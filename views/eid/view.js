@@ -115,15 +115,20 @@
 		ref_list.reset ();
 		var input = template.input ();
 		var div = $ ('<div class="editing"></div>').append ('<div class="edit-title">' + field.label  + '</div>');
+
+		// on submit send ajax post for proposal
 		var submit = $ ('<a class="control" href="#">Submit</a>').click (function () {
 		    var val = template.val (input);
+		    var now = new Date();
 		    $.ajax ({
 			//url: '{{= URL (r = request, c = 'eid', f = 'propose', args = [eid_id]) }}',
 			url: '/{{= request.application }}/eid/propose/{{= eid_id }}/' + field.name,
 			type: 'POST',
 			data: {
 			    val: JSON.stringify (val),
-			    refs: JSON.stringify (ref_list.selected ())
+			    refs: JSON.stringify (ref_list.selected ()),
+			    date: JSON.stringify(now),
+			    user: 
 			},
 			dataType: 'text',
 			success: function (data) {
