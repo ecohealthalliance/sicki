@@ -15,11 +15,14 @@ def view():
     if not eid_id:
         raise HTTP (400, "Missing EID ID")
     #event = get_event (eid_id)
-    page = load_page (eid_id)
-    if not page:
-        insert_page (eid_id)
+    if request.extension == 'html':
         page = load_page (eid_id)
-    return {'event': get_event (eid_id), 'page': page}
+        if not page:
+            insert_page (eid_id)
+            page = load_page (eid_id)
+        return {'page': page}
+    elif request.extension == 'js':
+        return {'event': get_event (eid_id)}
 
 # GET /sicki/eid/proposals/<eid_id>
 @require_logged_in
