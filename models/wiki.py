@@ -17,7 +17,6 @@ def parse_wiki_rest ():
     return rest_vars
 
 def render_page ():
-    #require_mongo ()
     rest_vars = parse_wiki_rest ()
     #arg, repr = get_arg (request.args (0))
     if not rest_vars.page_op and not rest_vars.page_slug:
@@ -185,7 +184,7 @@ def render_index (rest_vars):
     return dict(pages = pages, first = first, last = last, older = older, newer = newer)
 
 def render_create (rest_vars):
-    require_role (writer_role)
+    require_role_deprecated (writer_role)
     response.view = 'wiki/create.html'
     return {}
 
@@ -247,7 +246,7 @@ def insert_page (slug):
         return True
 
 def create_page (rest_vars):
-    require_role (writer_role)
+    require_role_deprecated (writer_role)
     okay = insert_page (slug)
     if not okay:
         response.flash = 'Slug already exists'
@@ -258,7 +257,7 @@ def format_datetime_blog (date_ob):
     return str (date_ob.year) + '-' + str (date_ob.month) + '-' + str (date_ob.day) + ' ' + str (date_ob.hour) + ':' + str (date_ob.minute)
 
 def render_comment_create (rest_vars):
-    require_logged_in ()
+    require_logged_in_deprecated ()
     slug = rest_vars.page_slug
     page = load_page (slug)
     if (not request.vars.has_key ('body')) or (len (request.vars.get ('body')) == 0):
@@ -318,7 +317,7 @@ def render_delete (rest_vars):
     redirect (URL (r = request))
 
 def render_categories (rest_vars):
-    require_role (editor_role)
+    require_role_deprecated (editor_role)
     response.view = 'wiki/categories.html'    
     if request.vars.has_key ('name'):
         vars = request.vars
@@ -370,12 +369,10 @@ def split_page (page, length):
     return page
 
 def require_page_authorized (page):
-    return True
     if not check_user (page.owner):
-        require_role (editor_role)
+        require_role_deprecated (editor_role)
 
 def check_page_authorized (page):
-    return True
     if check_user (page.owner):
         return True
     return check_role (editor_role)
@@ -412,8 +409,8 @@ def load_page (slug):
     #page = db (db.plugin_wiki_page.slug == slug).select ().first ()
     if not page:
         return None
-    #if not page.public:
-    #    require_page_authorized (page)
+    if not page.public:
+        require_page_authorized (page)
     return page
 
 def newest_page_preview ():

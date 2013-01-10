@@ -6,7 +6,7 @@
 ###################################################
 
 DEFAULT = {
-    'editor' : True, #check_role (editor_role), #auth.user and auth.has_membership(role='editor') or auth.user_id==1, # if current user a editor?
+    'editor' : check_role (editor_role), #auth.user and auth.has_membership(role='editor') or auth.user_id==1, # if current user a editor?
     'mode'   : 'markmin',    # 'markmin' or 'html' for wysiwyg editor
     'level'  : 3,            # 1 - wiki only, 2 - widgets enables, 3 - template render enabled
     'migrate': True,         # set to False in production
