@@ -144,7 +144,7 @@ def get_all_events (sort = None):
         def key_func (event):
             val = event.get (sort)
             if val:
-                val = val.lower ()
+                val = unicode (val).lower ()
             return val
         events.sort (key = key_func)
         
