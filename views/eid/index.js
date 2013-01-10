@@ -1,11 +1,12 @@
 {{ if sort: }}
-{{ modified_events = map (lambda event: {'event_name': event['event_name'], sort: event.get (sort), 'id': str (event['_id']) }, events) }}
+{{ modified_events = map (lambda event: {'event_name': event['event_name'], 'sort': event.get (sort), 'id': str (event['_id']) }, events) }}
 var events = {{ response.write (json.dumps (modified_events), escape = False) }};
 {{ else: }}
 {{ modified_events = map (lambda event: {'event_name': event['event_name'], 'id': str (event['_id']) }, events) }}
 var events = {{ response.write (json.dumps (modified_events), escape = False) }};
 {{ pass }}
 var base = '{{= URL (r = request, c = 'eid', f = 'view.html') }}';
+var sort_field = '{{= sort }}';
 
 $ (document).ready (function () {
     $ ('#sort_events').change (function () {
@@ -17,8 +18,18 @@ $ (document).ready (function () {
     });
 
     $.each (events, function (index, item) {
+	if (item['event_name'] == '1993 - Sir Charles Gairdner Hospital, Perth, Australia - Acinetobacter baumannii')
+	    console.log ("OK");
+	var text = '';
+	if (item['sort']) {
+	    var val = item['sort'];
+	    var template = Template (event_lookup[sort_field], item['sort']);
+	    if (template)
+		text = template.text ();
+	}
+	var caption = $ ('<span class="caption"></span>').text (text);
 	var a = $ ('<a></a>').text (item['event_name']).attr ('href', base + '/' + item.id)
-	var wrapper = $ ('<p></p>').append (a);
+	var wrapper = $ ('<p></p>').append (caption).append (a);
 	$ ('.main').append (wrapper);
     });
 });
