@@ -103,8 +103,8 @@ event_fields=[
     {'name':'location','label':'Location'},
     {'name':'host','label':'Host'},
     {'name':'disease','label':'Disease'},
-    {'name':'start_date','label':'Start Date'},
-    {'name':'end_date','label':'End Date'},
+    {'name':'start_date','label':'Start Date', 'type': 'date'},
+    {'name':'end_date','label':'End Date', 'type': 'date'},
     {'name':'host_age', 'label':'Host Age','type': 'set', 'set':host_age},
     {'name':'host_use','label':'Host Use', 'type': 'set', 'set':host_use},
     {'name':'transition_model','label':'Transition Model', 'type': 'set', 'set':transition_model},
@@ -144,8 +144,8 @@ def get_all_events (sort = None):
     return events
 
 
-def get_event (id):
-    event = mongo.events.find_one ({'_id': ObjectId (id)})
+def get_event (eid_id):
+    event = mongo.events.find_one ({'_id': ObjectId (eid_id)})
     event['_id'] = str (event['_id'])
     event['ref'] = str (event['ref'])
     return event
