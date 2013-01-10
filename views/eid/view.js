@@ -96,9 +96,11 @@
 	    height: $ (window).innerHeight () - 100
 	});
 
+	// static/js/refs.js ReferenceList
 	ref_list = new ReferenceList ('{{= request.application }}', $ ('#ref-query'), $ ('#ref-results'));
 
 	var displayField = function (field, value) {
+	    // returns a template object appropriate for field type (list,set,text)
 	    var template = Template (field, value);
 	    if (!template)
 		return '';
@@ -108,6 +110,7 @@
 	    var wrapper = $ ('<div class="wrapper"></div>').append (elem);
 	    var stat = $ ('<div class="stat" id="' + field.name + '"></div>').append (edit).append (format_label (field)).append (wrapper);
 
+	    // on clicking display popup for editing field
 	    edit.click (function () {
 		ref_list.reset ();
 		var input = template.input ();
@@ -143,6 +146,8 @@
 		    $ ('#submit-prop-wrapper').css ('display', 'none');
 		    return false;
 		});
+		// Generic placeholder(html5) message for now, non generic would take some work
+		input.attr('placeholder','Enter value');
 		var wrapper = $ ('<div></div>').append (input);
 		var controls = $ ('<div class="controls"></div>').append (submit). append (cancel);
 		div.append (wrapper).append (controls);
