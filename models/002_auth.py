@@ -11,7 +11,7 @@ admin_role = auth.id_group ("Administrator")
 if not admin_role:
     admin_role = auth.add_group ("Administrator", "System Administrator - can access & make changes to any data")
 
-def require_logged_in (func):
+def require_logged_in (func = None):
     def wrapper (*args, **kwargs):
         if not auth.user:
             redirect (URL (r = request, c = 'default', f = 'user', args = ['login']))
