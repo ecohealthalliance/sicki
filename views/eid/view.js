@@ -1,28 +1,27 @@
 (function () {
 
+    // templating from web2py, since we are in views directy
     {{ eid_id = request.args (0) }}
     
+    // turn python event(which came from mongo) into json
     var event = {{ response.write (json.dumps (event), escape = False) }};
 
+    // python model globally accessible and dumping into json list
+    // event fields is the schema for mongo, meta data of what it is and whats editable
     var event_fields = {{ response.write (json.dumps (event_fields), escape = False) }};
     
+    // turns event_fields list into a hash keyed on the name of the field
     var event_lookup = {};
     $.each (event_fields, function (i, field) {
 	event_lookup[field.name] = field;
     });
 
+    // util function for making links with class edit with '+' to click on
     var format_edit = function () {
 	return $ ('<a class="edit" href="#">+</a>');
     };
 
-    /*var format_value = function (field) {
-	if (field.type == 'text' || !field.type) {
-	    return event[field.name];
-	}
-	else 
-	    return '<div>MISSING</div>';
-    };*/
-
+    // util function for label divs
     function format_label (field) {
 	var label = field.label;
 	if (!label)
@@ -30,64 +29,46 @@
 	return $ ('<div class="label">' + label + '</div>');
     };
 
-    /*var format_input = function (field, adj) {
-	var div = $ ('<div class="editing"></div>')
-	if (field.type == 'text' || !field.type) {
-	    var input = $ ('<input type="text" value="' + event[field.name] + '" />')
-	    var button = $ ('<a class="control" href="#">Submit</a>').click (function () {
-		$.ajax ({
-		    url: '{{= URL (r = request, c = 'eid', f = 'propose', args = [eid_id]) }}',
-		    type: 'POST',
-		    data: input.val (),
-		    dataType: 'text',
-		    success: function (data) {
-			div.children ().remove ();
-			div.addClass ('ok');
-			div.append ('<i>' + input.val () + '</i> has been proposed');
-			//adj.removeClass ('greyed');
-		    },
-		    error: function (xhr, message) {
-			console.log (message);
-		    }
-		});
-	    });
-	    var cancel = $ ('<a class="control" href="cancel">Cancel</a>').click (function () {
-		//adj.removeClass ('greyed');
-		div.remove ();
-		return false;
-	    });
-	    div.append (input).append (button). append (cancel);
-	    
-	}
-	else
-	    return 'INPUT MISSING';
-    };*/
-    
+    // This loads after the page is loaded. This is really the start of things
+    // and loads up the whole page
     $ (document).ready (function () {
 
+	// putting the event name title into the div, div is in view.html
 	$ ('#title').text (event['event_name']);
 
+	// util for greying out screen & prevent scrolling
 	var scrim = new Scrim (2);
 
+	// sending the map div to wiggle.Map constructor, using dims of #map
 	var map = new wiggle.Map ('#map');
 
+	// python check if we have a map make asynchronous ajax to load map up
+	// and let page load carry on
 	{{ if event.get ('map'): }}
 	$.ajax ({
+	    // get map file using event[map]
 	    url: '/{{= request.application }}/static/maps/{{= event['map']}}.json',
 	    dataType: 'json',
+	    // callback from ajax with data as geoJson polygon of coords
 	    success: function (data) {
 		var aspect = map.width () / map.height ();
 
+		// wigglemaps/js/geojson.js takes in geoJson data and returns
+		// a javascript representation of the layer. a layer is a collection of
+		// polygons to trasnparently draw on map
 		layer = wiggle.io.GeoJSON (data);
 		var bounds = layer.bounds;
+		// center map view on the center of the layer
 		map.vcenter (bounds.centroid ());
 
+		// how much of the world to look at
 		var extent = 4 * Math.max (bounds.width (), bounds.height () * aspect)
 		map.extents (Math.min (extent, 360));
 
 		map.append (layer);
 	    }
 	});
+	// end of if python statement above
 	{{ pass }}
 	
 	$ ('#submit-prop-wrapper').css ({
