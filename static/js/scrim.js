@@ -27,4 +27,14 @@ function Scrim (zIndex) {
 	return elem;
     };
 
+    var click_func = function () {};
+
+    this.click = function (func) {
+	click_func = func;
+    };
+    
+    elem.click (function () {
+	click_func ();
+    });
+
 };

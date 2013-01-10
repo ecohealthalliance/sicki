@@ -155,7 +155,11 @@
 		$ ('#submit-prop-wrapper').css ({
 		    'display': 'block'
 		});
-		scrim.show ()
+		scrim.show ();
+		scrim.click (function () {
+		    cancel.trigger ('click');
+		});
+
 		return false;
 	    });
 	    $ ('#stats').append (stat);
