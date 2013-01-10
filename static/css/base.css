@@ -218,3 +218,9 @@ div.header-title {
 #prop-link {
     margin-left: 50px;
 }
+
+span.caption {
+    font-size: .85em;
+    padding: 0px 5px;
+    color: #999;
+}

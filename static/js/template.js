@@ -14,7 +14,7 @@ var Template;
 	    return $ ('<span>' + as_text (value) + '</span>');
 	};
 
-	this.text = function (value) {
+	this.text = function () {
 	    return value;
 	};
 
@@ -32,7 +32,7 @@ var Template;
 	    return $ ('<span>' + as_text (value) + '</span>');
 	};
 	
-	this.text = function (value) {
+	this.text = function () {
 	    return value;
 	};
 
@@ -93,7 +93,7 @@ var Template;
 	    return $ ('<span></span>').append (val_list);
 	};
 
-	this.text = function (value) {
+	this.text = function () {
 	    throw "Not Implemented";
 	};
 
@@ -155,7 +155,7 @@ var Template;
 	    return $ ('<span>' + format_date (value.day, value.month, value.year) + '</span>');
 	};
 
-	this.text = function (value) {
+	this.text = function () {
 	    return format_date (value.day, value.month, value.year);
 	};
 

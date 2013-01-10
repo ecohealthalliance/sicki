@@ -4,8 +4,9 @@
     <title>{{= request.title or 'The Sicki Project' }}</title>
     <link rel="stylesheet" type="text/css" href="{{= URL (r = request, c = 'static', f = 'css/base.css') }}" /> 
     <script type="text/javascript" src="{{= URL (r= request, c = 'static', f = 'js/jquery.min.js')}}"></script> 
+    <script type="text/javascript" src="{{= URL (r= request, c = 'static', f = 'js/template.js')}}"></script>
     <script type="text/javascript" src="{{= URL (r = request, c = 'eid', f = 'fields.js') }}"></script>
-    <script type="text/javascript" src="{{= URL (r = request, c = 'eid', f = 'index.js') }}"></script> 
+    <script type="text/javascript" src="{{= URL (r = request, c = 'eid', f = 'index.js', vars = {'sort': request.vars.get ('sort')}) }}"></script> 
   </head>
   <body>
     {{ include "login.html" }}
@@ -18,11 +19,6 @@
 	  {{ pass }}
 	</select>
       </div>
-      <!--{{ for event in events: }}
-      {{id = str (event['_id']) }}
-      {{name = event['event_name'] }}
-      <p><a href="{{= URL (r = request, c = 'eid', f = 'view', args = [id]) }}">{{= name }}</a></p>
-      {{ pass }}-->
     </div>
     </body>
 </html>
