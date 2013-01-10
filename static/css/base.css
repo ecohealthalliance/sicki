@@ -80,7 +80,7 @@ div.editing {
     padding: 10px 20px;
 }
 
-div.editing input {
+div.editing input.text {
     width: 200px;
     padding: 2px;
 }

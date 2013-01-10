@@ -19,7 +19,7 @@ var Template;
 	};
 
 	this.input = function () {
-	    return $ ('<input type="text" value="' + as_text (value) + '" />');
+	    return $ ('<input type="text" value="' + as_text (value) + '" />').addClass ('text');
 	};
 
 	this.val = function (input) {
@@ -121,6 +121,58 @@ var Template;
 	};
     };
 
+    var DateTemplate = function (field, value) {
+	if (!value)
+	    value = {};
+	var month_name = {
+	    1: 'Jan',
+	    2: 'Feb',
+	    3: 'Mar',
+	    4: 'Apr',
+	    5: 'May',
+	    6: 'Jun',
+	    7: 'Jul',
+	    8: 'Aug',
+	    9: 'Sep',
+	    10: 'Oct',
+	    11: 'Nov',
+	    12: 'Dec',
+	};
+	var format_date = function (day, month, year) {
+	    return $.map ([month_name[month], day, year], function (item) {
+		return as_text (item);
+	    }).join (' ');
+	};
+	
+	this.html = function () {
+	    return $ ('<span>' + format_date (value.day, value.month, value.year) + '</span>');
+	};
+
+	this.text = function (value) {
+	    return format_date (value.day, value.month, value.year);
+	};
+
+	this.input = function () {
+	    var month_picker = $ ('<select><option value=""></option></select>').addClass ('month');
+	    for (var key in month_name) {
+		var month = $ ('<option></option>').text (month_name[key]).attr ('value', key);
+		month_picker.append (month);
+	    }
+	    //return $ ('<input type="text" value="' + as_text (value) + '" />');
+	    var year_picker = $ ('<input type="text"  maxlength="4" size="4" />').addClass ('year');
+	    var day_picker = $ ('<input type="text"  maxlength="2" size="2" />').addClass ('day');
+	    return $ ('<span></span>').append (month_picker).append (day_picker).append (year_picker);
+	};
+
+	this.val = function (input) {
+	    return {
+		year: input.children ('.year').val (),
+		month: input.children ('.month').val (),
+		day: input.children ('.day').val ()
+	    };
+	};	
+    };
+
     Template = function (field, value) {
 	var template;
 	if (field.type == 'text' || !field.type)
@@ -129,6 +181,8 @@ var Template;
 	    template = new SetTemplate (field, value);
 	else if (field.type == 'list')
 	    template = new ListTemplate (field, value);
+	else if (field.type == 'date')
+	    template = new DateTemplate (field, value);
 	else 
 	    template = undefined;
 	return template;

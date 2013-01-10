@@ -119,7 +119,7 @@
 			url: '/{{= request.application }}/eid/propose/{{= eid_id }}/' + field.name,
 			type: 'POST',
 			data: {
-			    val: val,
+			    val: JSON.stringify (val),
 			    refs: JSON.stringify (ref_list.selected ())
 			},
 			dataType: 'text',

@@ -36,7 +36,7 @@ def proposals():
 def propose():
     eid_id = request.args (0)
     field = request.args (1)
-    value = request.vars.get ('val')
+    value = json.loads (request.vars.get ('val'))
     refs = json.loads (request.vars.get ('refs'))
     #ensure_prop_eid (eid_id)
     id = propose_edit (eid_id, field, value, refs)
@@ -98,5 +98,6 @@ def ref():
     del result['_id']
     return json.dumps (result)
 
+@require_logged_in
 def eid_map():
     return {}
