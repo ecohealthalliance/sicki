@@ -4,10 +4,19 @@
     <title>{{= request.title or 'The Sicki Project' }}</title>
     <link rel="stylesheet" type="text/css" href="{{= URL (r = request, c = 'static', f = 'css/base.css') }}" /> 
     <script type="text/javascript" src="{{= URL (r= request, c = 'static', f = 'js/jquery.min.js')}}"></script> 
+    <script type="text/javascript" src="{{= URL (r = request, c = 'static', f = 'js/sort_index.js') }}"></script> 
   </head>
   <body>
     {{ include "login.html" }}
     <div class="main">
+      <div class="event-sort">
+	Sort By: <select id="sort_events">
+	  <option value=""></option>
+	  {{ for field in event_fields: }}
+	  <option value="{{= field['name']}}" {{if sort == field['name']: }} selected="selected" {{ pass }}>{{= field.get ('label') or field['name'] }}</option>
+	  {{ pass }}
+	</select>
+      </div>
       {{ for event in events: }}
       {{id = str (event['_id']) }}
       {{name = event['event_name'] }}

@@ -1,7 +1,8 @@
 # GET /sicki/eid/
 @require_logged_in
 def index():
-    return {'events': get_all_events ()}
+    sort = request.vars.get ('sort')
+    return {'events': get_all_events (sort), 'sort': sort}
 
 @require_logged_in
 def fields():

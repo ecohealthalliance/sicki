@@ -127,20 +127,27 @@ event_fields=[
 
     ]
 
+def get_field (name):
+    for field in event_fields:
+        if field['name'] == name:
+            return field
+    return None
+
 def get_all_events (sort = None):
     events = []
     results = mongo.events.find ()
     for item in results:
        events.append (item)
 
-    def key_func (event):
-        val = event.get (sort['name'])
-        if val:
-            val = val.lower ()
-        return val
-
     if sort:
+        sort_field = get_field (sort)
+        def key_func (event):
+            val = event.get (sort)
+            if val:
+                val = val.lower ()
+            return val
         events.sort (key = key_func)
+        
     return events
 
 
