@@ -62,8 +62,10 @@ var Template;
 	    return $ ('<div class="sublabel">' + label + '</div>');
 	};
 
+	// if field has children iterates and appends elements for each kid using subformt fn
 	var format_item = function (field, item, subformat) {
 	    var elem =  $ ('<div class="sublist"></div>');
+	    // j is the array index - not used
 	    $.each (field.children, function (j, subfield) {
 		    elem.append (format_label (subfield)).append (subformat  (item, subfield.name));
 	    });
@@ -95,14 +97,19 @@ var Template;
 	    throw "Not Implemented";
 	};
 
+	// editor for list -> format_list -> format_item gets to children of list
 	this.input = function () {
+	    // function for input layout for kids
 	    var format_input = function (item, key) {
 		var val;
 		if (!(key in item))
 		    val = '';
 		else
 		     val = item[key];
-		return $ ('<input class="' + key + '" type="text" value="' + val + '" />');
+		// create & return the input element
+		var inp_html = '<input class="' + key + '" type="text" value="' + val + '" ';
+		inp_html += 'placeholder="Enter value" />';
+		return $(inp_html);
 	    };
 	    
 	    var wrapper = $ ('<div></div>');
@@ -121,6 +128,7 @@ var Template;
 	};
     };
 
+    // return different template according to field type
     Template = function (field, value) {
 	var template;
 	if (field.type == 'text' || !field.type)
