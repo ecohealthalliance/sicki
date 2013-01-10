@@ -19,7 +19,7 @@ var Template;
 	};
 
 	this.input = function () {
-	    return $ ('<input type="text" value="' + as_text (value) + '" />');
+	    return $ ('<input type="text" value="' + as_text (value) + '" />').addClass ('text');
 	};
 
 	this.val = function (input) {
@@ -128,6 +128,93 @@ var Template;
 	};
     };
 
+    var DateTemplate = function (field, value) {
+	if (!value)
+	    value = {};
+	var month_name = {
+	    1: 'Jan',
+	    2: 'Feb',
+	    3: 'Mar',
+	    4: 'Apr',
+	    5: 'May',
+	    6: 'Jun',
+	    7: 'Jul',
+	    8: 'Aug',
+	    9: 'Sep',
+	    10: 'Oct',
+	    11: 'Nov',
+	    12: 'Dec',
+	};
+	var format_date = function (day, month, year) {
+	    return $.map ([month_name[month], day, year], function (item) {
+		return as_text (item);
+	    }).join (' ');
+	};
+	
+	this.html = function () {
+	    return $ ('<span>' + format_date (value.day, value.month, value.year) + '</span>');
+	};
+
+	this.text = function (value) {
+	    return format_date (value.day, value.month, value.year);
+	};
+
+	this.input = function () {
+	    var month_picker = $ ('<select><option value=""></option></select>').addClass ('month');
+	    for (var key in month_name) {
+		var month = $ ('<option></option>').text (month_name[key]).attr ('value', key);
+		if (key == value.month)
+		    month.attr ('selected', 'selected');
+		month_picker.append (month);
+	    }
+	    //return $ ('<input type="text" value="' + as_text (value) + '" />');
+	    var year_picker = $ ('<input type="text"  maxlength="4" size="4" />').addClass ('year').val (as_text (value.year));
+	    var day_picker = $ ('<input type="text"  maxlength="2" size="2" />').addClass ('day').val (as_text (value.day));
+	    return $ ('<span></span>').append (month_picker).append (day_picker).append (year_picker);
+	};
+
+	this.val = function (input) {
+	    return {
+		year: input.children ('.year').val (),
+		month: input.children ('.month').val (),
+		day: input.children ('.day').val ()
+	    };
+	};	
+    };
+
+    var UnitTemplate = function (field, value) {
+	if (!value)
+	    value = {};
+
+	this.html = function () {
+	    return $ ('<span>' + this.text () + '</span>');
+	};
+	
+	this.text = function () {
+	    return as_text (value.val)  + ' ' + as_text (value.units);
+	};
+	
+	this.input = function () {
+	    var select = $ ("<select></select>").addClass ('units');
+	    $.each (field.units, function (i, val) {
+		var name = as_text (val);
+		var option = $ ('<option>' + name + '</option>');
+		if (name == value.units)
+		    option.attr ('selected', 'selected');
+		select.append (option);
+	    });
+	    var text_field = $ ('<input type="text" />').addClass ('val').attr ('value', value.val);
+	    return $('<span></span>').append (text_field).append (select);
+	};
+
+	this.val = function (input) {
+	    return {
+		val: input.children ('.val').val (),
+		units: input.children ('.units').val ()
+	    };
+	};
+    };
+
     // return different template according to field type
     Template = function (field, value) {
 	var template;
@@ -137,6 +224,10 @@ var Template;
 	    template = new SetTemplate (field, value);
 	else if (field.type == 'list')
 	    template = new ListTemplate (field, value);
+	else if (field.type == 'date')
+	    template = new DateTemplate (field, value);
+	else if (field.type == 'value_units')
+	    template = new UnitTemplate (field, value);
 	else 
 	    template = undefined;
 	return template;

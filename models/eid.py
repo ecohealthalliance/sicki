@@ -103,8 +103,8 @@ event_fields=[
     {'name':'location','label':'Location'},
     {'name':'host','label':'Host'},
     {'name':'disease','label':'Disease'},
-    {'name':'start_date','label':'Start Date'},
-    {'name':'end_date','label':'End Date'},
+    {'name':'start_date','label':'Start Date', 'type': 'date'},
+    {'name':'end_date','label':'End Date', 'type': 'date'},
     {'name':'host_age', 'label':'Host Age','type': 'set', 'set':host_age},
     {'name':'host_use','label':'Host Use', 'type': 'set', 'set':host_use},
     {'name':'transition_model','label':'Transition Model', 'type': 'set', 'set':transition_model},
@@ -127,25 +127,32 @@ event_fields=[
 
     ]
 
+def get_field (name):
+    for field in event_fields:
+        if field['name'] == name:
+            return field
+    return None
+
 def get_all_events (sort = None):
     events = []
     results = mongo.events.find ()
     for item in results:
        events.append (item)
 
-    def key_func (event):
-        val = event.get (sort['name'])
-        if val:
-            val = val.lower ()
-        return val
-
     if sort:
+        sort_field = get_field (sort)
+        def key_func (event):
+            val = event.get (sort)
+            if val:
+                val = unicode (val).lower ()
+            return val
         events.sort (key = key_func)
+        
     return events
 
 
-def get_event (id):
-    event = mongo.events.find_one ({'_id': ObjectId (id)})
+def get_event (eid_id):
+    event = mongo.events.find_one ({'_id': ObjectId (eid_id)})
     event['_id'] = str (event['_id'])
     event['ref'] = str (event['ref'])
     return event
