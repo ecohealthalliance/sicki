@@ -26,20 +26,24 @@
 		      return '<p><b>' + key + ':</b> ' + value + '</p>';
 		  }
 	      };
-	      var link = $ (this);
-	      if (link.parent ().next ().attr ('class') != 'ref') {
-		  $.ajax ({
-		      url: '{{= URL (r = request, f = 'ref') }}/' + $ (this).attr ('class'),
+              var link = $ (this);
+              // if we are not yet expand, then expand, else collapse
+              if (link.parent ().next ().attr ('class').search('expanded-ref') == -1) {
+                  var ref_id = link.attr('class');
+                  var style = link.parent().attr('class');
+                  $.ajax ({
+		      url: '{{= URL (r = request, f = 'ref') }}/' + ref_id,
 		      dataType: 'json',
 		      success: function (data) {
-			  var div = $('<div class="ref"></div>');
+			  var div = $('<div class="'+style+' expanded-ref"></div>');
 			  for (var key in data) {
 			      div.append (format_data (key, data[key]));
 			  }
 			  link.parent ().after (div);
 		      }
 		  });
-	      }
+              }
+              // collapse
 	      else {
 		  link.parent ().next ().toggle ();
 	      }
@@ -51,9 +55,11 @@
   </head>
   <body>
     {{ include "login.html" }}
-    <div id="refs" class="main">
+    <div id="refs">
+      {{rowClass = "even-ref"}}
       {{for ref in refs: }}
-      <p><a class="{{= ref['key'] }}" href="#">{{= ref['title'] }}</a></p>
+        <div class="{{=rowClass}}"><a class="{{= ref['key']}}" href="#">{{= ref['title'] }}</a></div>
+        {{rowClass = ("odd-ref" if rowClass == "even-ref" else "even-ref")}}
       {{ pass }}
     </div>
   </body>

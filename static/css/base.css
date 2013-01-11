@@ -211,8 +211,18 @@ div.header-title {
     margin: 0px 20px;
 }
 
-.ref {
-    margin-left: 50px;
+.expanded-ref {
+    padding-left: 60px !important;
+}
+
+.even-ref {
+    background-color: #ddd;
+    padding: 6px 0 6px 30px;
+}
+
+.odd-ref {
+    background-color: #fff;
+    padding: 6px 0 6px 30px;
 }
 
 #prop-link {
