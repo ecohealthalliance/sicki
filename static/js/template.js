@@ -97,7 +97,7 @@ var Template;
 	    throw "Not Implemented";
 	};
 
-	// editor for list -> format_list -> format_item gets to children of list
+	// editor for list -> format_list -> format_item puts up forms for children of list
 	this.input = function () {
 	    // function for input layout for kids
 	    var format_input = function (item, key) {
