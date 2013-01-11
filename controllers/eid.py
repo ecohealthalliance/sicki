@@ -42,8 +42,10 @@ def propose():
     field = request.args (1)
     value = json.loads (request.vars.get ('val'))
     refs = json.loads (request.vars.get ('refs'))
+    user = json.loads (request.vars.get('user'))
+    date = json.loads (request.vars.get('date'))
     #ensure_prop_eid (eid_id)
-    id = propose_edit (eid_id, field, value, refs)
+    id = propose_edit (eid_id, field, value, refs, user, date)
     return id
 
 # POST /sicki/eid/unpropose/<prop_id>
