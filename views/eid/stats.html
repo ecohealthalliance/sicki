@@ -66,6 +66,12 @@
     </div>
     {{ include "eid/nav.html" }}
     <div id="title">{{= event['event_name'] }}</div>
+    <div id="fields">
+      {{ def filter_hidden (fields): return filter (lambda x: x.get ('type') != 'hidden', fields) }}
+      {{ def to_link (field): return '<a href="#%s">%s</a> ' % (field['name'], field.get ('label')) }}
+      
+      {{ response.write (' | '.join (map (to_link, filter_hidden (event_fields))), escape = False) }}
+    </div>
     <div id="stats">
     </div>
   </body>
