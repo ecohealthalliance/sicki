@@ -212,12 +212,12 @@ div.header-title {
 }
 
 .even-ref {
-    background-color: #eee;
+    background-color: #fff;
     padding: 6px 0 6px 30px;
 }
 
 .odd-ref {
-    background-color: #fff;
+    background-color: #eee;
     padding: 6px 0 6px 30px;
 }
 
