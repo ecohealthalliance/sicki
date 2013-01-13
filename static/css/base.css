@@ -309,6 +309,11 @@ div#event-nav {
     text-align: center;
 }
 
+div#fields {
+    text-align: center;
+    margin: 10px 50px;
+}
+
 
 /* Sublist style */
 div.sublist {
