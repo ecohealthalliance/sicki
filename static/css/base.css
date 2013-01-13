@@ -1,7 +1,12 @@
 body {
-    font-family: Helvetica;
-    margin: 0px;
+    margin: 0px auto;
+    font-family: Helvetica, sans-serif;
+    background: #fefefe;
+    color: #444;
 }
+
+
+
 #login-wrapper {
     border-bottom: dashed 1px #ccc;
     text-align: right;
@@ -13,8 +18,19 @@ a {
     color: #336;
 }
 
-#map {
+a:hover {
+    color: #960028;
+}
+
+/*#map {
     height: 400px;
+}*/
+
+div#title {
+    font-weight: bold;
+    text-align: center;
+    font-size: 1.75em;
+    margin: 20px 0px 50px 0px;
 }
 
 /*div#stats {
@@ -23,7 +39,7 @@ a {
     position: absolute;
 }*/
 
-div#submit-prop-wrapper {
+/*div#submit-prop-wrapper {
     position: fixed;
     width: 50%;
     display: none;
@@ -44,24 +60,6 @@ div#ref-prop {
     margin-left: 50%;
 }
 
-/*div#scrim {
-    position: fixed;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,.75);
-    display: none;
-    z-index: 2;
-}*/
-
-div#title {
-    font-weight: bold;
-    text-align: center;
-    font-size: 1.75em;
-    margin: 20px 0px 50px 0px;
-}
-
 div#right {
     margin-left: 420px;
     margin-right: 20px;
@@ -71,9 +69,6 @@ div.stat {
     margin: 20px;
 }
 
-div.sublist {
-    margin: 10px 0px;
-}
 
 div.editing {
     margin: 10px 0px;
@@ -88,7 +83,7 @@ div.editing input.text {
 div.editing input.unit_value {
     width: 100px;
     padding: 2px;
-}
+}*/
 
 a.control {
     padding: 10px;
@@ -98,16 +93,16 @@ a.control {
     color: rgba(51,51,51,.8);
 }
 
-.ok {
+/*.ok {
     background-color: rgba(0,255,0,.5)
-}
+}*/
 
 .vote {
     height: 25px;
     cursor: pointer;
 }
 
-.stat {
+/*.stat {
     display: table-row;
 }
 
@@ -130,20 +125,11 @@ div.edit-title {
     text-align: right
 }
 
-.sublabel {
-    font-weight: bold;
-    margin-top: 2px;
-}
-
-.subitem {
-    margin-left: 20px;
-}
-
 h2.edit-title {
     margin: 20px;
-}
+}*/
 
-.prop-refs {
+/*.prop-refs {
     margin-left: 100px;
     margin-top: 20px;
 }
@@ -163,14 +149,7 @@ h2.edit-title {
 
 .outer {
     margin-bottom: 25px;
-}
-
-body {
-    margin: 0px auto;
-    font-family: Helvetica, sans-serif;
-    background: #fefefe;
-    color: #444;
-}
+}*/
 
 div.header-title {
     font-size: 2em;
@@ -287,7 +266,8 @@ div.subtitle {
 }
 
 .prop .ref {
-
+    margin-top: 20px;
+    margin-left: 25px;
 }
 
 /* Proposal popup window styles*/
@@ -323,6 +303,23 @@ div.subtitle {
     padding: 10px;
 }
 
-div#nav {
+
+/* event navigation styles */
+div#event-nav {
     text-align: center;
+}
+
+
+/* Sublist style */
+div.sublist {
+    margin: 10px 0px;
+}
+
+.sublabel {
+    font-weight: bold;
+    margin-top: 2px;
+}
+
+.subitem {
+    margin-left: 20px;
 }

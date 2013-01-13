@@ -67,7 +67,7 @@ function Statistic (field, field_proposals, field_value) {
 
     // The control for showing the proposals
     show_props = $ ('<a href="#"></a>').addClass ('control').click (function () {
-	props.toggle ();
+	props.toggle (400);
 	return false;
     });
     recount_proposals ();
