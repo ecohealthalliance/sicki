@@ -105,7 +105,16 @@ function format_label (field) {
 	};
 
 	this.text = function (value) {
-	    throw "Not Implemented";
+	    var strings = [];
+	    $.each (value, function (i, subvalue) {
+		var substring = []
+		$.each (field.children, function (j, subfield) {
+		    if (subfield.primary)
+			substring.push (subvalue[subfield.name]);
+		});
+		strings.push (substring.join (' '));
+	    });
+	    return strings.join (', ')
 	};
 
 	// editor for list -> format_list -> format_item puts up forms for children of list
@@ -134,7 +143,15 @@ function format_label (field) {
 	};
 
 	this.val = function (input) {
-	    throw "Not Implemented";
+	    elem = [];
+	    input.children ().children ('.sublist').each (function (i, sublist) {
+		var items = {}
+		$.each (field.children, function (j, subfield) {
+		    items[subfield.name] = $ (sublist).children ('input.' + subfield.name).val ();
+		});
+		elem.push (items)
+	    });
+	    return elem;
 	};
     };
 

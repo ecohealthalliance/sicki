@@ -214,7 +214,10 @@ def render_edit (rest_vars):
                     'categories': map (lambda x: ObjectId (x), cats),
                     'tags': json.loads (request.vars.get ('tags')),
                     }})
-        redirect (URL (r = request, args = [vars.slug, 'view']))
+        if not request.vars.has_key ('next'):
+            redirect (URL (r = request, args = [vars.slug, 'view']))
+        else:
+            redirect (request.vars.get ('next'))
     else:
         return dict (page = page, create = create)
 

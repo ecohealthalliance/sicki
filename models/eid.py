@@ -95,9 +95,9 @@ event_fields=[
           {'name':'tax_order','label':'Taxanomic Order'},
           {'name':'class','label':'Class'},
           {'name':'family','label':'Family'},
-          {'name':'genus','label':'Genus'},
-          {'name':'species','label':'Species'},
-          {'name':'sub_species','label':'Sub-species'},
+          {'name':'genus','label':'Genus', 'primary': True},
+          {'name':'species','label':'Species', 'primary': True},
+          {'name':'sub_species','label':'Sub-species', 'primary': True},
           {'name':'primary','label':'Primary?'}]
      },
     {'name':'location','label':'Location'},

@@ -16,6 +16,10 @@
     {{ include "eid/nav.html" }}
     <div id="title">{{= event['event_name'] }}</div>
     <div id="wiki">
+      <h2>Wiki <a href="/{{= request.application }}/wiki/blog/{{= request.args[0] }}/edit?next={{= URL (r = request, c = 'eid', f = 'wiki', args = [request.args (0)] ) }}">(Edit)</a></h2>
+      <div id="wiki-main">
+	{{=plugin_wiki.render (page.body) }}
+      </div>
     </div>
   </body>
 </html>
