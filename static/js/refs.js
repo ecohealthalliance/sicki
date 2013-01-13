@@ -4,6 +4,13 @@ function ReferenceList (app, input, result) {
     
     input.keyup (function () {
 	var query = $(this).val ();
+
+	if (!query) {
+	    current = {};
+	    result.children ().remove ();
+	    return false;
+	}
+
 	$.ajax ({
 	    url: '/' + app + '/ref/query',
 	    dataType: 'json',

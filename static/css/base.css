@@ -17,11 +17,11 @@ a {
     height: 400px;
 }
 
-div#stats {
+/*div#stats {
     margin-left: 20px;
     width: 400px;
     position: absolute;
-}
+}*/
 
 div#submit-prop-wrapper {
     position: fixed;
@@ -92,10 +92,6 @@ div.editing input.unit_value {
 
 a.control {
     padding: 10px;
-}
-
-div.controls {
-    margin: 10px 0px;
 }
 
 .greyed {
@@ -223,4 +219,100 @@ span.caption {
     font-size: .85em;
     padding: 0px 5px;
     color: #999;
+}
+
+div. {
+
+}
+
+#stats div.statistic {
+    padding: 20px;
+}
+
+div.even {
+    background-color: #eee;
+}
+
+div.odd {
+    background-color: #fff;
+}
+
+#stats .main {
+    margin: 15px;
+}
+
+#stats div.value {
+}
+
+#stats div.proposals {
+    display: none;
+}
+
+#stats div.controls {
+    text-align: right;
+    margin: 10px 0px;
+}
+
+#stats a.contol {
+    padding-left: 5px;
+}
+
+div.title {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+div.subtitle {
+    font-size: 1.25em;
+    font-weight: bold;
+    margin: 15px 0px;
+}
+
+#stats .prop {
+    margin: 15px;
+}
+
+.prop .refs {
+    margin-left: 50px;
+}
+
+.prop .ref {
+
+}
+
+/* Proposal popup window styles*/
+#proposal-popup {
+    display: none;
+    position: fixed;
+    background-color: white;
+    z-index: 3;
+    border: solid 1px black;
+    padding: 20px;
+ }
+
+#proposal-popup .proposal-main {
+    overflow-y: auto;
+}
+
+#proposal-popup .edit {
+    float: left;
+}
+
+#proposal-popup .refs {
+
+}
+
+#proposal-popup .refs .query {
+    width: 95%;
+}
+#proposal-popup .controls {
+    text-align: right;
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    padding: 10px;
+}
+
+div#nav {
+    text-align: center;
 }

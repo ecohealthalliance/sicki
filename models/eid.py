@@ -87,7 +87,7 @@ time_period=[
 
 
 event_fields=[
-    {'name':'event_name','label':'Event Name','type': 'hidden', 'required': True},
+    {'name':'event_name','label':'Event Name','type': 'text', 'required': True},
     {'name':'pathogens','label':'Pathogen(s)', 'type':'list', 'children':
          [{'name':'reported_name','label':'Reported name'},
           {'name':'drug_resistance','label':'Drug resistance'},
@@ -191,7 +191,7 @@ def propose_edit (eid_id, field, value, refs, user, date):
             'date': date,
             })
 
-def get_proposals (eid_id, user_id = None):
+def get_proposals (eid_id, user_id):
     props = mongo.proposals.find ({
             'eid': ObjectId (eid_id)
             })

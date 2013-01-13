@@ -1,5 +1,12 @@
 var Template;
 
+function format_label (field) {
+    var label = field.label;
+    if (!label)
+	label = field.name;
+    return $ ('<div class="title">' + label + '</div>');
+};
+
 (function () {
 
     var as_text = function (value) {
@@ -8,18 +15,22 @@ var Template;
 	return value;
     };
 
-    var TextTemplate = function (field, value) {
+    var TextTemplate = function (field) {
 
-	this.html = function () {
+	this.html = function (value) {
 	    return $ ('<span>' + as_text (value) + '</span>');
 	};
 
-	this.text = function () {
+	this.text = function (value) {
 	    return value;
 	};
 
-	this.input = function () {
-	    return $ ('<input type="text" value="' + as_text (value) + '" />').addClass ('text');
+	this.input = function (value) {
+	    //return $ ('<input type="text" value="' + as_text (value) + '" />').addClass ('text');
+	    return $ ('<textarea>' + as_text (value) + '</textarea>').css ({
+		width: '95%',
+		height: 100
+	    });
 	};
 
 	this.val = function (input) {
@@ -27,16 +38,16 @@ var Template;
 	};
     };
 
-    var SetTemplate = function (field, value) {
-	this.html = function () {
+    var SetTemplate = function (field) {
+	this.html = function (value) {
 	    return $ ('<span>' + as_text (value) + '</span>');
 	};
 	
-	this.text = function () {
+	this.text = function (value) {
 	    return value;
 	};
 
-	this.input = function () {
+	this.input = function (value) {
 	    var select = $ ("<select></select>");
 	    $.each (field.set, function (i, val) {
 		var name = as_text (val);
@@ -53,7 +64,7 @@ var Template;
 	};
     };
 
-    var ListTemplate = function (field, value) {
+    var ListTemplate = function (field) {
 
 	var format_label = function (field) {
 	    var label = field.label;
@@ -81,7 +92,7 @@ var Template;
 	    return val_list;
 	};
 
-	this.html = function () {
+	this.html = function (value) {
 	    var format_val = function (item, key) {
 		if (!(key in item))
 		    return '';
@@ -93,12 +104,12 @@ var Template;
 	    return $ ('<span></span>').append (val_list);
 	};
 
-	this.text = function () {
+	this.text = function (value) {
 	    throw "Not Implemented";
 	};
 
 	// editor for list -> format_list -> format_item puts up forms for children of list
-	this.input = function () {
+	this.input = function (value) {
 	    // function for input layout for kids
 	    var format_input = function (item, key) {
 		var val;
@@ -123,14 +134,11 @@ var Template;
 	};
 
 	this.val = function (input) {
-	    console.log (input.find ('input'))
 	    throw "Not Implemented";
 	};
     };
 
-    var DateTemplate = function (field, value) {
-	if (!value)
-	    value = {};
+    var DateTemplate = function (field) {
 	var month_name = {
 	    1: 'Jan',
 	    2: 'Feb',
@@ -151,15 +159,19 @@ var Template;
 	    }).join (' ');
 	};
 	
-	this.html = function () {
+	this.html = function (value) {
+	    if (!value)
+		value = {};
 	    return $ ('<span>' + format_date (value.day, value.month, value.year) + '</span>');
 	};
 
-	this.text = function () {
+	this.text = function (value) {
+	    if (!value)
+		value = {};
 	    return format_date (value.day, value.month, value.year);
 	};
 
-	this.input = function () {
+	this.input = function (value) {
 	    var month_picker = $ ('<select><option value=""></option></select>').addClass ('month');
 	    for (var key in month_name) {
 		var month = $ ('<option></option>').text (month_name[key]).attr ('value', key);
@@ -182,19 +194,19 @@ var Template;
 	};	
     };
 
-    var UnitTemplate = function (field, value) {
-	if (!value)
-	    value = {};
+    var UnitTemplate = function (field) {
 
-	this.html = function () {
-	    return $ ('<span>' + this.text () + '</span>');
+	this.html = function (value) {
+	    return $ ('<span>' + this.text (value) + '</span>');
 	};
 	
-	this.text = function () {
+	this.text = function (value) {
+	    if (!value)
+		value = {};
 	    return as_text (value.val)  + ' ' + as_text (value.units);
 	};
 	
-	this.input = function () {
+	this.input = function (value) {
 	    var select = $ ("<select></select>").addClass ('units');
 	    $.each (field.units, function (i, val) {
 		var name = as_text (val);

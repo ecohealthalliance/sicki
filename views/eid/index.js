@@ -5,7 +5,7 @@ var events = {{ response.write (json.dumps (modified_events), escape = False) }}
 {{ modified_events = map (lambda event: {'event_name': event['event_name'], 'id': str (event['_id']) }, events) }}
 var events = {{ response.write (json.dumps (modified_events), escape = False) }};
 {{ pass }}
-var base = '{{= URL (r = request, c = 'eid', f = 'view.html') }}';
+var base = '{{= URL (r = request, c = 'eid', f = 'stats.html') }}';
 var sort_field = '{{= sort }}';
 
 $ (document).ready (function () {
@@ -18,14 +18,12 @@ $ (document).ready (function () {
     });
 
     $.each (events, function (index, item) {
-	if (item['event_name'] == '1993 - Sir Charles Gairdner Hospital, Perth, Australia - Acinetobacter baumannii')
-	    console.log ("OK");
 	var text = '';
-	if (item['sort']) {
-	    var val = item['sort'];
-	    var template = Template (event_lookup[sort_field], item['sort']);
+	if (item.sort && (sort_field != 'event_name')) {
+	    var val = item.sort;
+	    var template = Template (event_lookup[sort_field]);
 	    if (template)
-		text = template.text ();
+		text = template.text (item.sort);
 	}
 	var caption = $ ('<span class="caption"></span>').text (text);
 	var a = $ ('<a></a>').text (item['event_name']).attr ('href', base + '/' + item.id)
