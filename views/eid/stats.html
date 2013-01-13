@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{= request.title or 'The Sicki Project' }}</title> 
+    <link rel="stylesheet" type="text/css" href="{{= URL (r = request, c = 'static', f = 'css/base.css') }}" /> 
+    <script type="text/javascript" src="{{= URL (r= request, c = 'static', f = 'js/jquery.min.js')}}"></script> 
+    <script type="text/javascript" src="{{= URL (r= request, c = 'static', f = 'js/scrim.js')}}"></script> 
+    <script type="text/javascript" src="{{= URL (r= request, c = 'static', f = 'js/template.js')}}"></script>
+    <script type="text/javascript" src="{{= URL (r = request, c = 'eid', f = 'fields.js') }}"></script>
+    <script type="text/javascript" src="{{= URL (r= request, c = 'static', f = 'js/refs.js')}}"></script> 
+    <script type="text/javascript" src="{{= URL (r= request, c = 'static', f = 'js/popup.js')}}"></script> 
+    <script type="text/javascript" src="{{= URL (r= request, c = 'static', f = 'js/statistic.js')}}"></script> 
+    <script type="text/javascript" src="{{= URL (r= request, c = 'static', f = 'js/proposal.js')}}"></script> 
+    <script type="text/javascript">
+      var eid_id = '{{= request.args (0) }}';
+      var popup;
+
+      $ (document).ready (function () {
+	  var event = {{ response.write (json.dumps (event), escape = False) }};
+
+	  var event_fields = {{ response.write (json.dumps (event_fields), escape = False) }};
+
+	  popup = new Popup ();
+
+	  // Don't show any hidden fields
+	  event_fields = event_fields.filter (function (field) {
+	      return (field.type != 'hidden');
+	  });
+
+	  var proposals = {{ response.write (json.dumps (proposals), escape = False) }};
+
+	  // Quick lookup for proposals
+	  var field_proposals = {};
+	  $.each (event_fields, function (i, field) {
+	      field_proposals[field.name] = [];
+	  });
+	  $.each (proposals, function (i, proposal) {
+	      field_proposals[proposal.field].push (proposal);
+	  });
+
+	  // Set the title of the page
+
+	  var stat_lookup = {};
+
+	  $.each (event_fields, function (i, field) {
+	      var stat = new Statistic (field, field_proposals[field.name], event[field.name]);
+	      stat_lookup[field.name] = stat
+	      stat.addClass ((i % 2) ? 'even' : 'odd')
+	      stat.append ('#stats');
+	  });
+      });
+    </script>
+  </head>
+  <body>
+    {{ include "login.html" }}
+    <div id="proposal-popup">
+      <div class="proposal-main">
+	<div class="edit"></div>
+	<div class="refs">
+	  <div class="title">References</div>
+	  <input class="query" type="text" placeholder="Choose references"/>
+	  <div class="results"></div>
+	</div>
+      </div>
+      <div class="controls"></div>
+    </div>
+    {{ include "eid/nav.html" }}
+    <div id="title">{{= event['event_name'] }}</div>
+    <div id="stats">
+    </div>
+  </body>
+</html>

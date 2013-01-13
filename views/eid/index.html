@@ -13,7 +13,6 @@
     <div class="main">
       <div class="event-sort">
 	Sort By: <select id="sort_events">
-	  <option value=""></option>
 	  {{ for field in event_fields: }}
 	  <option value="{{= field['name']}}" {{if sort == field['name']: }} selected="selected" {{ pass }}>{{= field.get ('label') or field['name'] }}</option>
 	  {{ pass }}
