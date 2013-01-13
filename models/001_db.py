@@ -5,7 +5,10 @@ from gluon.tools import Crud
 import pymongo
 from bson.objectid import ObjectId
 
-mongo = pymongo.Connection (settings['mongodb']['host'], settings['mongodb']['port'])[settings['mongodb']['db']]
+try:
+    mongo = pymongo.Connection (settings['mongodb']['host'], settings['mongodb']['port'])[settings['mongodb']['db']]
+except:
+    raise HTTP (400, 'Could not connect to MongoDB')
 if settings['mongodb']['username']:
     mongo.authenticate(settings['mongodb']['username'], settings['mongodb']['password'])
 
