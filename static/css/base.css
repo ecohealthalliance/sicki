@@ -33,6 +33,14 @@ div#title {
     margin: 20px 0px 50px 0px;
 }
 
+div#wiki {
+    margin: 20px;
+}
+
+div#wiki-main {
+    margin-left: 40px;
+}
+
 /*div#stats {
     margin-left: 20px;
     width: 400px;
