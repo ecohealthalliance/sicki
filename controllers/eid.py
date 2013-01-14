@@ -38,7 +38,7 @@ def event_refs():
     eid_id = request.args (0)
     if not eid_id:
         raise HTTP (400, "Missing EID ID")
-    return {'event': get_event (eid_id)}
+    return {'event': get_event (eid_id), 'refs': get_ref_names (eid_id)}
 
 # GET /sicki/eid/view/<eid_id>
 @require_logged_in
@@ -81,6 +81,7 @@ def propose():
     # Automatically accept proposals by admins
     if has_role (admin_role):
         edit_field (eid_id, field, value)
+        add_refs (eid_id, refs)
         return 1
     else:
         prop_id = propose_edit (eid_id, field, value, refs, user, date)
@@ -107,6 +108,7 @@ def accept():
     if not prop:
         raise HTTP (400)
     edit_field (str (prop['eid']), prop['field'], prop['value'])
+    add_refs (str (prop['eid']), prop['refs'])
     remove_proposal (prop_id)
     #redirect (URL (r = request, c = 'eid', f = 'view', args = [str (prop['eid'])]))
     return 1
@@ -139,12 +141,12 @@ def unvote():
 
 @require_logged_in
 def refs():
-    return {'refs': mongo.refs.find ()}
+    return {'refs': get_ref_names ()}
 
 @require_logged_in
 def ref():
     key = request.args (0);
-    result = mongo.refs.find_one ({'key': key})
+    result = mongo.refs.find_one ({'_id': ObjectId (key)})
     del result['_id']
     return json.dumps (result)
 

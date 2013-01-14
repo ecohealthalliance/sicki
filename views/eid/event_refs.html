@@ -5,9 +5,12 @@
     <link rel="stylesheet" type="text/css" href="{{= URL (r = request, c = 'static', f = 'css/base.css') }}" /> 
     <script type="text/javascript" src="{{= URL (r= request, c = 'static', f = 'js/jquery.min.js')}}"></script> 
     <script type="text/javascript" src="{{= URL (r = request, c = 'eid', f = 'fields.js') }}"></script>
+    <script type="text/javascript" src="{{= URL (r= request, c = 'static', f = 'js/refs.js')}}"></script> 
     <script type="text/javascript">
       $ (document).ready (function () {
-
+	  var refs = {{ response.write (json.dumps (refs), escape = False) }};
+	  var collection = new ReferenceCollection (refs);
+	  collection.append ('#refs');
       });
     </script>
   </head>
