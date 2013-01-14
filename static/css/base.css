@@ -336,3 +336,7 @@ div.sublist {
 .subitem {
     margin-left: 20px;
 }
+
+#refs .reference {
+    padding: 10px;
+}

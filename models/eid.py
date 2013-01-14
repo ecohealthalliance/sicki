@@ -155,6 +155,8 @@ def get_event (eid_id):
     event = mongo.events.find_one ({'_id': ObjectId (eid_id)})
     event['_id'] = str (event['_id'])
     event['ref'] = str (event['ref'])
+    event['references'] = map (str, event['references'])
+        
     return event
 
 def edit_field (eid_id, field, value):
@@ -253,3 +255,31 @@ def set_vote (prop_id, user_id, val):
             '_id': ObjectId (prop_id)}, {
              '$push': {key: user_id}
             })
+
+def get_ref_names (eid_id = None):
+    if not eid_id:
+        result = mongo.refs.find ()
+    else:
+        event = get_event (eid_id)
+        result = []
+        for ref in event['references']:
+            result.append (mongo.refs.find_one ({'_id': ObjectId (ref)}))
+        
+    refs = []
+    for item in result:
+        refs.append ({
+                'id': str (item['_id']),
+                'title': item.get ('title')
+                })
+    return refs
+
+def add_refs (eid_id, refs):
+    event = get_event (eid_id)
+    current = set (event['references'])
+    for ref in refs:
+        if not ref['id'] in current:
+            mongo.events.update ({
+                    '_id': ObjectId (eid_id)
+                    }, {
+                    '$push': {'references': ObjectId (ref['id'])}
+                    })

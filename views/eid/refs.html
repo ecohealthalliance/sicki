@@ -4,9 +4,14 @@
     <title>{{= request.title or 'The Sicki Project' }}</title>
     <link rel="stylesheet" type="text/css" href="{{= URL (r = request, c = 'static', f = 'css/base.css') }}" /> 
     <script type="text/javascript" src="{{= URL (r= request, c = 'static', f = 'js/jquery.min.js')}}"></script> 
+    <script type="text/javascript" src="{{= URL (r= request, c = 'static', f = 'js/refs.js')}}"></script> 
     <script type="text/javascript">
+      var application = '{{= request.application }}';
       $ (document).ready (function () {
-	  $ ('#refs a').click (function (event) {
+	  var refs = {{ response.write (json.dumps (refs), escape = False) }};
+	  var collection = new ReferenceCollection (refs);
+	  collection.append ('#refs');
+	  /*$ ('#refs a').click (function (event) {
 	      var format_data = function (key, value) {
 		  if (key == 'creators') {
 		      var authors = [];
@@ -49,18 +54,13 @@
 	      }
 	      event.preventDefault ();
 	      return false;
-	  });
+	  });*/
       });
     </script>
   </head>
   <body>
     {{ include "login.html" }}
     <div id="refs">
-      {{rowClass = "even-ref"}}
-      {{for ref in refs: }}
-        <div class="{{=rowClass}}"><a class="{{= ref['key']}}" href="#">{{= ref['title'] }}</a></div>
-        {{rowClass = ("odd-ref" if rowClass == "even-ref" else "even-ref")}}
-      {{ pass }}
     </div>
   </body>
 </html>
