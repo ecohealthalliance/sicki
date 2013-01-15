@@ -9,26 +9,22 @@
     <script type="text/javascript">
       $ (document).ready (function () {
 	  $ ('#map').css ('height', $ (window).height () - $ ('#map').position ().top - 25);
+	  var geodata = {{ response.write (json.dumps (event.get ('map')), escape = False) }};
 	  var map = new wiggle.Map ('#map');
 
-	  {{ if event.get ('map'): }}
-	  $.ajax ({
-	      url: '/{{= request.application }}/static/maps/{{= event['map'] }}.json',
-	      dataType: 'json',
-	      success: function (data) {
-		  var aspect = map.width () / map.height ();
+	  var aspect = map.width () / map.height ();
 
-		  layer = wiggle.io.GeoJSON (data);
-		  var bounds = layer.bounds;
-		  map.vcenter (bounds.centroid ());
+	  if (geodata) {
+	      var layer = wiggle.io.GeoJSON (geodata);
+	      var bounds = layer.bounds;
+	      map.vcenter (bounds.centroid ());
+	      
+	      var extent = 8 * Math.max (bounds.width (), bounds.height () * aspect)
+	      map.extents (Math.min (extent, 360));
+	      
+	      map.append (layer);
+	  }
 
-		  var extent = 8 * Math.max (bounds.width (), bounds.height () * aspect)
-		  map.extents (Math.min (extent, 360));
-
-		  map.append (layer);
-	      }
-	  });
-	  {{ pass }}
       });
     </script>
   </head>
