@@ -14,7 +14,7 @@ def query():
     for item in result:
         result_list.append ({
                 'name': item['title'],
-                'id': str (item['_id'])
+                'key': item['key']
                 })
     return json.dumps (result_list)
 
