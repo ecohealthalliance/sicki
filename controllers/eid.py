@@ -20,7 +20,9 @@ def event_map():
     eid_id = request.args (0)
     if not eid_id:
         raise HTTP (400, "Missing EID ID")
-    return {'event': get_event (eid_id)}
+    event = get_event (eid_id)
+    geodata = mongo.maps.find_one  ({'name': event.get ('map')})
+    return {'event': event, 'geodata': geodata}
 
 @require_logged_in
 def wiki():

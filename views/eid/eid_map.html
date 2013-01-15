@@ -42,7 +42,7 @@
 	});
 
 	$.ajax ({
-	    url: '{{= URL (r = request, c = "static/maps", f = "merge.asc") }}',
+	    url: '{{= URL (r = request, c = "static/maps", f = "eids.asc") }}',
 	    async: false,
 	    dataType: 'text',
 	    success: function (data) {
