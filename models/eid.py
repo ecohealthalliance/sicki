@@ -263,7 +263,7 @@ def get_ref_names (eid_id = None):
         event = get_event (eid_id)
         result = []
         for ref in event['references']:
-            result.append (mongo.refs.find_one ({'_id': ObjectId (ref)}))
+            result.append (mongo.refs.find_one ({'key': ref}))
         
     refs = []
     for item in result:
@@ -277,9 +277,9 @@ def add_refs (eid_id, refs):
     event = get_event (eid_id)
     current = set (event['references'])
     for ref in refs:
-        if not ref['id'] in current:
+        if not ref['key'] in current:
             mongo.events.update ({
                     '_id': ObjectId (eid_id)
                     }, {
-                    '$push': {'references': ObjectId (ref['id'])}
+                    '$push': {'references': ref['key']}
                     })
