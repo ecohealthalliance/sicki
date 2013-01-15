@@ -26,7 +26,7 @@ function Popup () {
 	// Remove the previous input fields
 	var edit = $ ('#proposal-popup .edit');
 	edit.children ().remove ();
-	edit.append ('<div class="subtitle">' + field.name + '</div>');
+	edit.append ('<div class="title">' + field.label + '</div>');
 
 	// Remove the old references
 	ref_list.reset ();
