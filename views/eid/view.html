@@ -31,9 +31,10 @@
   <div id="view">
     <div class="left-pane">
       {{ for key in ['Pathogen', 'Location', 'Year', 'Driver', 'ZooType']: }}
+      {{ jones = event.get ('jones') }}
+      {{ value = (jones.get (key) if jones else '') }}
+      <div class="fact"><span class="label">{{ = key }}</span> {{= value }}</div>
       {{ pass }}
-      <div class="fact"><span class="label">Year</span> 2011</div>
-      <div class="fact"><span class="label">Location</span> Perth Australia</div>
     </div>
     <div class="right-pane">
       <div id="map"></div>
