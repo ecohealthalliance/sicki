@@ -277,11 +277,11 @@ def add_refs (eid_id, refs):
     event = get_event (eid_id)
     current = set (event['references'])
     for ref in refs:
-        if not ref['id'] in current:
+        if not ref['key'] in current:
             mongo.events.update ({
                     '_id': ObjectId (eid_id)
                     }, {
-                    '$push': {'references': ObjectId (ref['id'])}
+                    '$push': {'references': ref['key']}
                     })
 
 def get_map (mapname):
