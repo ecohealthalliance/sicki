@@ -5,7 +5,7 @@ var events = {{ response.write (json.dumps (modified_events), escape = False) }}
 {{ modified_events = map (lambda event: {'event_name': event['event_name'], 'id': str (event['_id']) }, events) }}
 var events = {{ response.write (json.dumps (modified_events), escape = False) }};
 {{ pass }}
-var base = '{{= URL (r = request, c = 'eid', f = 'stats', extension = '') }}';
+var base = '{{= URL (r = request, c = 'eid', f = 'views', extension = '') }}';
 var sort_field = '{{= sort }}';
 
 $ (document).ready (function () {
