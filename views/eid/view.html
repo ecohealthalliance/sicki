@@ -5,38 +5,44 @@
     <link rel="stylesheet" type="text/css" href="{{= URL (r = request, c = 'static', f = 'css/base.css') }}" /> 
     <script type="text/javascript" src="{{= URL (r= request, c = 'static', f = 'js/jquery.min.js')}}"></script> 
     <script type="text/javascript" src="{{= URL (r= request, c = 'static', f = 'js/wigglemaps/wigglemaps.js')}}"></script> 
-    <script type="text/javascript" src="{{= URL (r= request, c = 'static', f = 'js/jquery.html.js')}}"></script> 
-    <script type="text/javascript" src="{{= URL (r= request, c = 'static', f = 'js/scrim.js')}}"></script> 
-    <script type="text/javascript" src="{{= URL (r= request, c = 'static', f = 'js/template.js')}}"></script>
-    <script type="text/javascript" src="{{= URL (r= request, c = 'static', f = 'js/refs.js')}}"></script> 
     <script type="text/javascript" src="{{= URL (r = request, c = 'eid', f = 'fields.js') }}"></script>
-    <script type="text/javascript" src="{{= URL (r = request, c = 'eid', f = 'view.js', args = [request.args (0)]) }}"></script>
+    <script type="text/javascript">
+      $ (document).ready (function () {
+	  var geodata = {{ response.write (json.dumps (geodata.get ('map')), escape = False) }};
+	  var map = new wiggle.Map ('#map');
+	  var aspect = map.width () / map.height ();
+	  if (geodata) {
+	      var layer = wiggle.io.GeoJSON (geodata);
+	      var bounds = layer.bounds;
+	      map.vcenter (bounds.centroid ());
+	      
+	      var extent = 8 * Math.max (bounds.width (), bounds.height () * aspect)
+	      map.extents (Math.min (extent, 360));
+	      
+	      map.append (layer);
+	  }
+      });
+    </script>
   </head>
   <body>
     {{ include "login.html" }}
-    <div id="submit-prop-wrapper">
-      <h2 class="edit-title">Propose Edit</h2>
-      <div id="submit-prop"></div>
-      <div id="ref-prop">
-	<div class="edit-title">References</div>
-	<input id="ref-query" type="text" placeholder="Choose reference"/>
-	<div id="ref-results"></div>
+    {{ include "eid/nav.html" }}
+    <div id="title">{{= event['event_name'] }}</div>
+  <div id="view">
+    <div class="left-pane">
+      {{ for key in ['Pathogen', 'Location', 'Year', 'Driver', 'ZooType']: }}
+      {{ pass }}
+      <div class="fact"><span class="label">Year</span> 2011</div>
+      <div class="fact"><span class="label">Location</span> Perth Australia</div>
+    </div>
+    <div class="right-pane">
+      <div id="map"></div>
+      <div class="refs">
+	{{ for refname in references: }}
+	<div class="refname">{{= refname.get ('title') }}</div>
+	{{ pass }}
       </div>
     </div>
-    <div id="main"> 
-      <div id="prop-link">
-	<a href="/{{= request.application }}/eid/proposals/{{= request.args[0] }}">View Proposals</a>
-	</div>
-      <div id="title"></div>
-      <div id="stats">
-	<h2>Disease Stats</h2>
-      </div>
-      <div id="right">
-	<div id="map"></div>
-	<div id="wiki">
-	  <h2>Wiki <a href="/{{= request.application }}/wiki/blog/{{= request.args[0] }}/edit">(Edit)</a></h2>
-	  {{=plugin_wiki.render (page.body) }}
-	</div>
-      </div>
-  </body>
+  </div>
+</body>
 </html>

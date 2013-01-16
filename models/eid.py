@@ -263,7 +263,7 @@ def get_ref_names (eid_id = None):
         event = get_event (eid_id)
         result = []
         for ref in event['references']:
-            result.append (mongo.refs.find_one ({'_id': ObjectId (ref)}))
+            result.append (mongo.refs.find_one ({'key': ref}))
         
     refs = []
     for item in result:
@@ -283,3 +283,7 @@ def add_refs (eid_id, refs):
                     }, {
                     '$push': {'references': ObjectId (ref['id'])}
                     })
+
+def get_map (mapname):
+    geodata = mongo.maps.find_one  ({'name': mapname})
+    return geodata

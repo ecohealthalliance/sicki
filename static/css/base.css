@@ -340,3 +340,37 @@ div.sublist {
 #refs .reference {
     padding: 10px;
 }
+
+#view {
+    width: 800px;
+    margin: auto;
+}
+
+#view .fact {
+    margin: 10px 0px;
+}
+
+#view .label {
+    display: inline-block;
+    font-weight: bold;
+    width: 90px;
+    text-align: right;
+    margin-right: 20px;
+}
+
+#view .left-pane {
+    width: 400px;
+    float: left;
+}
+
+#view .right-pane {
+    margin-left: 400px;
+}
+
+#view #map {
+    height: 200px;
+}
+
+#view .refname {
+    margin: 10px 0px;
+}

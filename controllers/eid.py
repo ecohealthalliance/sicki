@@ -5,6 +5,14 @@ def index():
     return {'events': get_all_events (sort), 'sort': sort}
 
 @require_logged_in
+def view():
+    eid_id = request.args (0)
+    if not eid_id:
+        raise HTTP (400, "Missing EID ID")
+    event = get_event (eid_id)
+    return {'event': event, 'references': get_ref_names (eid_id), 'geodata': get_map (event.get ('map'))}
+
+@require_logged_in
 def fields():
     return {'event_fields': event_fields}
 
@@ -41,22 +49,6 @@ def event_refs():
     if not eid_id:
         raise HTTP (400, "Missing EID ID")
     return {'event': get_event (eid_id), 'refs': get_ref_names (eid_id)}
-
-# GET /sicki/eid/view/<eid_id>
-@require_logged_in
-def view():
-    eid_id = request.args (0)
-    if not eid_id:
-        raise HTTP (400, "Missing EID ID")
-    #event = get_event (eid_id)
-    if request.extension == 'html':
-        page = load_page (eid_id)
-        if not page:
-            insert_page (eid_id)
-            page = load_page (eid_id)
-        return {'page': page}
-    elif request.extension == 'js':
-        return {'event': get_event (eid_id)}
 
 # GET /sicki/eid/proposals/<eid_id>
 @require_logged_in
