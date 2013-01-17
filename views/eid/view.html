@@ -8,7 +8,11 @@
     <script type="text/javascript" src="{{= URL (r = request, c = 'eid', f = 'fields.js') }}"></script>
     <script type="text/javascript">
       $ (document).ready (function () {
+          {{ if geodata: }}
 	  var geodata = {{ response.write (json.dumps (geodata.get ('map')), escape = False) }};
+	  {{ else: }}
+	  var geodata = null;
+	  {{ pass }}
 	  var map = new wiggle.Map ('#map');
 	  var aspect = map.width () / map.height ();
 	  if (geodata) {

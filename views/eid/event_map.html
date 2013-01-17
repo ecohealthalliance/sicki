@@ -9,7 +9,11 @@
     <script type="text/javascript">
       $ (document).ready (function () {
 	  $ ('#map').css ('height', $ (window).height () - $ ('#map').position ().top - 25);
+          {{ if geodata: }}
 	  var geodata = {{ response.write (json.dumps (geodata.get ('map')), escape = False) }};
+	  {{ else: }}
+	  var geodata = null;
+	  {{ pass }}
 	  var map = new wiggle.Map ('#map');
 
 	  var aspect = map.width () / map.height ();
