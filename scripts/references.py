@@ -1,9 +1,8 @@
 import pymongo
 from pyzotero import zotero
+from importlib import import_module
 
-mod = import_module ('..models.000_config')
-
-print 
+mod = import_module ('models.000_config')
 
 library_id = settings['zotero']['library_id']
 library_type = settings['zotero']['library_type']
