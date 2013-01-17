@@ -2,6 +2,7 @@
 *.py~
 *~
 \#*
+.\#*
 *.bak
 cache/*
 databases/*

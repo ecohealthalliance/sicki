@@ -8,7 +8,10 @@
     <script type="text/javascript" src="{{= URL (r = request, c = 'eid', f = 'fields.js') }}"></script>
     <script type="text/javascript">
       $ (document).ready (function () {
-	  $ ('#map').css ('height', $ (window).height () - $ ('#map').position ().top - 25);
+	  var height = $ (window).height () - $ ('#map').position ().top - 25;
+	  $ ('#map').css ('height', height);
+	  $ ('#map').css ('width', height * 16 / 9);
+	  $ ('#map').css ('margin', 'auto');
           {{ if geodata: }}
 	  var geodata = {{ response.write (json.dumps (geodata.get ('map')), escape = False) }};
 	  {{ else: }}
