@@ -1,0 +1,3 @@
+[submodule "static/wigglemaps"]
+	path = static/wigglemaps
+	url = git@github.com:dotskapes/wigglemaps.git
