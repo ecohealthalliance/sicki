@@ -43,11 +43,7 @@ def event_refs():
 # GET /sicki/eid/proposals/<eid_id>
 @require_logged_in
 def proposals():
-    eid_id = request.args (0)
-    if not eid_id:
-        raise HTTP (400, "Missing EID ID")
-    event_proposals = get_proposals (eid_id, auth.user.id)
-    return {'event': get_event (eid_id), 'event_proposals': event_proposals}
+    return stats()
 
 # POST /sicki/eid/propose/<eid_id>/<field>
 # Propose a change the field of an EID event. The body of the request contains the proposed value.
@@ -87,28 +83,27 @@ def propose():
         })
 
 # POST /sicki/eid/reject/<prop_id>
-# Removes a proposal completely from the database
+# The proposal gets status REJECTED, and modification does not happen
 @require_role (admin_role)
 def reject():
     prop_id = request.args (0)
     prop = get_proposal (prop_id)
     if not prop:
         raise HTTP (400)
-    remove_proposal (prop_id)
+    update_proposal_status(prop_id,REJECTED)
     return 1
 
 # POST /sicki/eid/accept/<prop_id>
-# Accept a proposal. The proposal is removed and the corresponding field is modified.
+# Accept a proposal. The proposal get status ACCEPTED and the corresponding field is modified.
 @require_role (admin_role)
 def accept():
-    #require_role (admin_role)
     prop_id = request.args (0)
     prop = get_proposal (prop_id)
     if not prop:
         raise HTTP (400)
     edit_field (str (prop['eid']), prop['field'], prop['value'])
     add_refs (str (prop['eid']), prop['refs'])
-    remove_proposal (prop_id)
+    update_proposal_status(prop_id,ACCEPTED)
     #redirect (URL (r = request, c = 'eid', f = 'view', args = [str (prop['eid'])]))
     return 1
 
