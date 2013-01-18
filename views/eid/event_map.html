@@ -19,7 +19,7 @@
 
 	  var aspect = map.width () / map.height ();
 
-	  if (geodata) {
+	  var add_map = function (selector, geodata, checked) {
 	      var layer = wiggle.io.GeoJSON (geodata.map);
 	      var bounds = layer.bounds;
 	      map.vcenter (bounds.centroid ());
@@ -27,9 +27,22 @@
 	      var extent = 8 * Math.max (bounds.width (), bounds.height () * aspect)
 	      map.extents (Math.min (extent, 360));
 	      
-	      map.append (layer);
+	      if (checked)
+		  map.append (layer);
 
-	      $ ('#map_controls').append ('<input type="checkbox" checked /').append (geodata.name);
+	      var checkbox = $ ('<input type="checkbox" />').attr ('checked', 'checked').click (function () {
+		  checked = ($ (this).attr ('checked') == 'checked');
+		  if (checked)
+		      map.append (layer);
+		  else
+		      map.remove (layer);
+	      })
+	      var container = $ ('<div></div>').append (checkbox).append (geodata.name);	      
+	      $ (selector).append (container);
+	  };
+
+	  if (geodata) {
+	      add_map ('#map_controls #current', geodata, true);
 	  }
 
       });
