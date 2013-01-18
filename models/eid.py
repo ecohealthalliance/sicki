@@ -85,6 +85,21 @@ time_period=[
     'Years'
     ]
 
+def upload_map (value):
+    filename = value.get ('name')
+    geodata = value.get ('map')
+    name = value.get ('name')
+    ext = value.get ('ext')
+    if (not name) or (not ext):
+        raise HTTP (400, "Cannot determine upload type")
+    if ext == 'json':
+        geodata = json.loads (geodata)
+    mongo.maps.insert ({
+            'name': name,
+            'type': ext,
+            'map': geodata
+            })
+    return name
 
 event_fields=[
     {'name':'event_name','label':'Event Name','type': 'text', 'required': True},
@@ -121,11 +136,17 @@ event_fields=[
     {'name':'contact','label':'Contact'},
     {'name':'notes','label':'Notes'},
     #{'name':'reference','label':'Reference'},
-    {'name':'map', 'type': 'hidden'},
+    {'name':'map', 'label': 'Map', 'type': 'map'},
     {'name':'data_quality_orig', 'type': 'hidden'},
     {'name':'data_quality', 'type': 'hidden'}
 
     ]
+
+upload_hooks = {
+    'map': {
+        'pre': upload_map
+        }
+}
 
 def get_field (name):
     for field in event_fields:

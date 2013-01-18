@@ -62,14 +62,29 @@ def propose():
     user = json.loads (request.vars.get('user'))
     date = json.loads (request.vars.get('date'))
 
+    event_field = get_field (field)
+
+    # Perform any pre-hooks or mappings before adding the value to the db
+    if upload_hooks.get (event_field['name']):
+        if upload_hooks.get (event_field['name']).get ('pre'):
+            value = upload_hooks.get (event_field['name']).get ('pre') (value)
+
     # Automatically accept proposals by admins
     if has_role (admin_role):
         edit_field (eid_id, field, value)
         add_refs (eid_id, refs)
-        return 1
+        prop_id = 1
     else:
         prop_id = propose_edit (eid_id, field, value, refs, user, date)
-        return prop_id
+
+    if upload_hooks.get (event_field['name']):
+        if upload_hooks.get (event_field['name']).get ('post'):
+            value = upload_hooks.get (event_field['name']).get ('post') (value)
+
+    return json.dumps ({
+        'id': prop_id,
+        'value': value
+        })
 
 # POST /sicki/eid/reject/<prop_id>
 # Removes a proposal completely from the database

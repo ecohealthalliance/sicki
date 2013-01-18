@@ -384,3 +384,15 @@ div.sublist {
 #event_map {
     margin-left: 200px;
 }
+
+.file-upload {
+    border: 1px #ccc dashed;
+    color: #ccc;
+    padding: 10px;
+    margin-right: 20px;
+}
+
+.file-upload-hovering {
+    background-color: #ccc;
+    color: #fff;
+}

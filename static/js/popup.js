@@ -64,17 +64,18 @@ function Popup () {
 		url: '/' + application + '/eid/propose/' + eid_id + '/' + field.name,
 		type: 'POST',
 		data: map_object (JSON.stringify, proposal),
-		dataType: 'text',
+		dataType: 'json',
 		success: function (data) {
 		    scrim.hide ();
 		    $ ('#proposal-popup').css ('display', 'none');
 		    //var num_props = field_proposals[field.name].length;
 		    //show_props.text (num_props + ' Proposals');
+		    proposal.value = data.value;
 		    if (admin_role) {
 			stat.update (proposal.value);
 		    }
 		    else {
-			proposal.id = data;
+			proposal.id = data.id;
 			stat.add_proposal (proposal);
 		    }
 		}

@@ -5,6 +5,8 @@ from gluon.tools import Crud
 import pymongo
 from bson.objectid import ObjectId
 
+import re
+
 try:
     mongo = pymongo.Connection (settings['mongodb']['host'], settings['mongodb']['port'])[settings['mongodb']['db']]
 except:
