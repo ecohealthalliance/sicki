@@ -127,6 +127,11 @@ event_fields=[
 
     ]
 
+# proposal status constants/enum
+PENDING = 'PENDING'
+ACCEPTED = 'ACCEPTED'
+REJECTED = 'REJECTED'
+
 def get_field (name):
     for field in event_fields:
         if field['name'] == name:
@@ -199,11 +204,13 @@ def propose_edit (eid_id, field, value, refs, user, date):
             'down': [],
             'user': user,
             'date': date,
+            'status': PENDING
             })
 
 def get_proposals (eid_id, user_id):
     props = mongo.proposals.find ({
-            'eid': ObjectId (eid_id)
+            'eid': ObjectId (eid_id),
+            'status': PENDING
             })
     if not props.count ():
         return []
@@ -233,10 +240,8 @@ def get_proposal (prop_id):
             '_id': ObjectId (prop_id)
             })
 
-def remove_proposal (prop_id):
-    mongo.proposals.remove ({
-            '_id': ObjectId (prop_id)
-            })
+def update_proposal_status(prop_id,status):
+    mongo.proposals.update({'_id': ObjectId(prop_id)},{'$set': {'status':status}})
     
 
 def vote (prop_id, user_id, val):

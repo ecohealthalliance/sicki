@@ -5,7 +5,7 @@ $ (document).ready (function () {
 
     var event_fields = {{ response.write (json.dumps (event_fields), escape = False) }};
     
-    var event_proposals = {{ response.write (json.dumps (event_proposals), escape = False) }};
+    var event_proposals = {{ response.write (json.dumps (proposals), escape = False) }};
     
     var event_lookup = {};
     $.each (event_fields, function (i, field) {
