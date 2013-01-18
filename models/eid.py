@@ -216,7 +216,7 @@ def format_field (field, event):
                 })'''
 
 def propose_edit (eid_id, field, value, refs, user, date):
-    return mongo.proposals.insert ({
+    return str (mongo.proposals.insert ({
             'eid': ObjectId (eid_id),
             'field': field,
             'value': value,
@@ -226,7 +226,7 @@ def propose_edit (eid_id, field, value, refs, user, date):
             'user': user,
             'date': date,
             'status': PENDING
-            })
+            }))
 
 def get_proposals (eid_id, user_id):
     props = mongo.proposals.find ({
