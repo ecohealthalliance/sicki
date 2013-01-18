@@ -375,3 +375,12 @@ div.sublist {
 #view .refname {
     margin: 10px 0px;
 }
+
+#map_controls {
+    width: 200px;
+    float: left;
+}
+
+#event_map {
+    margin-left: 200px;
+}

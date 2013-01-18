@@ -7,8 +7,6 @@ def index():
 @require_logged_in
 def view():
     eid_id = request.args (0)
-    if not eid_id:
-        raise HTTP (400, "Missing EID ID")
     event = get_event (eid_id)
     return {'event': event, 'references': get_ref_names (eid_id), 'geodata': get_map (event.get ('map'))}
 
@@ -19,15 +17,11 @@ def fields():
 @require_logged_in
 def stats():
     eid_id = request.args (0)
-    if not eid_id:
-        raise HTTP (400, "Missing EID ID")
     return {'event': get_event (eid_id), 'proposals': get_proposals (eid_id, auth.user.id)}
 
 @require_logged_in
 def event_map():
     eid_id = request.args (0)
-    if not eid_id:
-        raise HTTP (400, "Missing EID ID")
     event = get_event (eid_id)
     geodata = mongo.maps.find_one  ({'name': event.get ('map')})
     return {'event': event, 'geodata': geodata}
@@ -35,8 +29,6 @@ def event_map():
 @require_logged_in
 def wiki():
     eid_id = request.args (0)
-    if not eid_id:
-        raise HTTP (400, "Missing EID ID")
     page = load_page (eid_id)
     if not page:
         insert_page (eid_id)
@@ -46,8 +38,6 @@ def wiki():
 @require_logged_in
 def event_refs():
     eid_id = request.args (0)
-    if not eid_id:
-        raise HTTP (400, "Missing EID ID")
     return {'event': get_event (eid_id), 'refs': get_ref_names (eid_id)}
 
 # GET /sicki/eid/proposals/<eid_id>

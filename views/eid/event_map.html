@@ -8,21 +8,19 @@
     <script type="text/javascript" src="{{= URL (r = request, c = 'eid', f = 'fields.js') }}"></script>
     <script type="text/javascript">
       $ (document).ready (function () {
-	  var height = $ (window).height () - $ ('#map').position ().top - 25;
-	  $ ('#map').css ('height', height);
-	  $ ('#map').css ('width', height * 16 / 9);
-	  $ ('#map').css ('margin', 'auto');
-          {{ if geodata: }}
-	  var geodata = {{ response.write (json.dumps (geodata.get ('map')), escape = False) }};
-	  {{ else: }}
-	  var geodata = null;
-	  {{ pass }}
-	  var map = new wiggle.Map ('#map');
+	  var height = $ (window).height () - $ ('#event_map').position ().top - 25;
+	  $ ('#event_map').css ('height', height);
+	  $ ('#event_map').css ('width', height * 16 / 9);
+	  $ ('#map_pane').css ('width', height * 16 / 9 + 200);
+	  $ ('#map_pane').css ('margin', 'auto');
+	  {{ geodata['_id'] = str (geodata['_id']) }}
+	  var geodata = {{ response.write (json.dumps (geodata), escape = False) }};
+	  var map = new wiggle.Map ('#event_map');
 
 	  var aspect = map.width () / map.height ();
 
 	  if (geodata) {
-	      var layer = wiggle.io.GeoJSON (geodata);
+	      var layer = wiggle.io.GeoJSON (geodata.map);
 	      var bounds = layer.bounds;
 	      map.vcenter (bounds.centroid ());
 	      
@@ -30,6 +28,8 @@
 	      map.extents (Math.min (extent, 360));
 	      
 	      map.append (layer);
+
+	      $ ('#map_controls').append ('<input type="checkbox" checked /').append (geodata.name);
 	  }
 
       });
@@ -39,7 +39,12 @@
     {{ include "login.html" }}
     {{ include "eid/nav.html" }}
     <div id="title">{{= event['event_name'] }}</div>
-    <div id="map">
-    </div>
+    <div id="map_pane">
+      <div id="map_controls">
+	<div id="current">
+	  <b>Current Map</b>
+	</div>
+      </div>
+      <div id="event_map"></div>
   </body>
 </html>

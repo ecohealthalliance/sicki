@@ -152,7 +152,15 @@ def get_all_events (sort = None):
 
 
 def get_event (eid_id):
-    event = mongo.events.find_one ({'_id': ObjectId (eid_id)})
+    if not eid_id:
+        raise HTTP (400, "Missing EID ID")
+    try:
+        o_eid_id = ObjectId (eid_id)
+    except:
+        raise HTTP (400, "Bad EID ID")
+    event = mongo.events.find_one ({'_id': o_eid_id})
+    if not event:
+        raise HTTP (400, "EID Event Not Found")
     event['_id'] = str (event['_id'])
     event['ref'] = str (event['ref'])
     event['references'] = map (str, event['references'])
