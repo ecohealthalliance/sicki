@@ -1,3 +1,5 @@
+// stat is a field in the event eid (not status silly)
+// stat is a Statistic javascript object not an element
 function Proposal (prop, stat) {
     var that = this;
     var upvote, downvote;
