@@ -1,8 +1,9 @@
+// DELETE THIS FILE!!! IT HAS BEEN REPLACED BY static
 $ (document).ready (function () {
-    {{ eid_id = request.args (0) }}
-    
-    var event = {{ response.write (json.dumps (event), escape = False) }};
+    //{{ eid_id = request.args (0) }} not used
+    //var event = {{ response.write (json.dumps (event), escape = False) }}; not used
 
+    // event_fields is a part of the model(global) defined in eid.py
     var event_fields = {{ response.write (json.dumps (event_fields), escape = False) }};
     
     var event_proposals = {{ response.write (json.dumps (proposals), escape = False) }};
