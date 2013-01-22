@@ -144,6 +144,11 @@ def ref():
     del result['_id']
     return json.dumps (result)
 
+def load_map():
+    name = request.vars.get ('name')
+    geodata = mongo.maps.find_one ({'name': name})
+    return json.dumps (geodata)
+
 @require_logged_in
 def eid_map():
     return {}

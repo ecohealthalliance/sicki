@@ -8,11 +8,18 @@
     <script type="text/javascript" src="{{= URL (r = request, c = 'eid', f = 'fields.js') }}"></script>
     <script type="text/javascript">
       $ (document).ready (function () {
+
+	  // Format the map to take up the max amount of space:
+	  // 16:9 aspect ratio with 200px panel on the left
 	  var height = $ (window).height () - $ ('#event_map').position ().top - 25;
 	  $ ('#event_map').css ('height', height);
 	  $ ('#event_map').css ('width', height * 16 / 9);
 	  $ ('#map_pane').css ('width', height * 16 / 9 + 200);
 	  $ ('#map_pane').css ('margin', 'auto');
+
+	  var get_map = function (mapname) {
+
+	  };
 	  {{ geodata['_id'] = str (geodata['_id']) }}
 	  var geodata = {{ response.write (json.dumps (geodata), escape = False) }};
 	  var map = new wiggle.Map ('#event_map');
