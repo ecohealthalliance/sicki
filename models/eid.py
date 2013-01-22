@@ -217,23 +217,27 @@ def get_proposals (eid_id, user_id):
     else:
         result = []
         for prop in props:
-            voted = 0
-            if user_id in prop['up']:
-                voted = 1
-            elif user_id in prop['down']:
-                voted = -1
-            result.append ({
-                    'field': prop['field'],
-                    'value': prop['value'],
-                    'refs': prop.get ('refs') or [],
-                    'up': len (prop['up']),
-                    'down': len (prop['down']),
-                    'id': str (prop['_id']),
-                    'voted': voted,
-                    'ratio': float (len (prop['up']) + 1) / float (len (prop['down']) + 1)
-                    })
+            result.append(mongo2web_proposal(prop,user_id))
         result.sort (key = lambda x: x['ratio'], reverse = True)
         return result
+
+# munge mongo proposal into data needed for view
+def mongo2web_proposal(prop,user_id):
+    voted = 0
+    if user_id in prop['up']:
+        voted = 1
+    elif user_id in prop['down']:
+        voted = -1
+    return {
+        'field': prop['field'],
+        'value': prop['value'],
+        'refs': prop.get ('refs') or [],
+        'up': len (prop['up']),
+        'down': len (prop['down']),
+        'id': str (prop['_id']),
+        'voted': voted,
+        'ratio': float (len (prop['up']) + 1) / float (len (prop['down']) + 1)
+        }
 
 def get_proposal (prop_id):
     return mongo.proposals.find_one ({
