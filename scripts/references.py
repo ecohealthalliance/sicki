@@ -1,4 +1,4 @@
-#import pymongo
+# Usage: python web2py.py --shell=sicki --run=applications/sicki/scripts/references.py --import_models
 from pyzotero import zotero
 
 library_id = settings['zotero']['library_id']
@@ -30,7 +30,12 @@ while start < total:
         if count >= total:
             break
         count += 1
-        if not mongo.refs.find ({'key': item['key']}).count ():
+
+        item['rights'] = int(item['rights']) if item['rights'] else ''
+        item['_id'] = item['key']
+        del item['key']
+
+        if not mongo.refs.find ({'_id': item['_id']}).count ():
             insert += 1
             mongo.refs.insert (item)
         else:
