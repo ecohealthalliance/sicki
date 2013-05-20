@@ -8,9 +8,12 @@ body {
 
 
 #login-wrapper {
-    border-bottom: dashed 1px #ccc;
-    text-align: right;
-    padding: 15px;
+    position: absolute; 
+    top: 10px; 
+    right: 20px; 
+    border: none; 
+    margin: 0px; 
+    padding: 0px
 }
 
 a {
@@ -21,10 +24,6 @@ a {
 a:hover {
     color: #960028;
 }
-
-/*#map {
-    height: 400px;
-}*/
 
 div#title {
     font-weight: bold;
@@ -315,6 +314,8 @@ div.subtitle {
 /* event navigation styles */
 div#event-nav {
     text-align: center;
+    font-size: .9em;
+    margin: 0px
 }
 
 div#fields {
@@ -373,4 +374,25 @@ div.sublist {
 
 #view .refname {
     margin: 10px 0px;
+}
+
+#map_controls {
+    width: 200px;
+    float: left;
+}
+
+#event_map {
+    margin-left: 200px;
+}
+
+.file-upload {
+    border: 1px #ccc dashed;
+    color: #ccc;
+    padding: 10px;
+    margin-right: 20px;
+}
+
+.file-upload-hovering {
+    background-color: #ccc;
+    color: #fff;
 }

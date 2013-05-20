@@ -4,29 +4,52 @@
     <title>{{= request.title or 'The Sicki Project' }}</title> 
     <link rel="stylesheet" type="text/css" href="{{= URL (r = request, c = 'static', f = 'css/base.css') }}" /> 
     <script type="text/javascript" src="{{= URL (r= request, c = 'static', f = 'js/jquery.min.js')}}"></script> 
-    <script type="text/javascript" src="{{= URL (r= request, c = 'static', f = 'js/wigglemaps/wigglemaps.js')}}"></script> 
+    <script type="text/javascript" src="{{= URL (r= request, c = 'static', f = 'wigglemaps/wigglemaps.js')}}"></script> 
     <script type="text/javascript" src="{{= URL (r = request, c = 'eid', f = 'fields.js') }}"></script>
     <script type="text/javascript">
       $ (document).ready (function () {
-	  $ ('#map').css ('height', $ (window).height () - $ ('#map').position ().top - 25);
-          {{ if geodata: }}
-	  var geodata = {{ response.write (json.dumps (geodata.get ('map')), escape = False) }};
-	  {{ else: }}
-	  var geodata = null;
-	  {{ pass }}
-	  var map = new wiggle.Map ('#map');
+
+	  // Format the map to take up the max amount of space:
+	  // 16:9 aspect ratio with 200px panel on the left
+	  var height = $ (window).height () - $ ('#event_map').position ().top - 25;
+	  $ ('#event_map').css ('height', height);
+	  $ ('#event_map').css ('width', height * 16 / 9);
+	  $ ('#map_pane').css ('width', height * 16 / 9 + 200);
+	  $ ('#map_pane').css ('margin', 'auto');
+
+	  var get_map = function (mapname) {
+
+	  };
+	  {{ geodata['_id'] = str (geodata['_id']) }}
+	  var geodata = {{ response.write (json.dumps (geodata), escape = False) }};
+	  var map = new wiggle.Map ('#event_map');
 
 	  var aspect = map.width () / map.height ();
 
-	  if (geodata) {
-	      var layer = wiggle.io.GeoJSON (geodata);
+	  var add_map = function (selector, geodata, checked) {
+	      var layer = wiggle.io.GeoJSON (geodata.map);
 	      var bounds = layer.bounds;
 	      map.vcenter (bounds.centroid ());
 	      
 	      var extent = 8 * Math.max (bounds.width (), bounds.height () * aspect)
 	      map.extents (Math.min (extent, 360));
 	      
-	      map.append (layer);
+	      if (checked)
+		  map.append (layer);
+
+	      var checkbox = $ ('<input type="checkbox" />').attr ('checked', 'checked').click (function () {
+		  checked = ($ (this).attr ('checked') == 'checked');
+		  if (checked)
+		      map.append (layer);
+		  else
+		      map.remove (layer);
+	      })
+	      var container = $ ('<div></div>').append (checkbox).append (geodata.name);	      
+	      $ (selector).append (container);
+	  };
+
+	  if (geodata) {
+	      add_map ('#map_controls #current', geodata, true);
 	  }
 
       });
@@ -36,7 +59,15 @@
     {{ include "login.html" }}
     {{ include "eid/nav.html" }}
     <div id="title">{{= event['event_name'] }}</div>
-    <div id="map">
-    </div>
+    <div id="map_pane">
+      <div id="map_controls">
+	<div id="current">
+	  <b>Current Map</b>
+	</div>
+	<div id="proposed">
+	  <b>Proposed Maps</b>
+	</div>
+      </div>
+      <div id="event_map"></div>
   </body>
 </html>

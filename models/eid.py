@@ -85,6 +85,21 @@ time_period=[
     'Years'
     ]
 
+def upload_map (value):
+    filename = value.get ('name')
+    geodata = value.get ('map')
+    name = value.get ('name')
+    ext = value.get ('ext')
+    if (not name) or (not ext):
+        raise HTTP (400, "Cannot determine upload type")
+    if ext == 'json':
+        geodata = json.loads (geodata)
+    mongo.maps.insert ({
+            'name': name,
+            'type': ext,
+            'map': geodata
+            })
+    return name
 
 event_fields=[
     {'name':'event_name','label':'Event Name','type': 'text', 'required': True},
@@ -121,11 +136,22 @@ event_fields=[
     {'name':'contact','label':'Contact'},
     {'name':'notes','label':'Notes'},
     #{'name':'reference','label':'Reference'},
-    {'name':'map', 'type': 'hidden'},
+    {'name':'map', 'label': 'Map', 'type': 'map'},
     {'name':'data_quality_orig', 'type': 'hidden'},
     {'name':'data_quality', 'type': 'hidden'}
 
     ]
+
+upload_hooks = {
+    'map': {
+        'pre': upload_map
+        }
+}
+
+# proposal status constants/enum
+PENDING = 'PENDING'
+ACCEPTED = 'ACCEPTED'
+REJECTED = 'REJECTED'
 
 def get_field (name):
     for field in event_fields:
@@ -152,9 +178,17 @@ def get_all_events (sort = None):
 
 
 def get_event (eid_id):
-    event = mongo.events.find_one ({'_id': ObjectId (eid_id)})
+    if not eid_id:
+        raise HTTP (400, "Missing EID ID")
+    try:
+        o_eid_id = ObjectId (eid_id)
+    except:
+        raise HTTP (400, "Bad EID ID")
+    event = mongo.events.find_one ({'_id': o_eid_id})
+    if not event:
+        raise HTTP (400, "EID Event Not Found")
     event['_id'] = str (event['_id'])
-    event['ref'] = str (event['ref'])
+    event['orig_event'] = str (event['orig_event'])
     event['references'] = map (str, event['references'])
         
     return event
@@ -182,7 +216,7 @@ def format_field (field, event):
                 })'''
 
 def propose_edit (eid_id, field, value, refs, user, date):
-    return mongo.proposals.insert ({
+    return str (mongo.proposals.insert ({
             'eid': ObjectId (eid_id),
             'field': field,
             'value': value,
@@ -191,11 +225,13 @@ def propose_edit (eid_id, field, value, refs, user, date):
             'down': [],
             'user': user,
             'date': date,
-            })
+            'status': PENDING
+            }))
 
 def get_proposals (eid_id, user_id):
     props = mongo.proposals.find ({
-            'eid': ObjectId (eid_id)
+            'eid': ObjectId (eid_id),
+            'status': PENDING
             })
     if not props.count ():
         return []
@@ -225,10 +261,8 @@ def get_proposal (prop_id):
             '_id': ObjectId (prop_id)
             })
 
-def remove_proposal (prop_id):
-    mongo.proposals.remove ({
-            '_id': ObjectId (prop_id)
-            })
+def update_proposal_status(prop_id,status):
+    mongo.proposals.update({'_id': ObjectId(prop_id)},{'$set': {'status':status}})
     
 
 def vote (prop_id, user_id, val):
@@ -263,7 +297,7 @@ def get_ref_names (eid_id = None):
         event = get_event (eid_id)
         result = []
         for ref in event['references']:
-            result.append (mongo.refs.find_one ({'key': ref}))
+            result.append (mongo.refs.find_one ({'_id': ref}))
         
     refs = []
     for item in result:
@@ -277,11 +311,11 @@ def add_refs (eid_id, refs):
     event = get_event (eid_id)
     current = set (event['references'])
     for ref in refs:
-        if not ref['key'] in current:
+        if not ref['_id'] in current:
             mongo.events.update ({
                     '_id': ObjectId (eid_id)
                     }, {
-                    '$push': {'references': ref['key']}
+                    '$push': {'references': ref['_id']}
                     })
 
 def get_map (mapname):

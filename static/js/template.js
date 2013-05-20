@@ -244,19 +244,78 @@ function format_label (field) {
 	};
     };
 
+    var MapTemplate = function (field) {
+	this.html = function (value) {
+	    return $ ('<span>' + this.text (value) + '</span>');
+	};
+
+	this.text = function (value) {
+	    return as_text (value);
+	};
+	
+	this.input = function (value) {
+	    elem = $ ('<div class="file-upload"></div>').text ("Drag a file to upload map");
+	    elem.data ('name', null);
+	    elem.data ('buffer', null);
+	    
+	    elem.get (0).ondragover = function (event) {
+		event.preventDefault ();
+		//console.log ('DRAGGING');
+		elem.addClass ('file-upload-hovering')
+		return false;
+	    };
+	    elem.get (0).ondragleave = function (event) {
+		event.preventDefault ();
+		//console.log ('DRAGGING');
+		elem.removeClass ('file-upload-hovering')
+		return false;
+	    };
+	    elem.get (0).ondrop = function (event) {
+		elem.removeClass ('file-upload-hovering')
+		var file = event.dataTransfer.files[0];
+		if (file) {
+		    reader = new FileReader ();
+		    reader.onload = function (event) {
+			elem.data ('name', file.name);
+			elem.data ('buffer', event.target.result);
+			elem.text (file.name);
+		    };
+		    reader.readAsText (file, 'UTF-8');
+		}
+		event.preventDefault ();
+		//console.log ('DROPPED');
+		return false;
+	    };
+	    return elem
+	};
+
+	this.val = function (input) {
+	    var buffer = input.data ('buffer');
+	    var filename = input.data ('name');
+	    var matches = filename.match (/^(.*)\.([^\.]+)$/)
+	    return {
+		name: matches[1],
+		ext: matches[2],
+		map: buffer
+	    };
+	};
+    };
+
     // return different template according to field type
-    Template = function (field, value) {
+    Template = function (field) {
 	var template;
 	if (field.type == 'text' || !field.type)
-	    template = new TextTemplate (field, value);
+	    template = new TextTemplate (field);
 	else if (field.type == 'set')
-	    template = new SetTemplate (field, value);
+	    template = new SetTemplate (field);
 	else if (field.type == 'list')
-	    template = new ListTemplate (field, value);
+	    template = new ListTemplate (field);
 	else if (field.type == 'date')
-	    template = new DateTemplate (field, value);
+	    template = new DateTemplate (field);
 	else if (field.type == 'value_units')
-	    template = new UnitTemplate (field, value);
+	    template = new UnitTemplate (field);
+	else if (field.type == 'map')
+	    template = new MapTemplate (field);
 	else 
 	    template = undefined;
 	return template;
