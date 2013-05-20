@@ -188,7 +188,7 @@ def get_event (eid_id):
     if not event:
         raise HTTP (400, "EID Event Not Found")
     event['_id'] = str (event['_id'])
-    event['ref'] = str (event['ref'])
+    event['orig_event'] = str (event['orig_event'])
     event['references'] = map (str, event['references'])
         
     return event
@@ -297,7 +297,7 @@ def get_ref_names (eid_id = None):
         event = get_event (eid_id)
         result = []
         for ref in event['references']:
-            result.append (mongo.refs.find_one ({'key': ref}))
+            result.append (mongo.refs.find_one ({'_id': ref}))
         
     refs = []
     for item in result:
@@ -311,11 +311,11 @@ def add_refs (eid_id, refs):
     event = get_event (eid_id)
     current = set (event['references'])
     for ref in refs:
-        if not ref['key'] in current:
+        if not ref['_id'] in current:
             mongo.events.update ({
                     '_id': ObjectId (eid_id)
                     }, {
-                    '$push': {'references': ref['key']}
+                    '$push': {'references': ref['_id']}
                     })
 
 def get_map (mapname):

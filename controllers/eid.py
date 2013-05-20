@@ -139,8 +139,8 @@ def refs():
 
 @require_logged_in
 def ref():
-    key = request.args (0);
-    result = mongo.refs.find_one ({'_id': ObjectId (key)})
+    id = request.args (0);
+    result = mongo.refs.find_one ({'_id': id})
     del result['_id']
     return json.dumps (result)
 
