@@ -22,11 +22,11 @@ function ReferenceList (app, input, result) {
 		result.children ().remove ();
 		for (var i = 0; i < data.length; i ++) {
 		    var elem = $ ('<p><a href="#" class="add_ref"> + </a>' + data[i].name + '</p>')
-		    if (data[i].key in current)
+		    if (data[i].id in current)
 			elem.css('background-color', '#fff77d');
                     // jquery method to associate data with dom element
 		    elem.data ('ref', data[i]);
-		    elem.data ('added', (data[i].key in current));
+		    elem.data ('added', (data[i].id in current));
 		    result.append (elem);
 		}
 
@@ -35,13 +35,13 @@ function ReferenceList (app, input, result) {
 
 		    if (! $(this).parent ().data ('added')) {
 			//$ (this).text (' - ');
-			current[ref.key] = ref;
+			current[ref.id] = ref;
 			$ (this).parent (). css ('background-color', '#fff77d');
 			$(this).parent ().data ('added', true);
 		    }
 		    else {
 			//$ (this).text (' + ');
-			delete current[ref.key];
+			delete current[ref.id];
 			$ (this).parent (). css ('background-color', '');
 			$(this).parent ().data ('added', false);
 		    }
@@ -71,7 +71,7 @@ function ReferenceCollection (refs) {
     $.each (refs, function (i, ref) {
 	var expanded = false;
 	var expand_ref = $ ('<div></div>').css ('display', 'none');
-	var ln = $ ('<a href="#"></a>').text (ref.title).addClass (ref.key).click (function (event) {
+	var ln = $ ('<a href="#"></a>').text (ref.title).addClass (ref.id).click (function (event) {
 	    var format_data = function (key, value) {
 		if (key == 'creators') {
 		    var authors = [];
@@ -97,7 +97,7 @@ function ReferenceCollection (refs) {
 	    if (!expanded) {
                 //var style = link.parent().attr('class');
                 $.ajax ({
-		    url: '/' + application + '/eid/ref/' + ref.key,
+		    url: '/' + application + '/eid/ref/' + ref.id,
 		    dataType: 'json',
 		    success: function (data) {
 			//var div = $('<div class="'+style+' expanded-ref"></div>');
