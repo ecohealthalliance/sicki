@@ -41,7 +41,7 @@ while start < total:
         else:
             update += 1
             mongo.refs.update ({
-                    'key': item['key']
+                    '_id': item['_id']
                     }, {
                     '$set': item
                     })
