@@ -319,5 +319,5 @@ def add_refs (eid_id, refs):
                     })
 
 def get_map (mapname):
-    geodata = mongo.maps.find_one  ({'name': mapname})
+    geodata = mongo.maps.find_one({'name': mapname})
     return geodata
