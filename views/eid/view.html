@@ -18,8 +18,7 @@
 	  if (geodata) {
 	      var layer = wiggle.io.GeoJSON (geodata);
 	      var bounds = layer.bounds;
-	      map.camera.position (bounds.centroid ());
-	      
+	      map.center (bounds.centroid ());
 	      var extent = 8 * Math.max (bounds.width (), bounds.height () * aspect)
 	      map.extents (Math.min (extent, 360));
 	      

@@ -40,8 +40,11 @@ while start < total:
             mongo.refs.insert (item)
         else:
             update += 1
+            zid = item['_id']
+            # can not have id in update! mongo silently fails
+            del item['_id']
             mongo.refs.update ({
-                    'key': item['key']
+                    '_id': zid
                     }, {
                     '$set': item
                     })
