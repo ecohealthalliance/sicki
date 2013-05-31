@@ -8,6 +8,8 @@ api_key = settings['zotero']['api_key']
 '''mongo = pymongo.Connection (settings['mongodb'][['host'], settings['mongodb'][['port'])[settings['mongodb'][['db']]
 if settings['mongodb'].get ('username'):
                                                                                             mongo.authenticate(settings['mongodb']['username'], settings['mongodb']['password'])'''
+''' this is commented out because it gets mongo handle from running as
+web2py instance. in 001._db.py mongo is defined.'''
 
 zot = zotero.Zotero(library_id, library_type, api_key)
 
@@ -21,6 +23,9 @@ start = 0
 count = 0
 update = 0
 insert = 0
+
+# clear out all refs - this will get rid of refs that are deleted in zotero(zombies)
+mongo.refs.drop()
 
 while start < total:
     print 'Processing: %d' % (start,)
