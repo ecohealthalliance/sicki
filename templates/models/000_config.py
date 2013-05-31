@@ -15,7 +15,7 @@ settings = {
         'pool': 30
         },
     'zotero': {
-        'library_id': '126319',
+        'library_id': 'library-id',
         'library_type': 'group',
         'api_key': 'put-api-key-here'
         }
