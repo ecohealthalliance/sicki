@@ -2,10 +2,12 @@ function Statistic (field, field_proposals, field_value) {
     var that = this;
 
     var field_name = field.name;
+    // zacks homegrown js templating keyed on field.type
     var template = Template (field);
     this.template = template;
 
     // The container for the whole object
+    // html output/rendered view - actually this is redeclared below woops
     var stat;
     this.addClass = function (classname) {
 	stat.addClass (classname);
@@ -17,6 +19,7 @@ function Statistic (field, field_proposals, field_value) {
     this.value = function () {
 	return value;
     };
+    // update value client side (admin updating/accept proposal)
     this.update = function (_value) {
 	value = _value;
 	wrapper.children ().remove ();
