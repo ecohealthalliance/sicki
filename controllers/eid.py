@@ -1,3 +1,56 @@
+@require_logged_in
+def model():
+    return json.dumps(EIDEvent);
+
+
+@require_role(admin_role)
+def create():
+    pass
+
+
+@require_logged_in
+def read():
+    eid_id = request.args(0)
+    if not eid_id:
+        raise HTTP (400, "Missing EID ID")
+    try:
+        o_eid_id = ObjectId (eid_id)
+    except:
+        raise HTTP (400, "Bad EID ID")
+    event = mongo.events.find_one ({'_id': o_eid_id})
+
+    if not event:
+        raise HTTP (400, "EID Event Not Found")
+
+    event['id'] = str (event['_id'])
+    del event['_id']
+
+    del event['orig_event']
+    # Join on all references
+    #event['references'] = map (str, event['references'])
+    return json.dumps(event)
+
+
+@require_role(admin_role)
+def update():
+    eid_id = request.args(0)
+    if not eid_id:
+        raise HTTP(400, eid_id)
+    for field, value in request.post_vars.iteritems():
+        edit_field (eid_id, field, value)
+    return json.dumps(True)
+
+
+@require_role(admin_role)
+def delete():
+    pass
+
+
+## !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+## Everything Below this line is suspect, may need to be refactored
+## !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
 # GET /sicki/eid/
 @require_logged_in
 def index():

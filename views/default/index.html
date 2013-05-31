@@ -1,2 +1,35 @@
-{{extend 'layout.html'}}
-<p>Welcome to Sicki.</p>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <title>The Sicki Project</title>
+  <script src="static/lib/jquery.min.js"></script>
+  <script src="static/lib/underscore.min.js"></script>
+  <script src="static/lib/backbone.js"></script>
+
+  <script src="static/src/namespace.js"></script>
+
+  <script src="static/src/sicki/models/Model.js"></script>
+  <script src="static/src/sicki/models/EID.js"></script>
+
+  <script src="static/src/sicki/controllers/Controller.js"></script>
+  <script src="static/src/sicki/controllers/EIDEventController.js"></script>
+
+  <script src="static/lib/jade-runtime.js"></script>
+  <script src="static/built/templates.js"></script>
+
+  <script src="static/src/sicki/routes/Router.js"></script>
+
+  <script src="static/src/sicki/App.js"></script>
+
+  <script>
+  $(document).ready(function() {
+    var app = new sicki.App({
+      root: 'sicki'
+    });
+  });
+  </script>
+
+  </head>
+  <body>
+  </body>
+</html>

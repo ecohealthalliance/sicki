@@ -85,23 +85,7 @@ time_period=[
     'Years'
     ]
 
-def upload_map (value):
-    filename = value.get ('name')
-    geodata = value.get ('map')
-    name = value.get ('name')
-    ext = value.get ('ext')
-    if (not name) or (not ext):
-        raise HTTP (400, "Cannot determine upload type")
-    if ext == 'json':
-        geodata = json.loads (geodata)
-    mongo.maps.insert ({
-            'name': name,
-            'type': ext,
-            'map': geodata
-            })
-    return name
-
-event_fields=[
+EIDEvent = [
     {'name':'event_name','label':'Event Name','type': 'text', 'required': True},
     {'name':'pathogens','label':'Pathogen(s)', 'type':'list', 'children':
          [{'name':'reported_name','label':'Reported name'},
@@ -141,6 +125,28 @@ event_fields=[
     {'name':'data_quality', 'type': 'hidden'}
 
     ]
+
+## !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+## Everything Below this line is suspect, may need to be refactored
+## !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+def upload_map (value):
+    filename = value.get ('name')
+    geodata = value.get ('map')
+    name = value.get ('name')
+    ext = value.get ('ext')
+    if (not name) or (not ext):
+        raise HTTP (400, "Cannot determine upload type")
+    if ext == 'json':
+        geodata = json.loads (geodata)
+    mongo.maps.insert ({
+            'name': name,
+            'type': ext,
+            'map': geodata
+            })
+    return name
+
+
 
 upload_hooks = {
     'map': {
@@ -187,7 +193,8 @@ def get_event (eid_id):
     event = mongo.events.find_one ({'_id': o_eid_id})
     if not event:
         raise HTTP (400, "EID Event Not Found")
-    event['_id'] = str (event['_id'])
+    event['id'] = str (event['_id'])
+    del event['_id']
     event['orig_event'] = str (event['orig_event'])
     event['references'] = map (str, event['references'])
         
