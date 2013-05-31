@@ -2,7 +2,7 @@ settings = {
     'mongodb': {
         'host': 'localhost',
         'port': 27017,
-        'db': 'test',
+        'db': 'sicki',
         'username': None,
         'password': None
         },
