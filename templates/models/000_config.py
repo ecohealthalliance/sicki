@@ -13,5 +13,10 @@ settings = {
         'host': None,
         'database': None,
         'pool': 30
+        },
+    'zotero': {
+        'library_id': '126319',
+        'library_type': 'group',
+        'api_key': 'put-api-key-here'
         }
 }
