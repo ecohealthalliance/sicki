@@ -1,4 +1,4 @@
-(function() {
+define(function() {
 
     var Model = Backbone.Model.extend({
         update: function(attributes, callback) {
@@ -45,6 +45,6 @@
         }
     });
 
-    sicki.models.Model = Model;
+    return Model;
 
-}());
+});

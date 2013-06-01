@@ -1,6 +1,7 @@
-(function() {
-    var EIDEventController = sicki.controllers.Controller.extend({
-        Model: sicki.models.EID,
+define(['./Controller', '../models/EID'], function(Controller, EID) {
+
+    var EIDEventController = Controller.extend({
+        Model: EID,
 
         overview: function() {
             console.log('overview', this.model.get('id'));
@@ -13,6 +14,6 @@
         }
     });
 
-    sicki.controllers.EIDEventController = new EIDEventController();
+    return new EIDEventController();
 
-})();
+});
