@@ -1,4 +1,4 @@
-(function() {
+define(function() {
     var Controller = Backbone.View.extend({
         Model: null,
         model: null,
@@ -33,6 +33,6 @@
 
     });
 
-    sicki.controllers.Controller = Controller;
+    return Controller;
 
-})();
+});

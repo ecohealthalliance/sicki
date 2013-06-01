@@ -1,4 +1,4 @@
-(function() {
+define(['require'], function(require) {
 
     var Router = Backbone.Router.extend({
         routes: {
@@ -7,7 +7,9 @@
         },
 
         viewEID: function(eid_id, view) {
-            sicki.controllers.EIDEventController.switchView(eid_id, view);
+            require(['../controllers/EIDEventController'], function(EIDEventController) {
+                EIDEventController.switchView(eid_id, view);
+            });
         },
 
         viewEIDList: function() {
@@ -15,6 +17,6 @@
         }
     });
 
-    sicki.routes.Router = Router;
+    return Router;
 
-})();
+});

@@ -1,9 +1,9 @@
-(function() {
+define(['./Model'], function(Model) {
 
-    var EID = sicki.models.Model.extend({}, {
+    var EID = Model.extend({}, {
         endpoint: '/sicki/eid'
     });
 
-    sicki.models.EID = EID;
+    return EID;
 
-})();
+});
