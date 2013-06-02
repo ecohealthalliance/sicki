@@ -85,7 +85,41 @@ time_period=[
     'Years'
     ]
 
-EIDEvent = [
+EIDEvent = {
+    'defaults': {
+        'event_name': '',
+        'pathogens': [],
+        'location': '',
+        'host': '',
+        'disease': '',
+        'start_date': '',
+        'end_date': '',
+        'host_age': '',
+        'host_use': '',
+        'transmission_model': '',
+        'zoonotic_type': '',
+        'number_infected': '',
+        'prevelance': '',
+        'host_sex': '',
+        'sample_type': '',
+        'sample_type': '',
+        'driver': '',
+        'domestication_status': '',
+        'number_deaths': '',
+        'contact': '',
+        'notes': '',
+        'references': [],
+        'map': None,
+        'data_quality_orig': '',
+        'data_quality': ''
+        }
+}
+
+## !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+## Everything Below this line is suspect, may need to be refactored
+## !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+'''EIDEvent = [
     {'name':'event_name','label':'Event Name','type': 'text', 'required': True},
     {'name':'pathogens','label':'Pathogen(s)', 'type':'list', 'children':
          [{'name':'reported_name','label':'Reported name'},
@@ -124,11 +158,7 @@ EIDEvent = [
     {'name':'data_quality_orig', 'type': 'hidden'},
     {'name':'data_quality', 'type': 'hidden'}
 
-    ]
-
-## !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-## Everything Below this line is suspect, may need to be refactored
-## !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    ]'''
 
 def upload_map (value):
     filename = value.get ('name')
