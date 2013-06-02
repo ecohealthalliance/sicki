@@ -1,4 +1,4 @@
-define(['./Controller', '../models/EID'], function(Controller, EID) {
+define(['sicki/controllers/Controller', 'sicki/models/EID'], function(Controller, EID) {
 
     var EIDEventController = Controller.extend({
         Model: EID,

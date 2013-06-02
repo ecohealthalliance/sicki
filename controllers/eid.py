@@ -1,6 +1,6 @@
 @require_logged_in
 def model():
-    return json.dumps(EIDEvent);
+    return json.dumps(EIDEvent)
 
 
 @require_role(admin_role)

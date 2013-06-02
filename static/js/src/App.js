@@ -1,4 +1,4 @@
-define(['./routes/Router'], function(Router) {
+define(['sicki/routes/Router'], function(Router) {
 
     var App = function(options) {
         var router = new Router({

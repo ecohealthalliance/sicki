@@ -2,18 +2,25 @@
 <html lang="en">
   <head>
   <title>The Sicki Project</title>
-  <script src="static/lib/jquery.min.js"></script>
-  <script src="static/lib/underscore.min.js"></script>
-  <script src="static/lib/backbone.min.js"></script>
-  <script src="static/lib/require.min.js"></script>
+  <script src="static/js/lib/jquery.min.js"></script>
+  <script src="static/js/lib/underscore.min.js"></script>
+  <script src="static/js/lib/backbone.min.js"></script>
+  <script src="static/js/lib/require.min.js"></script>
 
-  <script src="static/src/namespace.js"></script>
+  <script src="static/js/src/namespace.js"></script>
 
-  <script src="static/lib/jade-runtime.js"></script>
+  <script src="static/js/lib/jade-runtime.js"></script>
   <script src="static/built/templates.js"></script>
 
   <script>
-    require(['static/src/sicki/App'], function(App) {
+    requirejs.config({
+        baseUrl: 'static/js/lib',
+        paths: {
+            sicki: '../src',
+            api: '../../..'
+        }
+    });
+    require(['sicki/App'], function(App) {
         var app = new App({
             root: 'sicki'
         });
