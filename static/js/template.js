@@ -1,5 +1,7 @@
 var Template;
 
+// zacks homegrown js/jquery templating - refactor with a js mvc
+
 function format_label (field) {
     var label = field.label;
     if (!label)
