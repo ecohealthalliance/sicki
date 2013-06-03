@@ -1,4 +1,4 @@
-define(['require'], function(require) {
+define(['require', 'backbone'], function(require, Backbone) {
 
     var Router = Backbone.Router.extend({
         routes: {

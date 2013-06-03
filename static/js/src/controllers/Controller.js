@@ -1,4 +1,4 @@
-define(function() {
+define(['backbone'], function(Backbone) {
     var Controller = Backbone.View.extend({
         Model: null,
         model: null,

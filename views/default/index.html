@@ -2,11 +2,7 @@
 <html lang="en">
   <head>
   <title>The Sicki Project</title>
-  <script src="static/js/lib/jquery.min.js"></script>
-  <script src="static/js/lib/underscore.min.js"></script>
-  <script src="static/js/lib/backbone.min.js"></script>
-  <script src="static/js/lib/require.min.js"></script>
-
+  <script src="static/js/lib/require.js"></script>
   <script src="static/js/src/namespace.js"></script>
 
   <script src="static/js/lib/jade-runtime.js"></script>
@@ -18,6 +14,15 @@
         paths: {
             sicki: '../src',
             api: '../../..'
+        },
+        shim: {
+            undercore: {
+                exports: '_'
+            },
+            backbone: {
+                deps: ['jquery', 'underscore'],
+                exports: 'Backbone'
+            }
         }
     });
     require(['sicki/App'], function(App) {
