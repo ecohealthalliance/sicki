@@ -1,7 +1,7 @@
-define(['sicki/controllers/Controller', 'sicki/models/EID'], function(Controller, EID) {
+define(['jquery', 'sicki/controllers/Controller', 'sicki/models/EIDEvent'], function($, Controller, EIDEvent) {
 
     var EIDEventController = Controller.extend({
-        Model: EID,
+        Model: EIDEvent,
 
         overview: function() {
             console.log('overview', this.model.get('id'));

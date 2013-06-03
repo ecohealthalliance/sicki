@@ -1,4 +1,4 @@
-define(function() {
+define(['backbone'], function(Backbone) {
 
     var Model = Backbone.Model.extend({
         update: function(attributes, callback) {
