@@ -4,6 +4,10 @@ def index():
     sort = request.vars.get ('sort') or 'event_name'
     return {'events': get_all_events (sort), 'sort': sort}
 
+# GET /sicki/eid/events api call returns all events as JSON string.
+def events():
+    return get_all_events_json('event_name')
+
 @require_logged_in
 def view():
     eid_id = request.args (0)
