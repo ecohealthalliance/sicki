@@ -159,9 +159,9 @@ def get_field (name):
             return field
     return None
 
-def get_all_events (sort = None):
+def get_all_events (sort = None, projection = None):
     events = []
-    results = mongo.events.find ()
+    results = mongo.events.find ({}, projection)
     for item in results:
        events.append (item)
 
@@ -175,6 +175,11 @@ def get_all_events (sort = None):
         events.sort (key = key_func)
         
     return events
+
+def get_all_events_json (sort = None):
+    # object ids wont dump in json
+    events = get_all_events(sort,{'_id': 0, 'orig_event': 0})
+    return json.dumps(events)
 
 
 def get_event (eid_id):
