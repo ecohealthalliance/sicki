@@ -159,11 +159,18 @@ def get_field (name):
             return field
     return None
 
-def get_all_events (sort = None, projection = None):
+def get_all_events (sort = None):
+    'returns all events, _id hex objId -> id string, orig_event objId taken out'
     events = []
-    results = mongo.events.find ({}, projection)
-    for item in results:
-       events.append (item)
+    # results is a mongo lazy cursor - not a list
+    # filtering out orig_event, dont need and its hex doesnt dump to json
+    results = mongo.events.find ({}, {'orig_event': 0})
+    for item in results: # iterate on cursor
+        # convert binary/hex to string
+        item['id'] = str(item['_id'])
+        # drop _id - dont need it anymore
+        del item['_id']
+        events.append (item)
 
     if sort:
         sort_field = get_field (sort)
@@ -177,8 +184,7 @@ def get_all_events (sort = None, projection = None):
     return events
 
 def get_all_events_json (sort = None):
-    # object ids wont dump in json
-    events = get_all_events(sort,{'_id': 0, 'orig_event': 0})
+    events = get_all_events(sort)
     return json.dumps(events)
 
 
