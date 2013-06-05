@@ -1,6 +1,4 @@
-define(['text!api/eid/model.json', 'sicki/models/Model'], function(data, Model) {
-
-    var dataModel = JSON.parse(data);
+define(['json!api/eid/model.json', 'sicki/models/Model'], function(dataModel, Model) {
 
     var EIDEvent = Model.extend({
         defaults: dataModel.defaults

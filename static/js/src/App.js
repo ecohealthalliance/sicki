@@ -1,11 +1,11 @@
-define(['jquery', 'sicki/routes/Router'], function($, Router) {
+define(['jquery', 'sicki/routes/Router', 'sicki/views/main'], function($, Router, mainView) {
 
     var App = function(options) {
         var router = new Router({
             root: options.root
         });
         
-        var $el = $(sicki.views.main());
+        var $el = $(mainView());
         $('body').append ($el);
         Backbone.history.start();
     };

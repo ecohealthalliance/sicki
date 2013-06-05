@@ -6,13 +6,13 @@
   <script src="static/js/src/namespace.js"></script>
 
   <script src="static/js/lib/jade-runtime.js"></script>
-  <script src="static/built/templates.js"></script>
 
   <script>
     requirejs.config({
         baseUrl: 'static/js/lib',
         paths: {
             sicki: '../src',
+            'sicki/views': '../built/views',
             api: '../../..'
         },
         shim: {
