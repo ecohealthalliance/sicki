@@ -1,4 +1,4 @@
-define(function(){return function anonymous(locals) {
+define(['jade'],function(jade){return function anonymous(locals) {
 var buf = [];
 var locals_ = (locals || {}),eidEvent = locals_.eidEvent;// iterate eidEvent
 ;(function(){
