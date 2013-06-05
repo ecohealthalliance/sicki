@@ -2,6 +2,8 @@ define(['backbone'], function(Backbone) {
     var Controller = Backbone.View.extend({
         model: null,
 
+        subControllers: {},
+
         initialize: function(options) {
             if (options.model)
                 options.model.on('change', function() {
@@ -16,7 +18,12 @@ define(['backbone'], function(Backbone) {
             return (this.model.get('id') == id);
         },
 
-        render: function() {}
+        render: function() {
+            for (var selector in this.subControllers) {
+                this.subControllers[selector].setElement(this.$(selector)).render();
+            }
+            return this;
+        }
 
     }, {
         Model: null,

@@ -1,9 +1,12 @@
-define(['json!api/eid/model.json', 'sicki/models/Model'], function(dataModel, Model) {
+define(['json!api/eid/model.json', 'sicki/models/Model', 'sicki/models/utils'], function(dataModel, Model, utils) {
+
+    var defaultModel = utils.defaults(dataModel);
 
     var EIDEvent = Model.extend({
-        defaults: dataModel.defaults
+        defaults: defaultModel
     }, {
-        endpoint: '/sicki/eid'
+        endpoint: '/sicki/eid',
+        fields: dataModel
     });
 
     return EIDEvent;

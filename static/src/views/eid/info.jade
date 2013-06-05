@@ -1,2 +1,2 @@
-each value, key in eidEvent
-  div.key= key + ': ' + value
+each field in Model.fields
+  div(class = field.name)

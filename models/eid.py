@@ -115,13 +115,40 @@ EIDEvent = {
         }
 }
 
+EIDEvent = [
+    {'name':'event_name','label':'Event Name','type': 'text', 'required': True},
+    {'name':'pathogens','label':'Pathogen(s)', 'type':'model'},
+    {'name':'location','label':'Location'},
+    {'name':'host','label':'Host'},
+    {'name':'disease','label':'Disease'},
+    {'name':'start_date','label':'Start Date', 'type': 'date'},
+    {'name':'end_date','label':'End Date', 'type': 'date'},
+    {'name':'host_age', 'label':'Host Age','type': 'select', 'options':host_age},
+    {'name':'host_use','label':'Host Use', 'type': 'select', 'options':host_use},
+    {'name':'transition_model','label':'Transition Model', 'type': 'select', 'options': transition_model},
+    {'name':'zoonotic_type','label':'Zoonotic Type', 'type': 'select', 'options': zoonotic_type},
+    {'name':'number_infected','label':'Number Infected'},
+    {'name':'prevalence','label':'Prevalence'},
+    {'name':'duration','label':'Duration', 'type': 'units', 'units': time_period},
+    {'name':'symptoms_reported','label':'Symptoms Reported'},
+    {'name':'host_sex','label':'Host Sex', 'type': 'select', 'options':host_sex},
+    {'name':'sample_type','label':'Sample Type', 'type': 'select', 'options': sample_type},
+    {'name':'driver','label':'Driver','type': 'select', 'options': driver},
+    {'name':'domestication_status','label':'Domestication Status', 'type': 'select', 'options': domestication_status},
+    {'name':'number_deaths','label':'Number of deaths'},
+    {'name':'contact','label':'Contact'},
+    {'name':'notes','label':'Notes'},
+    {'name':'references','label':'References', 'type': 'model'},
+    {'name':'map', 'label': 'Map', 'type': 'map'},
+    {'name':'data_quality_orig', 'type': 'hidden'},
+    {'name':'data_quality', 'type': 'hidden'}
+    ]
+
 ## !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ## Everything Below this line is suspect, may need to be refactored
 ## !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-'''EIDEvent = [
-    {'name':'event_name','label':'Event Name','type': 'text', 'required': True},
-    {'name':'pathogens','label':'Pathogen(s)', 'type':'list', 'children':
+''' Pathogens model:
          [{'name':'reported_name','label':'Reported name'},
           {'name':'drug_resistance','label':'Drug resistance'},
           {'name':'authority','label':'Authority'},
@@ -132,33 +159,7 @@ EIDEvent = {
           {'name':'species','label':'Species', 'primary': True},
           {'name':'sub_species','label':'Sub-species', 'primary': True},
           {'name':'primary','label':'Primary?'}]
-     },
-    {'name':'location','label':'Location'},
-    {'name':'host','label':'Host'},
-    {'name':'disease','label':'Disease'},
-    {'name':'start_date','label':'Start Date', 'type': 'date'},
-    {'name':'end_date','label':'End Date', 'type': 'date'},
-    {'name':'host_age', 'label':'Host Age','type': 'set', 'set':host_age},
-    {'name':'host_use','label':'Host Use', 'type': 'set', 'set':host_use},
-    {'name':'transition_model','label':'Transition Model', 'type': 'set', 'set':transition_model},
-    {'name':'zoonotic_type','label':'Zoonotic Type', 'type': 'set', 'set':zoonotic_type},
-    {'name':'number_infected','label':'Number Infected'},
-    {'name':'prevalence','label':'Prevalence'},
-    {'name':'duration','label':'Duration', 'type': 'value_units', 'units': time_period},
-    {'name':'symptoms_reported','label':'Symptoms Reported'},
-    {'name':'host_sex','label':'Host Sex', 'type': 'set', 'set':host_sex},
-    {'name':'sample_type','label':'Sample Type','set':sample_type},
-    {'name':'driver','label':'Driver','type': 'set', 'set':driver},
-    {'name':'domestication_status','label':'Domestication Status', 'type': 'set', 'set':domestication_status},
-    {'name':'number_deaths','label':'Number of deaths'},
-    {'name':'contact','label':'Contact'},
-    {'name':'notes','label':'Notes'},
-    #{'name':'reference','label':'Reference'},
-    {'name':'map', 'label': 'Map', 'type': 'map'},
-    {'name':'data_quality_orig', 'type': 'hidden'},
-    {'name':'data_quality', 'type': 'hidden'}
-
-    ]'''
+     }]'''
 
 def upload_map (value):
     filename = value.get ('name')
