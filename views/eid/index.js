@@ -1,8 +1,8 @@
 {{ if sort: }}
-{{ modified_events = map (lambda event: {'event_name': event['event_name'], 'sort': event.get (sort), 'id': str (event['_id']) }, events) }}
+{{ modified_events = map (lambda event: {'event_name': event['event_name'], 'sort': event.get (sort), 'id': event['id'] }, events) }}
 var events = {{ response.write (json.dumps (modified_events), escape = False) }};
 {{ else: }}
-{{ modified_events = map (lambda event: {'event_name': event['event_name'], 'id': str (event['_id']) }, events) }}
+{{ modified_events = map (lambda event: {'event_name': event['event_name'], 'id': event['id'] }, events) }}
 var events = {{ response.write (json.dumps (modified_events), escape = False) }};
 {{ pass }}
 var base = '{{= URL (r = request, c = 'eid', f = 'view', extension = '') }}';
