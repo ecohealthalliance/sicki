@@ -2,15 +2,15 @@
 <html lang="en">
   <head>
   <title>The Sicki Project</title>
-  <script src="static/js/lib/require.js"></script>
+  <script src="static/lib/require.js"></script>
 
   <script>
     requirejs.config({
-        baseUrl: 'static/js/lib',
+        baseUrl: 'static/lib',
         paths: {
             sicki: '../src',
             'sicki/views': '../built/views',
-            api: '../../..'
+            api: '../..'
         },
         shim: {
             undercore: {
