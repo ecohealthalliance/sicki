@@ -3,6 +3,10 @@ define(['backbone'], function(Backbone) {
         model: null,
 
         initialize: function(options) {
+            if (options.model)
+                options.model.on('change', function() {
+                    this.render();
+                }.bind(this));
             this.render();
         },
 
@@ -16,6 +20,7 @@ define(['backbone'], function(Backbone) {
 
     }, {
         Model: null,
+
         create: function(id, options, callback) {
             this.Model.read(id, function(model) {
                 var settings = {model: model};
