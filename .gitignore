@@ -12,3 +12,4 @@ models/config.py
 sessions/*
 uploads/*
 static/js/wigglemaps/*
+node_modules
