@@ -3,9 +3,6 @@
   <head>
   <title>The Sicki Project</title>
   <script src="static/js/lib/require.js"></script>
-  <script src="static/js/src/namespace.js"></script>
-
-  <script src="static/js/lib/jade-runtime.js"></script>
 
   <script>
     requirejs.config({
@@ -22,6 +19,9 @@
             backbone: {
                 deps: ['jquery', 'underscore'],
                 exports: 'Backbone'
+            },
+            jade: {
+                exports: 'jade'
             }
         }
     });

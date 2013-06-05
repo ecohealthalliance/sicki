@@ -43,7 +43,7 @@ module.exports = function (grunt) {
                     });
                     
                     var outputFile = outputDir + baseDir + '/' + basename + '.js';
-                    fs.writeFileSync(outputFile, 'define(function(){return ');
+                    fs.writeFileSync(outputFile, 'define([\'jade\'],function(jade){return ');
                     fs.appendFileSync(outputFile, fn.toString() + '})');
                 }
             });
