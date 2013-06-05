@@ -1,6 +1,7 @@
 var app = angular.module('gridApp', ['ngGrid']);
 app.controller('GridCtrl', function($scope) {
-    var url = '/sicki/eid/events';
+    //var url = '/sicki/eid/events'; // URL('static',... - thats web2py silly
+    var url = '../../eid/events';
     // need to work on getting asynch working
     /*var promise = $.get(url);
     promise.done(function (jsonEvents) {
