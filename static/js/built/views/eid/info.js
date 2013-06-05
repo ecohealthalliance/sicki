@@ -1,4 +1,4 @@
-sicki.views.eid={};sicki.views.eid.info = function anonymous(locals) {
+define(function(){return function anonymous(locals) {
 var buf = [];
 var locals_ = (locals || {}),eidEvent = locals_.eidEvent;// iterate eidEvent
 ;(function(){
@@ -22,7 +22,4 @@ buf.push("<div class=\"key\">" + (jade.escape(null == (jade.interp = key + ': ' 
   }
 }).call(this);
 ;return buf.join("");
-};sicki.views.main = function anonymous(locals) {
-var buf = [];
-buf.push("<div id=\"main\"></div>");;return buf.join("");
-};
+}})

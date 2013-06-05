@@ -1,8 +1,8 @@
-define(['jquery', 'sicki/controllers/Controller', 'sicki/models/EIDEvent'], function($, Controller, EIDEvent) {
+define(['jquery', 'sicki/controllers/Controller', 'sicki/models/EIDEvent', 'sicki/views/eid/info'], function($, Controller, EIDEvent, eidInfoView) {
 
     var EIDEventInfoController = Controller.extend({
         render: function() {
-            this.$el.html(sicki.views.eid.info({
+            this.$el.html(eidInfoView({
                 eidEvent: this.model.toJSON()
             }));
         }
