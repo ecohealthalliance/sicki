@@ -5,7 +5,7 @@ define(['sicki/controllers/Controller', 'sicki/controllers/EIDEventFieldControll
             for (var i = 0; i < EIDEventInfoController.Model.fields.length; i ++) {
                 var field = EIDEventInfoController.Model.fields[i];
                 this.subControllers['.' + field.name] = new EIDEventFieldController({
-                    model: this.model,
+                    model: this.model.toJSON(),
                     field: field
                 });
             }

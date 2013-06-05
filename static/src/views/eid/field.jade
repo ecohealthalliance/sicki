@@ -1,3 +1,7 @@
-div
+mixin text(field, value)
   span.name= field.name + ': '
-  span.value= model.get(field.name)
+  span.value= value
+  
+div
+  if field.type == 'text' || field.type === undefined
+    mixin text(field, model[field.name])
