@@ -16,6 +16,7 @@ define(['require', 'backbone'], function(require, Backbone) {
                         el: '#main'
                     }, function(controller) {
                         this.controller = controller;
+                        output = controller;
                     }.bind(this));
                 });
             }
