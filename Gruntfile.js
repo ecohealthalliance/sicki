@@ -7,8 +7,8 @@ module.exports = function (grunt) {
         pkg: grunt.file.readJSON('package.json'),
 
         jade: {
-            inputDir: 'static/js/src/views',
-            outputDir: 'static/js/built/views',
+            inputDir: 'static/src/views',
+            outputDir: 'static/built/views',
         }
     });
 
