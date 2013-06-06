@@ -21,9 +21,13 @@ app.controller('GridCtrl', function($scope) {
                          };
 
     var onEdit = function(newVal, oldVal) {
-        alert('got an edit '+newVal);
+        console.log('got an edit '+newVal[0].map);
     };
 
     // watch for edits
-    $scope.$watch('events', onEdit);
+    $scope.$watch('events', onEdit, true);
+
+    $('.save').click(function() {
+        console.log("clicked "+$scope.events[0]);
+    });
 });
