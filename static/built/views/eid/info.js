@@ -1,6 +1,7 @@
 define(['jade'],function(jade){return function anonymous(locals) {
 var buf = [];
-var locals_ = (locals || {}),Model = locals_.Model;// iterate Model.fields
+var locals_ = (locals || {}),Model = locals_.Model;buf.push("<!--each field in Model.fields--><!--  a(href = '#')= field.name-->");
+// iterate Model.fields
 ;(function(){
   var $$obj = Model.fields;
   if ('number' == typeof $$obj.length) {

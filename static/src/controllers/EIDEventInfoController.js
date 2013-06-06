@@ -2,22 +2,24 @@ define(['sicki/controllers/Controller', 'sicki/controllers/EIDEventFieldControll
 
     var EIDEventInfoController = Controller.extend({
         initialize: function(options) {
-            for (var i = 0; i < EIDEventInfoController.Model.fields.length; i ++) {
-                var field = EIDEventInfoController.Model.fields[i];
+            var Model = EIDEventInfoController.Model;
+            Model.fields.forEach(function(field) {
                 this.subControllers['.' + field.name] = new EIDEventFieldController({
-                    model: this.model.toJSON(),
-                    field: field
+                    model: this.model,
+                    field: field,
                 });
-            }
+            }.bind(this));
             return Controller.prototype.initialize.call(this, options);
         },
 
-        render: function() {
-            this.$el.html(eidInfoView({
+        view: eidInfoView,
+
+        viewArgs: function() {
+            return {
                 Model: EIDEventInfoController.Model
-            }));
-            return Controller.prototype.render.call(this);
+            };
         }
+
     }, {
         Model: EIDEvent,
     });

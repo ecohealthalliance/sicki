@@ -3,8 +3,9 @@ mixin textField(field, value)
     span.name= field.name + ': '
     span.value= value
   div.edit
-    input(value = value)
+    input(class = 'text', value = value)
+    input(class = 'commit', type = 'submit', value = 'Commit')
   
 div
   if field.type == 'text' || field.type === undefined
-    mixin text(field, model[field.name])
+    mixin textField(field, model[field.name])
