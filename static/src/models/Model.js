@@ -12,7 +12,7 @@ define(['backbone', 'sicki/utils/ajax'], function(Backbone, ajax) {
         update: function(attributes, callback) {
             ajax({
                 url: this.constructor.endpoint + '/update/' + this.get('id'),
-                type: 'POST',
+                type: 'PUT',
                 data: attributes
             }).done(function() {
                 this.set(attributes);
@@ -33,6 +33,7 @@ define(['backbone', 'sicki/utils/ajax'], function(Backbone, ajax) {
         read: function(id, callback) {
             ajax({
                 url: this.endpoint + '/read/' + id,
+                type: 'GET',
                 dataType: 'json'
             }).done(function(data) {
                 var model = new this(data);
@@ -41,10 +42,11 @@ define(['backbone', 'sicki/utils/ajax'], function(Backbone, ajax) {
             }.bind(this));
         },
 
-        // Creates an new instnace of the model on the server
+        // Creates an new instance of the model on the server
         create: function(attributes, callback) {
             ajax({
                 url: this.endpoint + '/create/',
+                type: 'POST',
                 dataType: 'json'
             }).done(function(id) {
                 var settings = {};

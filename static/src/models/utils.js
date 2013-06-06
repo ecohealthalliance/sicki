@@ -1,4 +1,4 @@
-/* Utiltiy functiona for models */
+/* Utiltiy functions for models */
 define(function() {
     return {
         // Get the default value from a field
