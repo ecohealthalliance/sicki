@@ -46,9 +46,13 @@ define(['backbone'], function(Backbone) {
             };
         },
 
-        initialize: function(options) {
+        constructor: function() {
             this.subControllers = {};
             this.listeners = {};
+            Backbone.View.apply(this, arguments);
+        },
+
+        initialize: function(options) {
             
             _.extend(this, options);
             if (options.model) {
