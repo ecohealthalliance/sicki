@@ -1,6 +1,7 @@
-/* This module defines a Controller base class. To subclass, you will need to extend
- * some key properties.
- *
+/* This module defines a Controller base class. It handles basic model listening and 
+ * rendering of views and subviews. To start a controller, or any of its subclasses 
+ * with a model from the server, use the static create method. To correctly subclass 
+ * this object, you will need to extend some key properties:
  * 
  * Model, a static property, specifies the constructor for model that this controller 
  * will use
@@ -29,12 +30,15 @@ define(['backbone'], function(Backbone) {
         // A mapping between events's to listen for and objects to listen to
         listeners: {},
 
+        // Events on the view to listen for and handle
+        events: {},
+
         // The main view of this controller
         view: function() {
             return '';
         },
 
-        // the arguments to pass to the view of this controller
+        // The arguments to pass to the view of this controller
         viewArgs: function() {
             return {
                 model: model.toJSON()
@@ -44,6 +48,7 @@ define(['backbone'], function(Backbone) {
         initialize: function(options) {
             _.extend(this, options);
             if (options.model) {
+                // Set up listening for changes on models
                 for (var event in this.listeners) {
                     this.listeners[event].on(event, function() {
                         this.render();
@@ -53,12 +58,14 @@ define(['backbone'], function(Backbone) {
             this.render();
         },
 
+        // Check if this.model matches an id
         isCurrentModel: function(id) {
             if (!this.model)
                 return false;
             return (this.model.get('id') == id);
         },
 
+        // Render this view and all subviews
         render: function() {
             this.$el.html(this.view(this.viewArgs()));
             for (var selector in this.subControllers) {
@@ -68,8 +75,11 @@ define(['backbone'], function(Backbone) {
         }
 
     }, {
+        // The constructor for this controller's model
         Model: null,
 
+        // Factory method to asynchronously create an instance of this controller
+        // with data from the server
         create: function(id, options, callback) {
             this.Model.read(id, function(model) {
                 var settings = {model: model};
