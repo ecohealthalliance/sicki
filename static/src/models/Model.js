@@ -1,6 +1,14 @@
+/* Base class for all models. Includes CRUD functions for keeping state with the
+ * server.
+ */ 
 define(['backbone', 'sicki/utils/ajax'], function(Backbone, ajax) {
 
     var Model = Backbone.Model.extend({
+        // The api endpoint to contact for CRUD methods
+        endpoint: null,
+
+        // Updates the model on the server, and then sets the corresponding
+        // attributes on the client
         update: function(attributes, callback) {
             ajax({
                 url: this.constructor.endpoint + '/update/' + this.get('id'),
@@ -15,10 +23,13 @@ define(['backbone', 'sicki/utils/ajax'], function(Backbone, ajax) {
             });
         },
 
+        // Deletes the model from the server
         delete: function() {
             throw "Not Implemented";
         }
     }, {
+        // Loads a model from the server and passes it to a callback.
+        // This is the prefered way to instantiate models
         read: function(id, callback) {
             ajax({
                 url: this.endpoint + '/read/' + id,
@@ -30,9 +41,10 @@ define(['backbone', 'sicki/utils/ajax'], function(Backbone, ajax) {
             }.bind(this));
         },
 
+        // Creates an new instnace of the model on the server
         create: function(attributes, callback) {
             ajax({
-                url: this.endpoint + '/update/' + id,
+                url: this.endpoint + '/create/',
                 dataType: 'json'
             }).done(function(id) {
                 var settings = {};
