@@ -10,11 +10,12 @@ define(['backbone', 'sicki/utils/ajax'], function(Backbone, ajax) {
         // Updates the model on the server, and then sets the corresponding
         // attributes on the client
         update: function(attributes, callback) {
-            ajax({
+            var dataPromise = ajax({
                 url: this.constructor.endpoint + '/update/' + this.get('id'),
                 type: 'PUT',
                 data: attributes
-            }).done(function() {
+            });
+            dataPromise.done(function() {
                 this.set(attributes);
                 if (callback)
                     callback();
@@ -29,11 +30,11 @@ define(['backbone', 'sicki/utils/ajax'], function(Backbone, ajax) {
         // Loads a model from the server and passes it to a callback.
         // This is the prefered way to instantiate models
         read: function(id, callback) {
-            ajax({
+            var dataPromise = ajax({
                 url: this.endpoint + '/read/' + id,
                 type: 'GET',
-                dataType: 'json'
-            }).done(function(data) {
+            });
+            dataPromise.done(function(data) {
                 var model = new this(data);
                 if (callback)
                     callback(model);
@@ -42,11 +43,11 @@ define(['backbone', 'sicki/utils/ajax'], function(Backbone, ajax) {
 
         // Creates an new instance of the model on the server
         create: function(attributes, callback) {
-            ajax({
+            var dataPromise = ajax({
                 url: this.endpoint + '/create/',
                 type: 'POST',
-                dataType: 'json'
-            }).done(function(id) {
+            });
+            dataPromise.done(function(id) {
                 var settings = {};
                 attributes.extend(settings, {id: id});
                 var model = new this(settings);

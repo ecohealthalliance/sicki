@@ -1,8 +1,10 @@
-define(['jquery'], function($) {
+define(['jquery', 'underscore'], function($, _) {
 
     var ajax = function (options) {
 
-        return $.ajax(options).fail(function(error) {
+        var settings = _.extend({dataType: 'json'}, options);
+
+        return $.ajax(settings).fail(function(error) {
             console.log(error);
         });
 
