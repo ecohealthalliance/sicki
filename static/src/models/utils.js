@@ -1,5 +1,7 @@
+/* Utiltiy functiona for models */
 define(function() {
     return {
+        // Get the default value from a field
         defaultValue: function(item) {
             switch(item.type) {
             case 'text': 
@@ -18,6 +20,7 @@ define(function() {
             }
         },
 
+        // Get an object representing all of the default values of a model
         defaults: function(schema) {
             var defaults = {};
             for (var i = 0; i < schema.length; i ++) {
