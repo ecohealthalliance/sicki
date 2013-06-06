@@ -49,14 +49,18 @@ define(['backbone'], function(Backbone) {
         },
 
         constructor: function() {
+            // Bind default attributes to the instance.
+            // This is done because prototypical inheritance would
+            // have these objects shared by reference otherwise
             this.subControllers = {};
             this.listeners = {};
             Backbone.View.apply(this, arguments);
         },
 
         initialize: function(options) {
-            
+            // Allow overrides of options as properties on the controller
             _.extend(this, options);
+
             if (options.model) {
                 // Set up listening for changes on models
                 for (var event in this.listeners) {
