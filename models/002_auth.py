@@ -17,7 +17,7 @@ writer_role = -1
 def require_logged_in (func):
     def wrapper (*args, **kwargs):
         if not auth.user:
-            redirect (URL (r = request, c = 'default', f = 'user', args = ['login']))
+            raise HTTP(401, "Unauthorized")
         return func (*args, **kwargs)
     return wrapper
 
@@ -29,11 +29,11 @@ def require_role (role):
     def decorator (func):
         def wrapper (*args, **kwargs):
             if not auth.user:
-                redirect (URL (r = request, c = 'default', f = 'user', args = ['login']))
+                raise HTTP(401, "Unauthorized")
             if role == -1:
                 return
             elif not auth.has_membership (role, auth.user.id):
-                raise HTTP (401, "Unauthorized")
+                raise HTTP (403, "Forbidden")
             return func (*args, **kwargs)
         return wrapper
     return decorator
