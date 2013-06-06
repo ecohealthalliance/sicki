@@ -1,2 +1,38 @@
-{{extend 'layout.html'}}
-<p>Welcome to Sicki.</p>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <title>The Sicki Project</title>
+  <script src="static/lib/require.js"></script>
+
+  <script>
+    requirejs.config({
+        baseUrl: 'static/lib',
+        paths: {
+            'sicki': '../src',
+            'sicki/views': '../built/views',
+            'api': '../..'
+        },
+        shim: {
+            underscore: {
+                exports: '_'
+            },
+            backbone: {
+                deps: ['jquery', 'underscore'],
+                exports: 'Backbone'
+            },
+            jade: {
+                exports: 'jade'
+            }
+        },
+    });
+    require(['sicki/App'], function(App) {
+        var app = new App({
+            root: 'sicki'
+        });
+    });
+  </script>
+
+  </head>
+  <body>
+  </body>
+</html>
