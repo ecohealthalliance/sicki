@@ -1,8 +1,8 @@
-define(['backbone'], function(Backbone) {
+define(['backbone', 'sicki/utils/ajax'], function(Backbone, ajax) {
 
     var Model = Backbone.Model.extend({
         update: function(attributes, callback) {
-            $.ajax({
+            ajax({
                 url: this.constructor.endpoint + '/update/' + this.get('id'),
                 type: 'POST',
                 data: attributes
@@ -20,7 +20,7 @@ define(['backbone'], function(Backbone) {
         }
     }, {
         read: function(id, callback) {
-            $.ajax({
+            ajax({
                 url: this.endpoint + '/read/' + id,
                 dataType: 'json'
             }).done(function(data) {
@@ -29,8 +29,9 @@ define(['backbone'], function(Backbone) {
                     callback(model);
             }.bind(this));
         },
+
         create: function(attributes, callback) {
-            $.ajax({
+            ajax({
                 url: this.endpoint + '/update/' + id,
                 dataType: 'json'
             }).done(function(id) {

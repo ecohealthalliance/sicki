@@ -3,6 +3,7 @@ define(['sicki/controllers/Controller', 'sicki/controllers/EIDEventFieldControll
     var EIDEventInfoController = Controller.extend({
         initialize: function(options) {
             var Model = EIDEventInfoController.Model;
+            // Initialize a subcontroller for each field of the model
             Model.fields.forEach(function(field) {
                 this.subControllers['.' + field.name] = new EIDEventFieldController({
                     model: this.model,

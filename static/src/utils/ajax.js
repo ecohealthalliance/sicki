@@ -1,4 +1,4 @@
-(function() {
+define(['jquery'], function($) {
 
     var ajax = function (options) {
 
@@ -8,6 +8,6 @@
 
     };
 
-    sicki.utils.ajax = ajax;
+    return ajax;
 
-})();
+});

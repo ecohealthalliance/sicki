@@ -19,12 +19,14 @@ define(['sicki/controllers/Controller', 'sicki/views/eid/field'], function(Contr
             return Controller.prototype.initialize.call(this, settings);
         },
 
-        render: function() {
-            this.$el.html(fieldView({
+        viewArgs: function() {
+            return {
                 model: this.model.toJSON(),
                 field: this.field
-            }))
+            };
         },
+
+        view: fieldView,
 
         commitChange: function() {
             var textVal = this.$('.edit .text').val();

@@ -17,18 +17,19 @@
  *
  * listeners is a mapping that defines under what circumstances the view should be 
  * updated
- *    
+ * 
  */ 
 define(['backbone'], function(Backbone) {
+
     var Controller = Backbone.View.extend({
         // The model this controller uses
         model: null,
 
         // A mapping between selectors and subcontrollers of the controller
-        subControllers: {},
+        subControllers: null,
 
         // A mapping between events's to listen for and objects to listen to
-        listeners: {},
+        listeners: null,
 
         // Events on the view to listen for and handle
         events: {},
@@ -46,6 +47,9 @@ define(['backbone'], function(Backbone) {
         },
 
         initialize: function(options) {
+            this.subControllers = {};
+            this.listeners = {};
+            
             _.extend(this, options);
             if (options.model) {
                 // Set up listening for changes on models
