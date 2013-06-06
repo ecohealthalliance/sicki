@@ -18,9 +18,7 @@ define(['backbone', 'sicki/utils/ajax'], function(Backbone, ajax) {
                 this.set(attributes);
                 if (callback)
                     callback();
-            }.bind(this)).fail(function() {
-                throw "Update of model on server failed";
-            });
+            }.bind(this));
         },
 
         // Deletes the model from the server
@@ -54,8 +52,6 @@ define(['backbone', 'sicki/utils/ajax'], function(Backbone, ajax) {
                 var model = new this(settings);
                 if (callback)
                     callback(model);
-            }).fail(function() {
-                throw "Create of model on server failed";
             });
         }
     });

@@ -11,20 +11,22 @@ define(['require', 'backbone'], function(require, Backbone) {
                 this.controller.remove();
 
             if (view == 'info') {
-                require(['sicki/models/EIDEvent', 'sicki/controllers/EIDEventInfoController'], function(EIDEvent, EIDEventInfoController) {
-                    EIDEventInfoController.create(eid_id, {
-                        el: '#main'
-                    }, function(controller) {
-                        this.controller = controller;
-                    }.bind(this));
-                });
+                require(['sicki/models/EIDEvent', 
+                         'sicki/controllers/EIDEventInfoController'], 
+                        function(EIDEvent, EIDEventInfoController) {
+                            EIDEventInfoController.create(eid_id, {
+                                el: '#main'
+                            }, function(controller) {
+                                this.controller = controller;
+                            }.bind(this));
+                        });
             }
             else
                 throw "Not Implemented";
         },
 
         viewEIDList: function() {
-            // sicki.controllers.EIDListController.activate();
+            // Todo
         }
     });
 
