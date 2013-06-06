@@ -6,7 +6,7 @@
  * Model, a static property, specifies the constructor for model that this controller 
  * will use
  * 
- * view is the template function. It should return and html string
+ * view is the template function. It should return an html string
  * 
  * viewArgs specifies what parameters to pass to the view functions. It returns an 
  * object
@@ -35,11 +35,13 @@ define(['backbone'], function(Backbone) {
         events: {},
 
         // The main view of this controller
+        // Abstract method: generally this should be changed in subclasses
         view: function() {
             return '';
         },
 
         // The arguments to pass to the view of this controller
+        // The default is a json representation of the model
         viewArgs: function() {
             return {
                 model: model.toJSON()

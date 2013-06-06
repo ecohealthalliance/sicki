@@ -85,36 +85,6 @@ time_period=[
     'Years'
     ]
 
-EIDEvent = {
-    'defaults': {
-        'event_name': '',
-        'pathogens': [],
-        'location': '',
-        'host': '',
-        'disease': '',
-        'start_date': '',
-        'end_date': '',
-        'host_age': '',
-        'host_use': '',
-        'transmission_model': '',
-        'zoonotic_type': '',
-        'number_infected': '',
-        'prevelance': '',
-        'host_sex': '',
-        'sample_type': '',
-        'sample_type': '',
-        'driver': '',
-        'domestication_status': '',
-        'number_deaths': '',
-        'contact': '',
-        'notes': '',
-        'references': [],
-        'map': None,
-        'data_quality_orig': '',
-        'data_quality': ''
-        }
-}
-
 EIDEvent = [
     {'name':'event_name','label':'Event Name','type': 'text', 'required': True},
     {'name':'pathogens','label':'Pathogen(s)', 'type':'model'},

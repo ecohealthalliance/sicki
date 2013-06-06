@@ -5,6 +5,9 @@
         "type": "git",
         "url": "git://github.com/ecohealthalliance/sicki.git"
     },
+    "dependencies": {
+        "wigglemaps": "0.1.0"
+    },
     "devDependencies": {
         "jade": ">=0.28.2",
         "grunt": "~0.4"
