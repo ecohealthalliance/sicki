@@ -1,6 +1,9 @@
 @require_logged_in
 def model():
-    return json.dumps(EIDEvent)
+    return json.dumps({
+            'fields': EIDEvent,
+            'uri': 'eid'
+            })
 
 
 @require_role(admin_role)
