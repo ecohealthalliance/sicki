@@ -20,8 +20,29 @@ app.controller('GridCtrl', function($scope) {
                            enableColumnResize: true
                          };
 
-    var onEdit = function(newVal, oldVal) {
-        console.log('got an edit '+newVal[0].map);
+    var compOldNew = function(oldVal,newVal) {
+        var diffKey = false;
+        $.each(oldVal, function(key, val) {
+            // for now puntin on arrays - and perhaps forever?
+            if ($.isArray(val)) { return true; }
+            if (val !== newVal[key]) {
+                diffKey = key;
+                return false;
+            }
+        });
+        return diffKey;
+    }
+
+    var onEdit = function(newVals, oldVals) {
+        console.log('got an edit '+newVals[0].map);
+        $.each(newVals, function(index, newVal) {
+            var diff = compOldNew(oldVals[index],newVal);
+            if (diff) {
+                console.log("diff "+diff+" "+newVal[diff]);
+                // do update
+                return false; // break out of iteration
+            }
+        });
     };
 
     // watch for edits
