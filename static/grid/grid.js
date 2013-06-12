@@ -19,4 +19,15 @@ app.controller('GridCtrl', function($scope) {
                            displaySelectionCheckbox: false,
                            enableColumnResize: true
                          };
+
+    var onEdit = function(newVal, oldVal) {
+        console.log('got an edit '+newVal[0].map);
+    };
+
+    // watch for edits
+    $scope.$watch('events', onEdit, true);
+
+    $('.save').click(function() {
+        console.log("clicked "+$scope.events[0]);
+    });
 });
