@@ -1,15 +1,23 @@
 /* Utiltiy functions for models */
 define(function() {
     return {
+        label: function(field) {
+            var nameParts = field.name.split('_');
+            var labelParts = nameParts.map(function(name) {
+                return name.charAt(0).toUpperCase() + name.slice(1);
+            });
+            return labelParts.join(' ');
+        },
+
         // Get the default value from a field
-        defaultValue: function(item) {
-            switch(item.type) {
+        defaultValue: function(field) {
+            switch(field.type) {
             case 'text': 
                 return '';
             case 'model':
                 return [];
             case 'select':
-                return item.options[0];
+                return field.options[0];
             case 'units':
                 return {
                     value: null,

@@ -1,4 +1,4 @@
-define(['sicki/controllers/Controller', 'sicki/views/eid/field'], function(Controller, fieldView) {
+define(['sicki/controllers/Controller', 'sicki/controllers/EIDEventTextFieldController', 'sicki/controllers/EIDEventSelectFieldController', 'sicki/models/utils'], function(Controller, textMixin, selectMixin, utils) {
 
     var EIDEventFieldController = Controller.extend({
         field: null,
@@ -9,6 +9,13 @@ define(['sicki/controllers/Controller', 'sicki/views/eid/field'], function(Contr
 
         initialize: function(options) {
             this.field = options.field;
+
+            // Mixin the correct template and editing type
+            var fieldType = this.field.type;
+            if (fieldType == 'text' || fieldType === undefined)
+                _.extend(this, textMixin);
+            else if (fieldType == 'select')
+                _.extend(this, selectMixin);
 
             // Bind change:<field> events to rendering of the view
             var settings = _.extend({
@@ -21,18 +28,26 @@ define(['sicki/controllers/Controller', 'sicki/views/eid/field'], function(Contr
 
         viewArgs: function() {
             return {
-                model: this.model.toJSON(),
+                label: utils.label(this.field),
+                value: this.model.get(this.field.name),
                 field: this.field
             };
         },
 
-        view: fieldView,
+        view: function() {
+            // Temp reminder for types that do not yet have templates
+            this.$el.html('<div>No template for type <b>' + this.field.type  + '</b></div>')
+        },
 
         commitChange: function() {
-            var textVal = this.$('.edit .text').val();
+            var editVal = this.getEditValue();
             var updateField = {};
-            updateField[this.field.name] = textVal;
+            updateField[this.field.name] = editVal;
             this.model.update(updateField);
+        },
+
+        getEditValue: function() {
+            return '';
         }
     });
 

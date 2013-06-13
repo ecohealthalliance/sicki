@@ -2,8 +2,19 @@ define(['require', 'backbone'], function(require, Backbone) {
 
     var Router = Backbone.Router.extend({
         routes: {
+            '': 'viewIndex',
             'eid': 'viewEIDList',
             'eid/:eid_id/:view': 'viewEID'
+        },
+
+        viewIndex: function() {
+            require(['sicki/controllers/IndexController'], function(IndexController) {
+                if (this.controller)
+                    this.controller.remove();
+                this.controller = new IndexController({
+                    el: '#main'
+                });
+            });
         },
 
         viewEID: function(eid_id, view) {

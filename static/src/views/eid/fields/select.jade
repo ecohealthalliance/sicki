@@ -1,0 +1,8 @@
+div.field
+  span.name= label + ': '
+  span.value= value
+div.edit
+  select
+    for option in field.options
+      option(value = option, selected= (value === option))= option
+  input(class = 'commit', type = 'submit', value = 'Commit')

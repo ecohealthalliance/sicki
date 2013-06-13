@@ -1,4 +1,4 @@
-define(['jquery', 'sicki/routes/Router', 'sicki/views/main'], function($, Router, mainView) {
+define(['jquery', 'sicki/routes/Router', 'sicki/views/app'], function($, Router, mainView) {
 
     var App = function(options) {
         var router = new Router({
