@@ -21,7 +21,8 @@ app.controller('GridCtrl', function($scope) {
                            enableSorting: true,
                            multiSelect: false,
                            showFilter: true,
-                           showColumnMenu: true
+                           showColumnMenu: true,
+                           excludeProperties: ['references','pathogens','map','id']
                          };
 
     var compOldNew = function(oldVal,newVal) {
@@ -74,7 +75,4 @@ app.controller('GridCtrl', function($scope) {
     // watch for edits
     $scope.$watch('events', onEdit, true);
 
-    $('.save').click(function() {
-        console.log("clicked "+$scope.events[0]);
-    });
 });
