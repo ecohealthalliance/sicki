@@ -17,7 +17,8 @@ app.controller('GridCtrl', function($scope) {
                            canSelectRows: false,
                            enableCellEdit: true,
                            displaySelectionCheckbox: false,
-                           enableColumnResize: true
+                           enableColumnResize: true,
+                           enableSorting: true
                          };
 
     var compOldNew = function(oldVal,newVal) {
