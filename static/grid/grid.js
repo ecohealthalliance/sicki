@@ -23,25 +23,47 @@ app.controller('GridCtrl', function($scope) {
     var compOldNew = function(oldVal,newVal) {
         var diffKey = false;
         $.each(oldVal, function(key, val) {
-            // for now puntin on arrays - and perhaps forever?
-            if ($.isArray(val)) { return true; }
+            // for now punting on arrays - and perhaps forever?
+            if ($.isArray(val)) return true;
             if (val !== newVal[key]) {
                 diffKey = key;
-                return false;
+                return false; // iteration break
             }
         });
         return diffKey;
     }
 
-    var onEdit = function(newVals, oldVals) {
-        console.log('got an edit '+newVals[0].map);
-        $.each(newVals, function(index, newVal) {
-            var diff = compOldNew(oldVals[index],newVal);
-            if (diff) {
-                console.log("diff "+diff+" "+newVal[diff]);
+    // update backend
+    var update = function(newRow,diffField) {
+        var eid = newRow.id;
+        var url = "../../eid/update/"+eid;
+        var newValue = {};
+        newValue[diffField] = newRow[diffField];
+        var dataPromise = $.ajax({
+            url: url,
+            type: 'PUT',
+            data: newValue
+        });
+        dataPromise.done(function(msg) {
+            console.log("done "+msg);
+        });
+        dataPromise.fail(function(err) {
+            console.log("Failed "+err);
+        });
+    }
+
+    var onEdit = function(newTable, oldTable) {
+        var diffField = false;
+        $.each(newTable, function(index, newRow) {
+            diffField = compOldNew(oldTable[index],newRow);
+            console.log("diffed "+newRow.id+' '+diffField);
+            if (diffField) {
+                console.log("diff "+diffField+" "+newRow[diffField]
+                            +" eid "+newRow.id);
                 // do update
-                return false; // break out of iteration
+                update(newRow,diffField);
             }
+            if (diffField) return false; // done break out of iter
         });
     };
 
