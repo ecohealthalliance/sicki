@@ -85,6 +85,7 @@ time_period=[
     'Years'
     ]
 
+# formerly called event_fields
 EIDEvent = [
     {'name':'event_name','type': 'text', 'required': True},
     {'name':'pathogens', 'type':'model'},
@@ -161,7 +162,7 @@ ACCEPTED = 'ACCEPTED'
 REJECTED = 'REJECTED'
 
 def get_field (name):
-    for field in event_fields:
+    for field in EIDEvent:
         if field['name'] == name:
             return field
     return None

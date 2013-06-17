@@ -1,6 +1,6 @@
 var app = angular.module('gridApp', ['ngGrid']);
 app.controller('GridCtrl', function($scope) {
-    //var url = '/sicki/eid/events'; // URL('static',... - thats web2py silly
+    // sicki/eid/events
     var url = '../../eid/events';
     // need to work on getting asynch working
     /*var promise = $.get(url);
@@ -17,6 +17,62 @@ app.controller('GridCtrl', function($scope) {
                            canSelectRows: false,
                            enableCellEdit: true,
                            displaySelectionCheckbox: false,
-                           enableColumnResize: true
+                           enableColumnResize: true,
+                           enableSorting: true,
+                           multiSelect: false,
+                           showFilter: true,
+                           showColumnMenu: true,
+                           excludeProperties: ['references','pathogens','map','id']
                          };
+
+    var compOldNew = function(oldVal,newVal) {
+        var diffKey = false;
+        $.each(oldVal, function(key, val) {
+            // for now punting on arrays - and perhaps forever?
+            if ($.isArray(val)) return true;
+            if (val !== newVal[key]) {
+                diffKey = key;
+                return false; // iteration break
+            }
+        });
+        return diffKey;
+    }
+
+    // update backend
+    var update = function(newRow,diffField) {
+        var eid = newRow.id;
+        var url = "../../eid/update/"+eid;
+        var newValue = {};
+        newValue[diffField] = newRow[diffField];
+        var dataPromise = $.ajax({
+            url: url,
+            type: 'PUT',
+            data: newValue
+        });
+        dataPromise.done(function(msg) {
+            console.log("done "+msg);
+        });
+        dataPromise.fail(function(err) {
+            console.log("Failed "+err);
+        });
+    }
+
+    var onEdit = function(newTable, oldTable) {
+        var diffField = false;
+        $.each(newTable, function(index, newRow) {
+            diffField = compOldNew(oldTable[index],newRow);
+            console.log("diffed "+newRow.id+' '+diffField);
+            if (diffField) {
+                console.log("diff "+diffField+" "+newRow[diffField]
+                            +" eid "+newRow.id);
+                // do update
+                update(newRow,diffField);
+            }
+            if (diffField) return false; // done break out of iter
+        });
+    };
+
+    // watch for edits
+    $scope.$watch('events', onEdit, true);
+
 });
