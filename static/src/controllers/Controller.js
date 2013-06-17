@@ -44,7 +44,7 @@ define(['backbone'], function(Backbone) {
         // The default is a json representation of the model
         viewArgs: function() {
             return {
-                model: this.model ? model.toJSON() : null
+                model: this.model ? this.model.toJSON() : null
             };
         },
 

@@ -1,0 +1,10 @@
+div
+  if !model
+    form
+      input(name = 'email', placeholder = 'Email', type = 'text')
+      input(name = 'password', placeholder = 'Password', type = 'password')
+      input(class = 'login', type = 'submit', value = 'Login')
+  else
+    span= model.firstname + '&nbsp;'
+    span= model.lastname
+    input(class = 'logout', type = 'submit', value = 'Logout')
