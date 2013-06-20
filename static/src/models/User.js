@@ -1,4 +1,4 @@
-define(['json!api/user'], function(userData) {
+define(['json!user'], function(userData) {
 
     var User = new Backbone.Model(userData);
 
