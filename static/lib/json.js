@@ -1,7 +1,7 @@
-define({
-    load: function(name, req, onload, config) {
-        require(['text!' + name], function(data) {
-            onload(JSON.parse(data));
-        });
-    }
+define(['sicki/utils/ajax'], function (ajax) {
+    var load = function(name, req, onload, config) {
+        ajax({url: name}).done(onload);
+    };
+
+    return { load: load };
 });
