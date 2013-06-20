@@ -20,9 +20,11 @@ define(function() {
                 return field.options[0];
             case 'units':
                 return {
-                    value: null,
+                    text: null,
                     units: null
                 };
+            case 'collection':
+                return [];
             default:
                 return '';
             }

@@ -1,13 +1,11 @@
 @require_logged_in
 def model():
-    return json.dumps({
-            'fields': EIDEvent,
-            'uri': 'eid'
-            })
+    return json.dumps(EIDEvent)
 
 @require_role(admin_role)
 def create():
     pass
+
 
 @require_logged_in
 def read():
@@ -30,6 +28,7 @@ def read():
     #event['references'] = map (str, event['references'])
     return json.dumps(event)
 
+
 @require_logged_in
 def read_all():
     fields = request.vars.get('fields')
@@ -47,6 +46,7 @@ def read_all():
         del event['orig_event']
         results.append(event)
     return json.dumps(results)
+
 
 @require_role(admin_role)
 def update():
