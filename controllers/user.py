@@ -1,30 +1,16 @@
 def index():
-    if not auth.user:
-        return json.dumps(None)
-    else:
-        return json.dumps({
-                'firstname': auth.user.first_name,
-                'lastname': auth.user.last_name,
-                'admin': check_role(admin_role)
-                })
+    return get_user_model()
 
 def login():
     username = request.vars.get('email')
     password = request.vars.get('password')
     result = auth.login_bare(username, password)
-    if result:
-        return json.dumps({
-                'firstname': auth.user.first_name,
-                'lastname': auth.user.last_name,
-                'admin': check_role(admin_role)
-                })
-    return json.dumps(False)
+    return get_user_model()
 
 def logout():
-    if not auth.user:
-        return json.dumps(False)
+    # This try block is because web2py throws a HTTP 304 error in successful logout
     try:
         auth.logout()
     except:
-        pass
-    return json.dumps(True)
+        auth.user = None
+    return get_user_model()

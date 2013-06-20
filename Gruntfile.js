@@ -9,8 +9,16 @@ module.exports = function (grunt) {
         jade: {
             inputDir: 'static/src/views',
             outputDir: 'static/built/views',
-        }
+        },
+
+        stylus: {
+            compile: {
+                files: {"static/built/style.css": ["static/stylus/*.styl"]}
+            }
+        },
     });
+
+    grunt.loadNpmTasks('grunt-contrib-stylus');
 
     grunt.registerTask('jade', 'Build the templates', function (inputFile) {
         var jade = require ('jade');
@@ -51,5 +59,5 @@ module.exports = function (grunt) {
         walkDir('');
     });
 
-    grunt.registerTask('default', ['jade']);
+    grunt.registerTask('default', ['jade', 'stylus']);
 };

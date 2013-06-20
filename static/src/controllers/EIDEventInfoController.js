@@ -14,10 +14,11 @@ define(['sicki/controllers/Controller',
                    // Initialize a subcontroller for each field of the model
                    // These subcontrollers will handle events sent by the model and 
                    // updates to the editable area.
-                   Model.fields.forEach(function(field) {
+                   Model.fields.forEach(function(field, i) {
                        this.subControllers['.' + field.name] = new EIDEventFieldController({
                            model: this.model,
                            field: field,
+                           even: i % 2
                        });
                    }.bind(this));
                    return Controller.prototype.initialize.call(this, options);

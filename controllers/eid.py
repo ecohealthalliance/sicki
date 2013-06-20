@@ -5,11 +5,9 @@ def model():
             'uri': 'eid'
             })
 
-
 @require_role(admin_role)
 def create():
     pass
-
 
 @require_logged_in
 def read():
@@ -27,12 +25,28 @@ def read():
 
     event['id'] = str (event['_id'])
     del event['_id']
-
     del event['orig_event']
     # Join on all references
     #event['references'] = map (str, event['references'])
     return json.dumps(event)
 
+@require_logged_in
+def read_all():
+    fields = request.vars.get('fields')
+    sort = request.vars.get('sort')
+    if fields:
+        fields = json.loads(fields)
+        fields += ['_id', 'orig_event']
+        if sort:
+            fields.append(sort)
+    events = mongo.events.find({}, fields)
+    results = []
+    for event in events:
+        event['id'] = str(event['_id'])
+        del event['_id']
+        del event['orig_event']
+        results.append(event)
+    return json.dumps(results)
 
 @require_role(admin_role)
 def update():
@@ -40,7 +54,7 @@ def update():
     if not eid_id:
         raise HTTP(400, eid_id)
     for field, value in request.post_vars.iteritems():
-        edit_field (eid_id, field, value)
+        edit_field (eid_id, field, json.loads(value))
     return json.dumps(True)
 
 
@@ -48,11 +62,9 @@ def update():
 def delete():
     pass
 
-
 ## !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ## Everything Below this line is suspect, may need to be refactored
 ## !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
 
 # GET /sicki/eid/
 @require_logged_in

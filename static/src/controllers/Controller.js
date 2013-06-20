@@ -29,7 +29,7 @@ define(['backbone'], function(Backbone) {
         subControllers: null,
 
         // A mapping between events's to listen for and objects to listen to
-        listeners: null,
+        // listeners: null,
 
         // Events on the view to listen for and handle
         events: {},
@@ -53,7 +53,7 @@ define(['backbone'], function(Backbone) {
             // This is done because prototypical inheritance would
             // have these objects shared by reference otherwise
             this.subControllers = {};
-            this.listeners = {};
+            //this.listeners = {};
             Backbone.View.apply(this, arguments);
         },
 
@@ -61,14 +61,14 @@ define(['backbone'], function(Backbone) {
             // Allow overrides of options as properties on the controller
             _.extend(this, options);
 
-            if (options.model) {
+            /*if (options.model) {
                 // Set up listening for changes on models
                 for (var event in this.listeners) {
                     this.listeners[event].on(event, function() {
                         this.render();
                     }.bind(this));
                 }
-            }
+            }*/
             this.render();
         },
 

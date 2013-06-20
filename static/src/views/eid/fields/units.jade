@@ -1,0 +1,14 @@
+div
+  div.value
+    span.show-edit= "Edit"
+    span.name= label + ': '
+    if value
+      span= value.text + ' ' + value.units
+    else
+      span= ''
+  div.edit
+    input(class = 'text', value = value.text)
+    select.units
+      for option in field.units
+        option(value = option, selected= (value.units === option))= option
+    input(class = 'commit', type = 'submit', value = 'Commit')

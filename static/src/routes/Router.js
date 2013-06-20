@@ -1,4 +1,4 @@
-define(['require', 'backbone'], function(require, Backbone) {
+define(['require', 'backbone', 'sicki/models/User'], function(require, Backbone, User) {
 
     var Router = Backbone.Router.extend({
         routes: {
@@ -7,10 +7,31 @@ define(['require', 'backbone'], function(require, Backbone) {
             'eid/:eid_id/:view': 'viewEID'
         },
 
+        initialize: function() {
+            User.on('change:loggedIn', this.viewUser.bind(this));
+            this.viewUser();
+        },
+
+        viewUser: function() {
+            require(['sicki/controllers/LoginController', 'sicki/controllers/LogoutController'], function(LoginController, LogoutController) {
+                if (!User.get('loggedIn')) {
+                    this.userController = new LoginController({
+                    el: $('#login')
+                    });
+                }
+                else {
+                    this.userController = new LogoutController({
+                        el: $('#login')
+                    });
+                }
+            });
+        },
+
         viewIndex: function() {
             require(['sicki/controllers/IndexController'], function(IndexController) {
                 if (this.controller)
-                    this.controller.remove();
+                    this.controller.stopListening();
+
                 this.controller = new IndexController({
                     el: '#main'
                 });
@@ -19,12 +40,11 @@ define(['require', 'backbone'], function(require, Backbone) {
 
         viewEID: function(eid_id, view) {
             if (this.controller)
-                this.controller.remove();
+                this.controller.stopListening();
 
             if (view == 'info') {
-                require(['sicki/models/EIDEvent', 
-                         'sicki/controllers/EIDEventInfoController'], 
-                        function(EIDEvent, EIDEventInfoController) {
+                require(['sicki/controllers/EIDEventInfoController'],
+                        function(EIDEventInfoController) {
                             EIDEventInfoController.create(eid_id, {
                                 el: '#main'
                             }, function(controller) {
@@ -37,7 +57,14 @@ define(['require', 'backbone'], function(require, Backbone) {
         },
 
         viewEIDList: function() {
-            // Todo
+            if (this.controller)
+                this.controller.stopListening();
+            
+            require(['sicki/controllers/EIDEventListController'], function(EIDEventListController) {
+                this.controller = new EIDEventListController({
+                    el: '#main'
+                });
+            }.bind(this));
         }
     });
 

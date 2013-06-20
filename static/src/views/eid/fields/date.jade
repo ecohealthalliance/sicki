@@ -1,0 +1,21 @@
+- var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+div
+  div.value
+      span.show-edit= "Edit"
+      span.name= label + ': '
+      if typeof(value) == 'string'
+        span.value= value
+      else
+        span.value= [value.year, months[value.month], value.day].join(' ')
+  div.edit
+    input.year(value = value.year || '')
+    select.month
+      option= ''
+      -for (var i = 0; i <= 11; i ++)
+        option(value = i, selected = (value.month === i))= months[i]
+    select.day
+      option= ''
+      -for (var i = 1; i <= 31; i ++)
+        option(selected = (value.day === i))= i
+    input(class = 'commit', type = 'submit', value = 'Commit')
+      

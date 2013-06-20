@@ -1,12 +1,10 @@
-define(['./Controller', 'sicki/views/login', 'json!api/user', 'sicki/utils/ajax'], function(Controller, loginView, userModel, ajax) {
+define(['./Controller', 'sicki/views/login', 'sicki/models/User', 'sicki/utils/ajax'], function(Controller, loginView, User, ajax) {
     var LoginController = Controller.extend({
         events: {
             'submit form': 'loginUser',
-            'click .logout': 'logoutUser'
+            //'click .logout': 'logoutUser'
         },
         view: loginView,
-
-        model: userModel ? new Backbone.Model(userModel) : null,
 
         loginUser: function() {
             var dataPromise = ajax({
@@ -14,14 +12,12 @@ define(['./Controller', 'sicki/views/login', 'json!api/user', 'sicki/utils/ajax'
                 data: this.$el.find('form').serialize()
             });
             dataPromise.done(function(userModel) {
-                if (userModel)
-                    this.model = new Backbone.Model(userModel);
-                this.render();
-            }.bind(this));
+                User.set(userModel);
+            });
             return false;
-        },
+        }
 
-        logoutUser: function() {
+        /*logoutUser: function() {
             var dataPromise = ajax({
                 url: 'user/logout'
             });
@@ -31,7 +27,7 @@ define(['./Controller', 'sicki/views/login', 'json!api/user', 'sicki/utils/ajax'
                 this.render();
             }.bind(this));
             return false;
-        }
+        }*/
     });
 
     return LoginController;

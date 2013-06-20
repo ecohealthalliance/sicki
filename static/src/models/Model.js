@@ -7,10 +7,14 @@ define(['backbone', 'sicki/utils/ajax', 'sicki/models/utils'], function(Backbone
         // Updates the model on the server, and then sets the corresponding
         // attributes on the client
         update: function(attributes, callback) {
+            var serialAttributes = {};
+            for (var key in attributes) {
+                serialAttributes[key] = JSON.stringify(attributes[key])
+            }
             var dataPromise = ajax({
                 url: this.constructor.getEndpoint('update', this.get('id')),
                 type: 'PUT',
-                data: attributes
+                data: serialAttributes 
             });
             dataPromise.done(function() {
                 this.set(attributes);

@@ -109,10 +109,10 @@ EIDEvent = [
     {'name':'number_deaths'},
     {'name':'contact'},
     {'name':'notes'},
-    {'name':'references', 'type': 'model'},
-    {'name':'map', 'type': 'map'},
-    {'name':'data_quality_orig', 'type': 'hidden'},
-    {'name':'data_quality', 'type': 'hidden'}
+    {'name':'references', 'type': 'model'}
+    #{'name':'map', 'type': 'hidden'},
+    #{'name':'data_quality_orig', 'type': 'hidden'},
+    #{'name':'data_quality', 'type': 'hidden'}
     ]
 
 ## !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
