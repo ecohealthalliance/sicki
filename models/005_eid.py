@@ -183,6 +183,7 @@ def get_event (eid_id):
     event = mongo.events.find_one ({'_id': o_eid_id})
     if not event:
         raise HTTP (400, "EID Event Not Found")
+
     event['id'] = str (event['_id'])
     del event['_id']
     event['orig_event'] = str (event['orig_event'])
