@@ -4,6 +4,26 @@
 define(['backbone', 'sicki/utils/ajax', 'sicki/models/utils'], function(Backbone, ajax, utils) {
 
     var Model = Backbone.Model.extend({
+        constructor: function(data, options) {
+            var modelData = {};
+            this.constructor.fields.forEach(function(field) {
+                if (field.type == 'collection') {
+                    var SubModel = Model.extendModel(field.model);
+                    var subCollection = new (Backbone.Collection.extend({
+                        model: SubModel
+                    }))();
+                    data[field.name].forEach(function(subData) {
+                        subCollection.add(subData);
+                    });
+                    modelData[field.name] = subCollection;
+                }
+                else {
+                    modelData[field.name] = data[field.name];
+                }
+            });
+            Backbone.Model.prototype.constructor.call(this, modelData, options);
+        },
+
         // Updates the model on the server, and then sets the corresponding
         // attributes on the client
         update: function(attributes, callback) {
