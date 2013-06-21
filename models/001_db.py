@@ -14,6 +14,7 @@ except:
 if settings['mongodb']['username']:
     mongo.authenticate(settings['mongodb']['username'], settings['mongodb']['password'])
 
+# legacy web2py DAL stuff, only used for auth
 db = DAL('sqlite://storage.sqlite')
 
 if settings['database']['type'] == 'sqlite':
@@ -22,86 +23,73 @@ else:
     dd = settings['database']
     db = DAL (dd['type'] + '://' + dd['username'] + ':' + dd['password']  + '@' + dd['host'] + '/' + dd['database'], dd['pool'], check_reserved=['all'])
 
-crud = Crud(globals(), db)
 
+# Generic MongoDB CRUD class for enforcing schemas. Requires that a variable mongo
+# exists, which is a connection to a mongo instance
+class CRUD:
+    mongo = mongo
+    def __init__(self, model):
+        self.model = model
+        self.collection = self.mongo[model['name']]
 
-class MongoCursorWrapper:
-    def __init__ (self, cursor):
-        self.__cursor = cursor
+    def create(self):
+        from uuid import uuid4
+        id = uuid4().hex
+        return self.collection.insert({
+                '_id': id
+                });
+        
+    def read(self, id):
+        db_result = self.collection.find_one({
+                '_id': id
+                })
+        if not db_result:
+            raise Exception('Item Not Found')
+        return self._parse_record(db_result)
 
-    def __getattr__ (self, key):
-        return getattr (self.__cursor, key)
+    def read_all(self, fields = None, sort = None):
+        if fields:
+            fields.append('_id')
+            if sort:
+                fields.append(sort)
 
-    def __getitem__ (self, index):
-        return MongoWrapper (self.__cursor[index])
-        #return map (lambda x : MongoWrapper (x), self.__cursor[index])
+        db_results = self.collection.find({}, fields)
+        results = []
+        for db_result in db_results:
+            results.append(self._parse_record(db_result))
+        return results
 
-    def __len__ (self):
-        return self.__cursor.count ()
-    
-    def __iter__ (self):
-        return MongoWrapperIter (self.__cursor)
+    def _parse_record(self, db_result):
+        result = {
+            'id': db_result['_id']
+            }
 
-class MongoWrapper:
-    def __init__ (self, cursor):
-        self.__dict__['cursor'] = cursor
-
-    def __getattr__ (self, key):
-        try:
-            return getattr (self.cursor, key)
-        except AttributeError:
-            try:
-                val = self.cursor[unicode (key)]
-                if (type (val) == list) or (type (val) == dict):
-                    return MongoWrapper (self.cursor[unicode (key)])
+        for field in self.model['fields']:
+            field_key = field['name']
+            field_type = field.get('type') or 'text'
+            if db_result.has_key(field_key):
+                if field_type == 'collection':
+                    print str(field)
+                    foreign_crud = CRUD(field['model'])
+                    joined_items = []
+                    for foreign_key in db_result[field_key]:
+                        joined_items.append(foreign_crud.read(foreign_key))
+                    result[field_key] = joined_items
+                elif field_type == 'model':
+                    foreign_crud = CRUD(field['model'])
+                    result[field_key] = foreign_crud(db_result[field_key])
                 else:
-                    return val
-            except KeyError:
-                return None
+                    result[field_key] = db_result[field_key]
+        return result
 
-    def __nonzero__ (self):
-        if self.cursor is None:
-            return False
-        return len (self.cursor) != 0
-
-    def __iter__ (self):
-        return MongoWrapperIter (self.cursor)
-
-    '''def __setattrbute__ (self, key, value):
-        try:
-            setattr (self.cursor, key)
-        except AttributeError:
-            self.cursor[unicode (key)]'''
-
-class MongoWrapperIter:
-    def __init__ (self, cursor):
-        self.__cursor = iter (cursor)
-
-    def __iter__ (self):
-        return self
-
-    def next (self):
-        val = self.__cursor.next ()
-        if (type (val) == list) or (type (val) == dict):
-            return MongoWrapper (val)
-        else:
-            return val
-
-class attr_dict (dict):
-    def __init__ (self, **attr):
-        dict.__init__ (self, **attr)
-
-    def __getattr__ (self, key):
-        try:
-            return self[key]
-        except KeyError:
-            return None
-
-    def default (self, key, default):
-        if self.has_key (key):
-            return
-        else:
-            self[key] = default
-
-    def json (self):
-        return json.dumps (self)
+    def update(self, id, kwargs):
+        for key, value in kwargs.iteritems():
+            self.collection.update({
+                    '_id': id
+                    }, {
+                    '$set': {key: value}
+                    })
+    
+    def delete(self, id):
+        pass
+    

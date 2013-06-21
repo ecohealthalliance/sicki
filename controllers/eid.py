@@ -1,62 +1,32 @@
 @require_logged_in
 def model():
-    return json.dumps(EIDEvent)
+    return json.dumps(eidEvents.model)
 
 @require_role(admin_role)
 def create():
     pass
 
-
 @require_logged_in
 def read():
     eid_id = request.args(0)
-    if not eid_id:
-        raise HTTP (400, "Missing EID ID")
-    try:
-        o_eid_id = ObjectId (eid_id)
-    except:
-        raise HTTP (400, "Bad EID ID")
-    event = mongo.events.find_one ({'_id': o_eid_id})
-
-    if not event:
-        raise HTTP (400, "EID Event Not Found")
-
-    event['id'] = str (event['_id'])
-    del event['_id']
-    del event['orig_event']
-    # Join on all references
-    #event['references'] = map (str, event['references'])
-    return json.dumps(event)
-
+    return json.dumps(eidEvents.read(eid_id))
 
 @require_logged_in
 def read_all():
     fields = request.vars.get('fields')
-    sort = request.vars.get('sort')
     if fields:
         fields = json.loads(fields)
-        fields += ['_id', 'orig_event']
-        if sort:
-            fields.append(sort)
-    events = mongo.events.find({}, fields)
-    results = []
-    for event in events:
-        event['id'] = str(event['_id'])
-        del event['_id']
-        del event['orig_event']
-        results.append(event)
-    return json.dumps(results)
+    return json.dumps(eidEvents.read_all(fields))
 
 
 @require_role(admin_role)
 def update():
     eid_id = request.args(0)
-    if not eid_id:
-        raise HTTP(400, eid_id)
-    for field, value in request.post_vars.iteritems():
-        edit_field (eid_id, field, json.loads(value))
+    attributes = {}
+    for key, value in request.vars.iteritems():
+        attributes[key] = json.loads(value)
+    eidEvents.update(eid_id, attributes)
     return json.dumps(True)
-
 
 @require_role(admin_role)
 def delete():

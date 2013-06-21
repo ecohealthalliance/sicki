@@ -1,5 +1,5 @@
 EIDEvent = {
-    'uri': 'eid',
+    'name': 'eid',
     'fields': [
         {'name':'event_name','type': 'text', 'required': True},
         {'name':'pathogens', 'type':'collection', 'model': Pathogen},
@@ -85,29 +85,18 @@ EIDEvent = {
         {'name':'number_deaths'},
         {'name':'contact'},
         {'name':'notes'},
-        {'name':'references', 'type': 'collection'}
+        #{'name':'references', 'type': 'collection'}
         #{'name':'map', 'type': 'hidden'},
         #{'name':'data_quality_orig', 'type': 'hidden'},
         #{'name':'data_quality', 'type': 'hidden'}
         ]
     }
 
+eidEvents = CRUD(EIDEvent)
+
 ## !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ## Everything Below this line is suspect, may need to be refactored
 ## !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-''' Pathogens model:
-         [{'name':'reported_name','label':'Reported name'},
-          {'name':'drug_resistance','label':'Drug resistance'},
-          {'name':'authority','label':'Authority'},
-          {'name':'tax_order','label':'Taxanomic Order'},
-          {'name':'class','label':'Class'},
-          {'name':'family','label':'Family'},
-          {'name':'genus','label':'Genus', 'primary': True},
-          {'name':'species','label':'Species', 'primary': True},
-          {'name':'sub_species','label':'Sub-species', 'primary': True},
-          {'name':'primary','label':'Primary?'}]
-     }]'''
 
 def upload_map (value):
     filename = value.get ('name')

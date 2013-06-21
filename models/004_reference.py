@@ -1,10 +1,10 @@
 Reference = {
-    'uri': 'refs',
+    'name': 'refs',
     # default type is text
     # required defaults to false, required constraint not used yet
     'fields':[
         {'name':'title'},
-        {'name':'creators', 'type':'collection','model'}, # collection???
+        {'name':'creators'}, # collection???
         {'name':'ISSN'},
         {'name':'DOI'},
         {'name':'itemType'},

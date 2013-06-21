@@ -66,7 +66,7 @@ define(['backbone', 'sicki/utils/ajax', 'sicki/models/utils'], function(Backbone
             var defaultModel = utils.defaults(dataModel.fields);
             options.defaults = defaultModel;
             classOptions.fields = dataModel.fields;
-            classOptions.uri = dataModel.uri;
+            classOptions.uri = dataModel.name;
             return this.extend(options, classOptions);
         },
 
