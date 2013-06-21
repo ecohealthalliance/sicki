@@ -7,15 +7,16 @@ def create():
     pass
 
 
+# refactor this - this should call model.read for most of this
 @require_logged_in
 def read():
     eid_id = request.args(0)
     if not eid_id:
         raise HTTP (400, "Missing EID ID")
     try:
-        o_eid_id = ObjectId (eid_id)
+        o_eid_id = ObjectId (eid_id) # string -> hex
     except:
-        raise HTTP (400, "Bad EID ID")
+        raise HTTP (400, "Bad EID ID") # string is not hex
     event = mongo.events.find_one ({'_id': o_eid_id})
 
     if not event:

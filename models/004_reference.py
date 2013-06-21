@@ -4,7 +4,7 @@ Reference = {
     # required defaults to false, required constraint not used yet
     'fields':[
         {'name':'title'},
-        {'name':'creators', 'type':'collection','model'}, # collection???
+        {'name':'creators', 'type':'collection','model': 'CreatorsModel?'}, # collection???
         {'name':'ISSN'},
         {'name':'DOI'},
         {'name':'itemType'},

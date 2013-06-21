@@ -1,5 +1,6 @@
 @require_logged_in
 def query():
+    """for autocomplete - refactor"""
     import re
     q = request.vars.get ('q')
     ql = q.split (' ')
@@ -18,8 +19,10 @@ def query():
                 })
     return json.dumps (result_list)
 
+
 @require_logged_in
 def append():
+    """append a ref to eid - pase - delete """
     event_id = request.vars.get ('event_id')
     ref_id = request.vars.get ('ref_id')
     
@@ -41,6 +44,7 @@ def append():
 
 @require_logged_in
 def remove():
+    """remove a ref from an eid - pase - delete"""
     event_id = request.vars.get ('event_id')
     ref_id = request.vars.get ('ref_id')
 
