@@ -85,7 +85,7 @@ EIDEvent = {
         {'name':'number_deaths'},
         {'name':'contact'},
         {'name':'notes'},
-        #{'name':'references', 'type': 'collection'}
+        {'name':'references', 'type': 'collection', 'model': Reference}
         #{'name':'map', 'type': 'hidden'},
         #{'name':'data_quality_orig', 'type': 'hidden'},
         #{'name':'data_quality', 'type': 'hidden'}
