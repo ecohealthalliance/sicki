@@ -44,7 +44,7 @@ class CRUD:
                 '_id': id
                 })
         if not db_result:
-            raise Exception('Item Not Found')
+            raise Exception('Item Not Found ' + self.model['name'])
         return self._parse_record(db_result)
 
     def read_all(self, fields = None, sort = None):

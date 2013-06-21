@@ -1,5 +1,5 @@
 Reference = {
-    'name': 'refs',
+    'name': 'reference',
     # default type is text
     # required defaults to false, required constraint not used yet
     'fields':[

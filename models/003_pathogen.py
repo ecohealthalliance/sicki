@@ -1,5 +1,5 @@
 Pathogen = {
-    'name': 'pathogens',
+    'name': 'pathogen',
     'fields': [
         {'name': 'reported_name'},
         {'name': 'drug_resistance'},
