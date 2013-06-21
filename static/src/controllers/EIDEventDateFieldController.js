@@ -1,5 +1,5 @@
-define(['sicki/views/eid/fields/date'], function(dateView) {
-    return {
+define(['sicki/controllers/EIDEventFieldController', 'sicki/views/eid/fields/date'], function(EIDEventFieldController, dateView) {
+    return EIDEventFieldController.extend({
         view: dateView,
 
         getEditValue: function() {
@@ -16,5 +16,5 @@ define(['sicki/views/eid/fields/date'], function(dateView) {
                 day: emptyOrNum(this.$('.edit .day').val())
             }
         }
-    };
+    });
 });

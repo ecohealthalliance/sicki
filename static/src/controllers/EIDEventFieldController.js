@@ -1,4 +1,4 @@
-define(['sicki/controllers/Controller', 'sicki/controllers/EIDEventTextFieldController', 'sicki/controllers/EIDEventSelectFieldController', 'sicki/controllers/EIDEventDateFieldController', 'sicki/controllers/EIDEventUnitsFieldController', 'sicki/models/utils'], function(Controller, textMixin, selectMixin, dateMixin, unitsMixin, utils) {
+define(['sicki/controllers/Controller', 'sicki/models/utils'], function(Controller, utils) {
 
     var EIDEventFieldController = Controller.extend({
         field: null,
@@ -10,17 +10,6 @@ define(['sicki/controllers/Controller', 'sicki/controllers/EIDEventTextFieldCont
 
         initialize: function(options) {
             this.field = options.field;
-
-            // Mixin the correct template and editing type
-            var fieldType = this.field.type;
-            if (fieldType == 'text' || fieldType === undefined)
-                _.extend(this, textMixin);
-            else if (fieldType == 'select')
-                _.extend(this, selectMixin);
-            else if (fieldType == 'date')
-                _.extend(this, dateMixin);
-            else if (fieldType == 'units')
-                _.extend(this, unitsMixin);
 
             /*// Bind change:<field> events to rendering of the view
             var settings = _.extend({

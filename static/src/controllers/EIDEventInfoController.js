@@ -5,8 +5,9 @@
 define(['sicki/controllers/Controller', 
         'sicki/controllers/EIDEventFieldController', 
         'sicki/models/EIDEvent', 
-        'sicki/views/eid/info'
-       ], function(Controller, EIDEventFieldController, EIDEvent, eidInfoView) {
+        'sicki/views/eid/info',
+        'sicki/controllers/EIDEventFieldFactory'
+       ], function(Controller, EIDEventFieldController, EIDEvent, eidInfoView, EIDEventFieldFactory) {
 
            var EIDEventInfoController = Controller.extend({
                initialize: function(options) {
@@ -15,11 +16,14 @@ define(['sicki/controllers/Controller',
                    // These subcontrollers will handle events sent by the model and 
                    // updates to the editable area.
                    Model.fields.forEach(function(field, i) {
-                       this.subControllers['.' + field.name] = new EIDEventFieldController({
-                           model: this.model,
-                           field: field,
-                           even: i % 2
-                       });
+                       var Field = EIDEventFieldFactory(field);
+                       if (Field) {
+                           this.subControllers['.' + field.name] = new Field({
+                               model: this.model,
+                               field: field,
+                               even: i % 2
+                           });
+                       }
                    }.bind(this));
                    return Controller.prototype.initialize.call(this, options);
                },
