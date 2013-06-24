@@ -128,7 +128,7 @@ ACCEPTED = 'ACCEPTED'
 REJECTED = 'REJECTED'
 
 def get_field (name):
-    for field in EIDEvent:
+    for field in EIDEvent['fields']:
         if field['name'] == name:
             return field
     return None
