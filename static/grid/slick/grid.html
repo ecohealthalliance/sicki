@@ -1,0 +1,55 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>SlickGrid for editing all EIDs</title>
+  <link rel="stylesheet" href="slick.grid.css" type="text/css"/>
+  <link rel="stylesheet" href="jquery-ui-1.8.16.custom.css" type="text/css"/>
+  <link rel="stylesheet" href="examples.css" type="text/css"/>
+  <style>
+    .cell-title {
+      font-weight: bold;
+    }
+
+    .cell-effort-driven {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+<div style="position:relative">
+  <div style="width:600px;">
+    <div id="myGrid" style="width:100%;height:500px;"></div>
+  </div>
+
+  <!-- div class="options-panel">
+    <h2>Demonstrates:</h2>
+    <ul>
+      <li>adding basic keyboard navigation and editing</li>
+      <li>custom editors and validators</li>
+      <li>auto-edit settings</li>
+    </ul>
+    <h2>Options:</h2 -->
+    <!-- button onclick="grid.setOptions({autoEdit:true})">Auto-edit ON</button>
+    &nbsp;
+    <button onclick="grid.setOptions({autoEdit:false})">Auto-edit OFF</button>
+  </div -->
+</div>
+
+<script src="lib/firebugx.js"></script>
+
+<script src="../../lib/jquery.js"></script>
+<script src="lib/jquery-ui-1.8.16.custom.min.js"></script>
+<script src="lib/jquery.event.drag-2.2.js"></script>
+
+<script src="slick.core.js"></script>
+<script src="plugins/slick.cellrangedecorator.js"></script>
+<script src="plugins/slick.cellrangeselector.js"></script>
+<script src="plugins/slick.cellselectionmodel.js"></script>
+<script src="slick.formatters.js"></script>
+<script src="slick.editors.js"></script>
+<script src="slick.grid.js"></script>
+
+<script src='eid.js'></script>
+<script src='eidGrid.js'></script>
+</body>
+</html>
