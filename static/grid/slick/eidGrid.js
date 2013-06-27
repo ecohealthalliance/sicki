@@ -2,7 +2,7 @@
 (function() {
   var eid, options, setUpGrid;
 
-  eid = window.eid;
+  eid = new Sicki.EID;
 
   options = {
     editable: true,

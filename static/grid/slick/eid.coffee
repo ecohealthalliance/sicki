@@ -1,4 +1,6 @@
-class EID
+window.Sicki or= {}
+
+window.Sicki.EID = class EID
   getAllEids: ->
     # return promise??
     #ret = null
@@ -23,6 +25,3 @@ class EID
   getColumns: ->
     colIds = ['event_name','disease','host','location','eid_id','start_date']
     cols = (@makeCol(id) for id in colIds)
-    
-
-window.eid = new EID
