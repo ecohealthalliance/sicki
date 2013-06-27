@@ -2,7 +2,9 @@
 (function() {
   var EID;
 
-  EID = (function() {
+  window.Sicki || (window.Sicki = {});
+
+  window.Sicki.EID = EID = (function() {
     function EID() {}
 
     EID.prototype.getAllEids = function() {
@@ -47,7 +49,5 @@
     return EID;
 
   })();
-
-  window.eid = new EID;
 
 }).call(this);
