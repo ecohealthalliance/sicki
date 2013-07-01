@@ -1,0 +1,7 @@
+install meteor:
+curl https://install.meteor.com | /bin/sh
+
+cd meteor/sicki
+
+$ meteor
+=> Meteor server running on: http://localhost:3000/
