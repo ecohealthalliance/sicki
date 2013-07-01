@@ -1,0 +1,15 @@
+<body>
+  <div>{{> event_list}}</div>
+</body>
+
+<template name="event_list">
+  <ul>
+    {{#each events}}
+      {{> event}}
+    {{/each}}
+  </ul>
+</template>
+
+<template name="event">
+  {{event_name}}
+</template>
