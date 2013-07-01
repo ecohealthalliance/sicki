@@ -1,5 +1,9 @@
 EIDEvents = new Meteor.Collection('eid')
 
 if Meteor.isClient
-  Template.event_list.events = () ->
+  Template.eventList.eidEvents = () ->
     EIDEvents.find()
+
+  Template.eventList.events(
+    'click .eid' : (event) -> console.log('clicked'+event.target.id)
+  )
