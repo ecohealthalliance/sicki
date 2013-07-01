@@ -3,6 +3,7 @@ define(['require', 'backbone', 'sicki/models/User'], function(require, Backbone,
     var Router = Backbone.Router.extend({
         routes: {
             '': 'viewIndex',
+            'login/*redirect': 'viewLoginRequired',
             'eid': 'viewEIDList',
             'eid/:eid_id/:view': 'viewEID'
         },
@@ -16,7 +17,7 @@ define(['require', 'backbone', 'sicki/models/User'], function(require, Backbone,
             require(['sicki/controllers/LoginController', 'sicki/controllers/LogoutController'], function(LoginController, LogoutController) {
                 if (!User.get('loggedIn')) {
                     this.userController = new LoginController({
-                    el: $('#login')
+                        el: $('#login')
                     });
                 }
                 else {
@@ -24,6 +25,19 @@ define(['require', 'backbone', 'sicki/models/User'], function(require, Backbone,
                         el: $('#login')
                     });
                 }
+            });
+        },
+
+        viewLoginRequired : function (redirect) {
+            require(['sicki/controllers/LoginRequiredController'], function (LoginRequiredController) {
+                if (this.controller) {
+                    this.controller.stopListening();
+                }
+
+                this.controller = new LoginRequiredController({
+                    el: '#main',
+                    redirect: redirect
+                });
             });
         },
 
