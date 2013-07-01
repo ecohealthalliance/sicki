@@ -1,15 +1,18 @@
 <body>
-  <div>{{> event_list}}</div>
+  <div>{{> eventList}}</div>
 </body>
 
-<template name="event_list">
+<template name="eventList">
   <ul>
-    {{#each events}}
+    {{#each eidEvents}}
       {{> event}}
     {{/each}}
   </ul>
 </template>
 
 <template name="event">
-  {{event_name}}
+  <br>
+  <a class='eid' id="{{_id}}" href = '.'>
+    {{event_name}}
+  </a>
 </template>
