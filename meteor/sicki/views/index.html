@@ -1,4 +1,19 @@
 <body>
   {{> header}}
-  {{> eventList}}
+  <div id="main">
+    {{> content}}
+  </div>
 </body>
+
+<template name="content">
+  {{#if showList}}
+    <div id="list-tab">
+      {{> eventList}}
+    </div>
+  {{/if}}
+  {{#if showMap}}
+    <div id="map-tab">
+      {{> map}}
+    </div>
+  {{/if}}
+</template>
