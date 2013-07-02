@@ -5,6 +5,7 @@
 
 preserve-inputs
 coffeescript
-accounts-ui
 accounts-google
 accounts-password
+stylus
+accounts-ui
