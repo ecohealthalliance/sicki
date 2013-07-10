@@ -12,12 +12,12 @@ template(name="eidTable")
     tbody
       {{#if eidEvents}}
         {{#each eidEvents}}
-          tr.odd.gradeX
-            td {{event_name}}
-            td {{disease}}
-            td {{host}}
-            td.center {{location}}
-            td.center {{eid_id}}
-            td {{start_date}}
+          tr.odd.gradeX(id='{{_id}}')
+            td(col='event_name') {{event_name}}
+            td(col='disease') {{disease}}
+            td(col='host') {{host}}
+            td(col='location') {{location}}
+            td(col='eid_id') {{eid_id}}
+            td(col='start_date') {{start_date}}
          {{/each}}
        {{/if}}
