@@ -1,0 +1,23 @@
+template(name="eidTable")
+  table.table.table-striped.table-bordered#eidTable(cellpadding="0", cellspacing="0", border="0")
+    thead
+      // todo - get headers from backend
+      tr
+        th Event name
+        th Disease
+        th Host
+        th Location
+        th EID id
+        th Start Date
+    tbody
+      {{#if eidEvents}}
+        {{#each eidEvents}}
+          tr.odd.gradeX
+            td {{event_name}}
+            td {{disease}}
+            td {{host}}
+            td.center {{location}}
+            td.center {{eid_id}}
+            td {{start_date}}
+         {{/each}}
+       {{/if}}
