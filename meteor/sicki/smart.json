@@ -1,0 +1,6 @@
+{
+  "packages": {
+    "datatables": {},
+    "jade-handlebars": {"git":"https://github.com/SimonDegraeve/meteor-jade-handlebars.git"}
+  }
+}
