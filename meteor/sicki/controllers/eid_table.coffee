@@ -21,13 +21,6 @@ setVal = (val,eventId,field) ->
 if Meteor.isClient
   Meteor.subscribe('all_eid_events')
 
-  Template.eventList.eidEvents = () ->
-    EIDEvents.find()
-
-  Template.eventList.events(
-    'click .eid' : (event) -> console.log('clicked'+event.target.id)
-  )
-
   # wait til eidTable template loads
   Meteor.startup () ->
     Template.eidTable.eidEvents = () ->
