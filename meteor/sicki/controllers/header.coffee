@@ -7,7 +7,8 @@ if Meteor.isClient
   showList = () ->
     Session.set('tab', 'list')
 
-  Template.nav.events(
-    'click #nav-map' : (event) -> showMap()
-    'click #nav-list' : (event) -> showList()
-  )
+  Meteor.startup () ->
+    Template.nav.events(
+      'click #nav-map' : (event) -> showMap()
+      'click #nav-list' : (event) -> showList()
+    )

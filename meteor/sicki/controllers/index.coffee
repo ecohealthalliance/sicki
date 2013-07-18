@@ -1,3 +1,5 @@
 if Meteor.isClient
-  Template.content.showList = () ->
-    Session.get('tab') == 'list'
+
+  Meteor.startup () ->
+    Template.content.showList = () ->
+      Session.get('tab') == 'list'
