@@ -14,9 +14,9 @@ if Meteor.isServer
 
 
 setVal = (val,eventId,field) ->
-  # this is not actually working yet ??? silently fails
-  #console.log('setting '+val+eventId+field)
-  EIDEvents.update({_id: eventId},{ $set: {field: val} } )
+  changes = {}
+  changes[field] = val
+  EIDEvents.update({_id: eventId},{ $set: changes } )
 
 if Meteor.isClient
   Meteor.subscribe('all_eid_events')
