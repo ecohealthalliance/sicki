@@ -1,9 +1,9 @@
-Session.set('tab', 'list')
+Session.set('selectedEventId', null)
 
-showList = () ->
-  Session.set('tab', 'list')
+showTable = () ->
+  Session.set('selectedEventId', null)
 
 Meteor.startup () ->
   Template.nav.events(
-    'click #nav-list' : (event) -> showList()
+    'click #nav-list' : (event) -> showTable()
   )

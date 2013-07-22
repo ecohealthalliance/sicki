@@ -3,6 +3,7 @@ template(name="eidTable")
     thead
       // todo - get headers from backend
       tr
+        th 
         th Event name
         th Disease
         th Host
@@ -13,6 +14,7 @@ template(name="eidTable")
       {{#if eidEvents}}
         {{#each eidEvents}}
           tr.odd.gradeX(id='{{_id}}')
+            td(col='open') Open
             td(col='event_name') {{event_name}}
             td(col='disease') {{disease}}
             td(col='host') {{host}}

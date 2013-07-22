@@ -27,7 +27,13 @@ Meteor.startup () ->
     $('td').each( () ->
       id = $(this).parent().attr('id')
       col = $(this).attr('col')
-      $(this).editable(setter , {id: id, name: col} )
+      if col != 'open'
+        $(this).editable(setter , {id: id, name: col} )
+      else
+        $(this).click( (event) ->
+          Session.set('selectedEventId', id)
+          rend()
+        )
       )
 
   # refactor! need to wait for eidEvents to come back

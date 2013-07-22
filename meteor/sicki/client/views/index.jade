@@ -4,7 +4,8 @@ body
     {{> content}}
 
 template(name="content")
-  {{#if showList}}
-    #list-tab
-      {{> eidTable}}
+  {{#if selectedEventId}}
+    .selected-event {{selectedEventId}}
+  {{else}}
+    {{> eidTable}}
   {{/if}}
