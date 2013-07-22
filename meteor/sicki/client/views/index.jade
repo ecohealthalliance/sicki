@@ -1,0 +1,10 @@
+body
+  {{> header}}
+  #main
+    {{> content}}
+
+template(name="content")
+  {{#if showList}}
+    #list-tab
+      {{> eidTable}}
+  {{/if}}
