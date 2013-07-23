@@ -1,21 +1,22 @@
-setVal = (val,eventId,field) ->
-  changes = {}
-  changes[field] = val
-  @sicki.EIDEvents.update({_id: eventId},{ $set: changes } )
-
 # wait til eidTable template loads
 Meteor.startup () ->
+  EIDEvents = @sicki.EIDEvents
+  render = @sicki.render
+
   Template.eidTable.eidEvents = () ->
-    @sicki.EIDEvents.find()
+    EIDEvents.find()
 
-  rend = () ->
-    @sicki.render()
-
+  loadDataTable = () ->
     $('#eidTable').dataTable
       "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>"
       "sPaginationType": "bootstrap"
       "oLanguage":
         "sLengthMenu": "_MENU_ records per page"
+
+    setVal = (val,eventId,field) ->
+      changes = {}
+      changes[field] = val
+      EIDEvents.update({_id: eventId},{ $set: changes } )
 
     setter = (value,settings) ->
       setVal(value,settings.id,settings.name)
@@ -29,10 +30,12 @@ Meteor.startup () ->
       else
         $(this).click( (event) ->
           Session.set('selectedEventId', id)
-          rend()
+          render()
         )
       )
 
-  Meteor.subscribe('all_eid_events', _.bind(rend, this))
+  @sicki.registerRenderCallback(loadDataTable)
+
+  Meteor.subscribe('all_eid_events', render)
 
 
