@@ -3,8 +3,13 @@ Meteor.startup () ->
   EIDEvents = @sicki.EIDEvents
   render = @sicki.render
 
+  Meteor.subscribe('userData')
+
   Template.eidTable.eidEvents = () ->
     EIDEvents.find()
+
+  Template.eidTable.admin = () ->
+    Meteor.user() and Meteor.user().admin
 
   loadDataTable = () ->
     $('#eidTable').dataTable
