@@ -22,17 +22,29 @@ Meteor.startup () ->
       setVal(value,settings.id,settings.name)
       value
 
-    $('td').each( () ->
-      id = $(this).parent().attr('id')
-      col = $(this).attr('col')
-      if col != 'open'
-        $(this).editable(setter , {id: id, name: col} )
+    handleNonEditingClick = (event) ->
+      id = $(event.target).parent().attr('id')
+      Session.set('selectedEventId', id)
+      render()
+
+    $('td:not(.edit)').click(handleNonEditingClick)
+
+    $('td.edit').click( (event) ->
+      if $(event.target).hasClass('editing')
+        parent = $(event.target).parent()
+        parent.children('td:not(.edit)').unbind('all').click(handleNonEditingClick)
+        $(event.target).removeClass('editing')
+        $(event.target).html('Edit')
       else
-        $(this).click( (event) ->
-          Session.set('selectedEventId', id)
-          render()
+        parent = $(event.target).parent()
+        id = $(this).parent().attr('id')
+        parent.children('td:not(.edit)').each( () ->
+          col = $(this).attr('col')
+          $(this).unbind('click').editable(setter , {id: id, name: col} )
         )
-      )
+        $(event.target).addClass('editing')
+        $(event.target).html('Stop editing')
+    )
 
   @sicki.registerRenderCallback(loadDataTable)
 

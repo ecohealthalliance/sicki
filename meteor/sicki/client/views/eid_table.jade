@@ -14,7 +14,7 @@ template(name="eidTable")
       {{#if eidEvents}}
         {{#each eidEvents}}
           tr.odd.gradeX(id='{{_id}}')
-            td(col='open') Open
+            td.edit(col='edit') Edit
             td(col='event_name') {{event_name}}
             td(col='disease') {{disease}}
             td(col='host') {{host}}

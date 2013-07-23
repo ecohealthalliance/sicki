@@ -7,5 +7,7 @@ Meteor.publish('all_eid_events', () ->
   
 EIDEvents.allow({
   'insert': (userId, doc) -> true
-  'update': (userId, doc, fieldNames, modified) -> true
+  'update': (userId, doc, fieldNames, modified) ->
+    console.log("user id #{userId} updated #{doc._id} with #{JSON.stringify(modified)}")
+    true
 })
