@@ -1,7 +1,14 @@
 body
   {{> header}}
   #main
+    {{> contentIfLoggedIn}}
+
+template(name="contentIfLoggedIn")
+  {{#if user}}
     {{> content}}
+  {{else}}
+    .login-required-message Log in to view EID Events
+  {{/if}}
 
 template(name="content")
   {{#if selectedEventId}}
