@@ -1,0 +1,46 @@
+template(name="eidEvent")
+  .event-name
+    span Event Name
+    input(type="text", value="{{event.event_name}}")
+
+  .pathogens
+    span Pathogens
+    {{#each pathogens}}
+      .pathogen(pathogen_id="{{_id}}")
+        .pathogen-reported-name
+          span Reported Name
+          input(type="text", value="{{reported_name}}")
+        .pathogen-genus
+          span Genus
+          input(type="text", value="{{genus}}")
+        .pathogen-species
+          span Species
+          input(type="text", value="{{species}}")
+        .pathogen-sub-species
+          span Sub-Species
+          input(type="text", value="{{sub_species}}")
+    {{/each}}
+
+  .location
+    span Location
+    input(type="text", value="{{event.location}}")
+
+  .host
+    span Host
+    input(type="text", value="{{event.host}}")
+
+  .disease
+    span Disease
+    input(type="text", value="{{event.disease}}")
+
+  .start-date
+    span Start Date
+    input(type="text", value="{{event.start_date}}")
+
+  .end-date
+    span End Date
+    input(type="text", value="{{event.end_date}}")
+
+  .host-age
+    span Host Age
+    input(type="text", value="{{event.host_age}}")

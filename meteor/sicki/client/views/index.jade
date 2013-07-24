@@ -12,7 +12,7 @@ template(name="contentIfLoggedIn")
 
 template(name="content")
   {{#if selectedEventId}}
-    .selected-event {{selectedEventId}}
+    {{> eidEvent}}
   {{else}}
     {{> eidTable}}
   {{/if}}
