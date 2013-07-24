@@ -1,7 +1,7 @@
 template(name="eidEvent")
-  .event-name
+  .event-name(field='event_name')
     span Event Name
-    input(type="text", value="{{event.event_name}}")
+    input.event-property(type="text", value="{{event.event_name}}")
 
   .pathogens
     span Pathogens
@@ -21,26 +21,26 @@ template(name="eidEvent")
           input(type="text", value="{{sub_species}}")
     {{/each}}
 
-  .location
+  .location(field='location')
     span Location
-    input(type="text", value="{{event.location}}")
+    input.event-property(type="text", value="{{event.location}}")
 
-  .host
+  .host(field='host')
     span Host
-    input(type="text", value="{{event.host}}")
+    input.event-property(type="text", value="{{event.host}}")
 
-  .disease
+  .disease(field='disease')
     span Disease
-    input(type="text", value="{{event.disease}}")
+    input.event-property(type="text", value="{{event.disease}}")
 
-  .start-date
+  .start-date(field='start_date')
     span Start Date
-    input(type="text", value="{{event.start_date}}")
+    input.event-property(type="text", value="{{event.start_date}}")
 
-  .end-date
+  .end-date(field='end_date')
     span End Date
-    input(type="text", value="{{event.end_date}}")
+    input.event-property(type="text", value="{{event.end_date}}")
 
-  .host-age
+  .host-age(field='host_age')
     span Host Age
-    input(type="text", value="{{event.host_age}}")
+    input.event-property(type="text", value="{{event.host_age}}")
