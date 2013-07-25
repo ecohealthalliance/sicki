@@ -15,7 +15,7 @@ Meteor.startup () ->
     event = EIDEvents.findOne({_id: Session.get('selectedEventId')})
     eidEvent = {}
     for field, proposals of event
-      if field != '_id' and field != 'orig_event'
+      if field != '_id' and field != 'orig_event' and field != 'jones'
         proposal = Proposals.findOne({_id: {$in: proposals}, accepted: true})
         eidEvent[field] = if proposal then proposal.value else ""
     eidEvent
