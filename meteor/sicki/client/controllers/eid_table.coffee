@@ -13,14 +13,13 @@ Meteor.startup () ->
     mongoProposals = Proposals.find().fetch()
     proposals = {}
     for proposal in mongoProposals
-      proposals[proposal._id] = proposal
+      proposals[proposal._id.toHexString()] = proposal
 
     eidEvents = []
     for event in events
       eidEvent = {_id: event._id}
       for field in FIELDS
-        proposal = proposals[event[field][0]]
-        eidEvent[field] = if proposal then proposal.value else ""
+        eidEvent[field] = (proposals?[proposalId.toHexString()]?.value for proposalId in event[field])
       eidEvents.push(eidEvent)
     eidEvents
       
