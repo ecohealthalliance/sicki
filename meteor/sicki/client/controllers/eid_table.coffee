@@ -1,12 +1,24 @@
 # wait til eidTable template loads
 Meteor.startup () ->
   EIDEvents = @sicki.EIDEvents
+  Proposals = @sicki.Proposals
   render = @sicki.render
 
+  Meteor.subscribe('all_proposals')
   Meteor.subscribe('userData')
 
   Template.eidTable.eidEvents = () ->
-    EIDEvents.find()
+    FIELDS = ['event_name', 'disease', 'host', 'location', 'eid_id', 'start_date']
+    events = EIDEvents.find().fetch()
+    eidEvents = []
+    for event in events
+      eidEvent = {_id: event._id}
+      for field in FIELDS
+        proposal = Proposals.findOne({_id: event[field][0]})
+        eidEvent[field] = if proposal then proposal.value else ""
+      eidEvents.push(eidEvent)
+    eidEvents
+      
 
   Template.eidTable.admin = () ->
     Meteor.user() and Meteor.user().admin
