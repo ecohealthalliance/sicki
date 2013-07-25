@@ -3,24 +3,6 @@ template(name="eidEvent")
     span Event Name
     input.event-property(type="text", value="{{event.event_name}}")
 
-  .pathogens
-    span Pathogens
-    {{#each pathogens}}
-      .pathogen(pathogen_id="{{_id}}")
-        .pathogen-reported-name
-          span Reported Name
-          input(type="text", value="{{reported_name}}")
-        .pathogen-genus
-          span Genus
-          input(type="text", value="{{genus}}")
-        .pathogen-species
-          span Species
-          input(type="text", value="{{species}}")
-        .pathogen-sub-species
-          span Sub-Species
-          input(type="text", value="{{sub_species}}")
-    {{/each}}
-
   .location(field='location')
     span Location
     input.event-property(type="text", value="{{event.location}}")
