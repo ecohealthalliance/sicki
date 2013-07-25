@@ -1,8 +1,9 @@
 Session.set('selectedEventId', null)
 
 showTable = () ->
-  Session.set('selectedEventId', null)
-  @sicki.render()
+  if Session.get('selectedEventId') != null
+    Session.set('selectedEventId', null)
+    @sicki.render()
 
 Meteor.startup () ->
   Meteor.subscribe('userData')
