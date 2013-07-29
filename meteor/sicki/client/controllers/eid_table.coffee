@@ -25,7 +25,7 @@ Meteor.startup () ->
       
 
   Template.eidTable.admin = () ->
-    Meteor.user() and Meteor.user().admin
+    Meteor.user()?.admin
 
   loadDataTable = () ->
     setupEvents = () ->

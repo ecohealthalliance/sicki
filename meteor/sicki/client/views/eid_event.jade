@@ -1,19 +1,19 @@
-template(name="eidEventField")
-  .event-field(data-field-name="{{name}}") {{label}}
-    {{#each proposals}}
-      .proposal 
-        span {{value}}&nbsp;&nbsp;
-        {{#if userEmail}}
-          span Proposed by {{userEmail}} on {{date}}
-        {{/if}}
-    {{/each}}
-    .add-proposal
-      input.add-proposal-value(type="text")
-      button.add-proposal-button Add Proposal
-
 template(name="eidEvent")
   {{#each fields}}
-    {{> eidEventField}}
+    .event-field(data-field-name="{{name}}") {{label}}
+      {{#each proposals}}
+        .proposal 
+          span {{value}}&nbsp;&nbsp;
+          {{#if userEmail}}
+            span Proposed by {{userEmail}} on {{date}}
+            {{#if canAccept}}
+              button.accept-button Accept
+            {{/if}}
+          {{/if}}
+      {{/each}}
+      .add-proposal
+        input.add-proposal-value(type="text")
+        button.add-proposal-button Add Proposal
   {{/each}}
 
 

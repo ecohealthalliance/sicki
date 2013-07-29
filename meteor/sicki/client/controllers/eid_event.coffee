@@ -22,6 +22,8 @@ Meteor.startup () ->
 
   Meteor.subscribe('all_pathogens')
 
+  Meteor.subscribe('userData')
+
   Template.eidEvent.fields = () ->
     event = EIDEvents.findOne({_id: Session.get('selectedEventId')})
     eidEventFields = []
@@ -37,6 +39,7 @@ Meteor.startup () ->
             user = Meteor.users.findOne({_id: proposal.source})
             userEmail = user.emails[0].address
             proposal.userEmail = userEmail
+          proposal.canAccept = Meteor.user()?.admin and !proposal.accepted
         eventField.proposals = if proposals then proposals else []
         eidEventFields.push(eventField)
     eidEventFields
