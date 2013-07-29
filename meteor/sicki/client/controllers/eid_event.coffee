@@ -14,6 +14,7 @@ Meteor.startup () ->
   EIDEvents = @sicki.EIDEvents
   Proposals = @sicki.Proposals
   Pathogens = @sicki.Pathogens
+  References = @sicki.References
   render = @sicki.render
 
   Meteor.subscribe('all_eid_events')
@@ -21,6 +22,8 @@ Meteor.startup () ->
   Meteor.subscribe('all_proposals')
 
   Meteor.subscribe('all_pathogens')
+
+  Meteor.subscribe('all_references')
 
   Meteor.subscribe('userData')
 
@@ -57,6 +60,12 @@ Meteor.startup () ->
       EIDEvents.update({_id: Session.get('selectedEventId')}, {$set: proposals})
 
       render()
+    )
+
+    Deps.autorun( () ->
+      references = References.find().fetch()
+      titles = (ref.title for ref in references)
+      $('.add-proposal-references').autocomplete({source: titles})
     )
 
   @sicki.registerRenderCallback(setupEvents)

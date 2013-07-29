@@ -12,7 +12,12 @@ template(name="eidEvent")
           {{/if}}
       {{/each}}
       .add-proposal
+        span Value:&nbsp;
         input.add-proposal-value(type="text")
+        span &nbsp;
+        span References:&nbsp;
+        input.add-proposal-references(type="text")
+        span &nbsp;
         button.add-proposal-button Add Proposal
   {{/each}}
 
