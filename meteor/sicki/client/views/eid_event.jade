@@ -3,7 +3,9 @@ template(name="eidEventField")
     {{#each proposals}}
       .proposal 
         span {{value}}&nbsp;&nbsp;
-        span {{date}}&nbsp;&nbsp;
+        {{#if userEmail}}
+          span Proposed by {{userEmail}} on {{date}}
+        {{/if}}
     {{/each}}
     .add-proposal
       input.add-proposal-value(type="text")

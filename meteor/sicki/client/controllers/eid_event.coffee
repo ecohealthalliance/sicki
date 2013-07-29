@@ -32,6 +32,11 @@ Meteor.startup () ->
           name: field
           label: FIELDS[field].label
         proposals = Proposals.find({_id: {$in: proposalIds}}, {sort: {accepted: -1}}).fetch()
+        for proposal in proposals
+          if proposal.source != 'original_data'
+            user = Meteor.users.findOne({_id: proposal.source})
+            userEmail = user.emails[0].address
+            proposal.userEmail = userEmail
         eventField.proposals = if proposals then proposals else []
         eidEventFields.push(eventField)
     eidEventFields
