@@ -64,8 +64,21 @@ Meteor.startup () ->
 
     Deps.autorun( () ->
       references = References.find().fetch()
-      titles = (ref.title for ref in references)
-      $('.add-proposal-references').autocomplete({source: titles})
+      source = ({
+        label: "#{ref.creators?[0]?.lastName} #{ref.date} #{ref.title}",
+        value: "#{ref.creators?[0]?.lastName} #{ref.date}",
+        referenceId: ref._id
+      } for ref in references)
+      $('.add-proposal-references').autocomplete({
+        source: source,
+        select: (event, ui) ->
+          refList = $(event.target).siblings('.reference-list')
+          refList.append(" #{ui.item.value} ")
+          oldIdList = refList.attr('data-reference-ids')
+          newIdList = if oldIdList then "#{oldIdList},#{ui.item.referenceId}" else "#{ui.item.referenceId}"
+          refList.attr('data-reference-ids', newIdList)
+          false
+      })
     )
 
   @sicki.registerRenderCallback(setupEvents)
