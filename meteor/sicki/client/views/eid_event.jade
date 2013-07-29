@@ -1,28 +1,17 @@
+template(name="eidEventField")
+  .event-field(data-field-name="{{name}}") {{label}}
+    {{#each proposals}}
+      .proposal 
+        span {{value}}&nbsp;&nbsp;
+        span {{date}}&nbsp;&nbsp;
+    {{/each}}
+    .add-proposal
+      input.add-proposal-value(type="text")
+      button.add-proposal-button Add Proposal
+
 template(name="eidEvent")
-  .event-name(field='event_name')
-    span Event Name
-    input.event-property(type="text", value="{{event.event_name}}")
+  {{#each fields}}
+    {{> eidEventField}}
+  {{/each}}
 
-  .location(field='location')
-    span Location
-    input.event-property(type="text", value="{{event.location}}")
 
-  .host(field='host')
-    span Host
-    input.event-property(type="text", value="{{event.host}}")
-
-  .disease(field='disease')
-    span Disease
-    input.event-property(type="text", value="{{event.disease}}")
-
-  .start-date(field='start_date')
-    span Start Date
-    input.event-property(type="text", value="{{event.start_date}}")
-
-  .end-date(field='end_date')
-    span End Date
-    input.event-property(type="text", value="{{event.end_date}}")
-
-  .host-age(field='host_age')
-    span Host Age
-    input.event-property(type="text", value="{{event.host_age}}")

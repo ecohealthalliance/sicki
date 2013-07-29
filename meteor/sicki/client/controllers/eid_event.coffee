@@ -1,9 +1,20 @@
 ENTER_KEY_CODE = 13
 
+FIELDS =
+  event_name: 
+    label: 'Event Name'
+  pathogen: 
+    label: 'Pathogen'
+  location:
+    label: 'Location'
+  disease: 
+    label: 'Disease'
+
 Meteor.startup () ->
   EIDEvents = @sicki.EIDEvents
   Proposals = @sicki.Proposals
   Pathogens = @sicki.Pathogens
+  render = @sicki.render
 
   Meteor.subscribe('all_eid_events')
 
@@ -11,25 +22,33 @@ Meteor.startup () ->
 
   Meteor.subscribe('all_pathogens')
 
-  Template.eidEvent.event = () ->
+  Template.eidEvent.fields = () ->
     event = EIDEvents.findOne({_id: Session.get('selectedEventId')})
-    eidEvent = {}
-    for field, proposals of event
-      if field != '_id' and field != 'orig_event' and field != 'jones'
-        proposal = Proposals.findOne({_id: {$in: proposals}, accepted: true})
-        eidEvent[field] = if proposal then proposal.value else ""
-    eidEvent
-
-  handleKeyup = (event) ->
-    if event.keyCode is ENTER_KEY_CODE
-      id = Session.get('selectedEventId')
-      field = $(event.target).parent().attr('field')
-      value = $(event.target).val()
-      changes = {}
-      changes[field] = value
-      EIDEvents.update({_id: id}, {$set: changes})
+    eidEventFields = []
+    for field in _.keys(FIELDS)
+      if event[field]
+        proposalIds = event[field]
+        eventField =
+          name: field
+          label: FIELDS[field].label
+        proposals = Proposals.find({_id: {$in: proposalIds}}, {sort: {accepted: -1}}).fetch()
+        eventField.proposals = if proposals then proposals else []
+        eidEventFields.push(eventField)
+    eidEventFields
 
   setupEvents = () ->
-    $('.event-property').keyup(handleKeyup)
+    $('.add-proposal-button').click( (event) ->
+      fieldName = $(event.target).parents('.event-field').attr('data-field-name')
+      value = $(event.target).siblings('.add-proposal-value').val()
+      id = Proposals.insert({value: value, date: new Date(), source: Meteor.userId()})
+
+      event = EIDEvents.findOne({_id: Session.get('selectedEventId')})
+      proposals = {}
+      proposals[fieldName] = event[fieldName]
+      proposals[fieldName].push(id)
+      EIDEvents.update({_id: Session.get('selectedEventId')}, {$set: proposals})
+
+      render()
+    )
 
   @sicki.registerRenderCallback(setupEvents)
