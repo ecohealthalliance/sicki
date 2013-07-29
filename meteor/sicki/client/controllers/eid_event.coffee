@@ -43,6 +43,7 @@ Meteor.startup () ->
             userEmail = user.emails[0].address
             proposal.userEmail = userEmail
           proposal.canAccept = Meteor.user()?.admin and !proposal.accepted
+          proposal.proposalId = proposal._id.toHexString()
         eventField.proposals = if proposals then proposals else []
         eidEventFields.push(eventField)
     eidEventFields
@@ -63,6 +64,12 @@ Meteor.startup () ->
       proposals[fieldName].push(id)
       EIDEvents.update({_id: Session.get('selectedEventId')}, {$set: proposals})
 
+      render()
+    )
+
+    $('.accept-button').click( (event) ->
+      proposalId = new Meteor.Collection.ObjectID($(event.target).parents('.proposal').attr('data-proposal-id'))
+      Proposals.update({_id: proposalId}, {$set: {accepted: true, accepted_by: Meteor.userId()}})
       render()
     )
 

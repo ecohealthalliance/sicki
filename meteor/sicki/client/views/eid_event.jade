@@ -2,7 +2,7 @@ template(name="eidEvent")
   {{#each fields}}
     .event-field(data-field-name="{{name}}") {{label}}
       {{#each proposals}}
-        .proposal 
+        .proposal(data-proposal-id="{{proposalId}}")
           span {{value}}&nbsp;&nbsp;
           {{#if userEmail}}
             span Proposed by {{userEmail}} on {{date}}
