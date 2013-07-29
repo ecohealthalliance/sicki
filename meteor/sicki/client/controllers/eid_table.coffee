@@ -10,7 +10,7 @@ Meteor.startup () ->
   Template.eidTable.eidEvents = () ->
     FIELDS = ['event_name', 'disease', 'host', 'location', 'eid_id', 'start_date']
     events = EIDEvents.find().fetch()
-    mongoProposals = Proposals.find().fetch()
+    mongoProposals = Proposals.find({accepted: true}).fetch()
     proposals = {}
     for proposal in mongoProposals
       proposals[proposal._id.toHexString()] = proposal
@@ -19,7 +19,8 @@ Meteor.startup () ->
     for event in events
       eidEvent = {_id: event._id}
       for field in FIELDS
-        eidEvent[field] = (proposals?[proposalId.toHexString()]?.value for proposalId in event[field])
+        proposalValues = (proposals?[proposalId.toHexString()]?.value for proposalId in event[field])
+        eidEvent[field] = (value for value in proposalValues when value)
       eidEvents.push(eidEvent)
     eidEvents
       
