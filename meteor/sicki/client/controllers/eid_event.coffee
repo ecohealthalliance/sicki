@@ -51,7 +51,11 @@ Meteor.startup () ->
     $('.add-proposal-button').click( (event) ->
       fieldName = $(event.target).parents('.event-field').attr('data-field-name')
       value = $(event.target).siblings('.add-proposal-value').val()
-      id = Proposals.insert({value: value, date: new Date(), source: Meteor.userId()})
+
+      referenceIdList = $(event.target).siblings('.reference-list').attr('data-reference-ids')
+      refIds = referenceIdList.split(',')
+
+      id = Proposals.insert({value: value, date: new Date(), source: Meteor.userId(), references: refIds})
 
       event = EIDEvents.findOne({_id: Session.get('selectedEventId')})
       proposals = {}
