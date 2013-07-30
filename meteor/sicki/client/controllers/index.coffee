@@ -1,3 +1,7 @@
 Meteor.startup () ->
-  Template.content.showList = () ->
-    Session.get('tab') == 'list'
+  Template.content.selectedEventId = () ->
+    Session.get('selectedEventId')
+
+  Template.contentIfLoggedIn.user = () ->
+    Meteor.user()
+
