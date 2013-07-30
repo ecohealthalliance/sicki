@@ -1,12 +1,12 @@
-EIDEvents = @sicki.EIDEvents
+Pathogens = @sicki.Pathogens
 
-Meteor.publish('all_eid_events', () ->
+Meteor.publish('all_pathogens', () ->
   if @userId
-    EIDEvents.find()
+    Pathogens.find()
 )
-  
-EIDEvents.allow({
-  'insert': (userId, doc) -> 
+
+Pathogens.allow({
+  'insert': (userId, doc) ->
     console.log("user id #{userId} inserted #{JSON.stringify(doc)}")
     true
   'update': (userId, doc, fieldNames, modified) ->

@@ -1,12 +1,12 @@
-EIDEvents = @sicki.EIDEvents
+Proposals = @sicki.Proposals
 
-Meteor.publish('all_eid_events', () ->
+Meteor.publish('all_proposals', () ->
   if @userId
-    EIDEvents.find()
+    Proposals.find()
 )
-  
-EIDEvents.allow({
-  'insert': (userId, doc) -> 
+
+Proposals.allow({
+  'insert': (userId, doc) ->
     console.log("user id #{userId} inserted #{JSON.stringify(doc)}")
     true
   'update': (userId, doc, fieldNames, modified) ->
