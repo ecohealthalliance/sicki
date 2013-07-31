@@ -70,6 +70,7 @@ Meteor.startup () ->
       eventField =
         name: field
         label: FIELDS[field].label
+        isPathogen: (field is 'pathogen')
       if event[field]
         proposalIds = event[field]
         proposals = Proposals.find({_id: {$in: proposalIds}}, {sort: {accepted: -1}}).fetch()
@@ -80,14 +81,23 @@ Meteor.startup () ->
             proposal.userEmail = userEmail
           proposal.canAccept = Meteor.user()?.admin and !proposal.accepted
           proposal.proposalId = proposal._id.toHexString()
+
+          if field is 'pathogen'
+            proposal.pathogen = Pathogens.findOne({_id: proposal.value})
         eventField.proposals = if proposals then proposals else []
+
       eidEventFields.push(eventField)
+
     eidEventFields
 
   setupEvents = () ->
     $('.add-proposal-button').click( (event) ->
       fieldName = $(event.target).parents('.event-field').attr('data-field-name')
-      value = $(event.target).siblings('.add-proposal-value').val()
+
+      if fieldName is 'pathogen'
+        value = $(event.target).siblings('.add-pathogen-value').attr('data-pathogen-id')
+      else
+        value = $(event.target).siblings('.add-proposal-value').val()
 
       referenceIdList = $(event.target).siblings('.reference-list').attr('data-reference-ids')
       refIds = referenceIdList.split(',')
@@ -125,6 +135,17 @@ Meteor.startup () ->
           newIdList = if oldIdList then "#{oldIdList},#{ui.item.referenceId}" else "#{ui.item.referenceId}"
           refList.attr('data-reference-ids', newIdList)
           false
+      })
+
+      pathogens = Pathogens.find().fetch()
+      source = ({
+        label: pathogen.reported_name,
+        pathogenId: pathogen._id
+      } for pathogen in pathogens)
+      $('.add-pathogen-value').autocomplete({
+        source: source,
+        select: (event, ui) ->
+          $(event.target).attr('data-pathogen-id', ui.item.pathogenId)
       })
     )
 
