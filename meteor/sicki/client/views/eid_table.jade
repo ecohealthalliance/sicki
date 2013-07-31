@@ -1,29 +1,16 @@
 template(name="eidTable")
   table.table.table-striped.table-bordered#eidTable(cellpadding="0", cellspacing="0", border="0")
     thead
-      // todo - get headers from backend
       tr
-        {{#if admin}}
-          th 
-        {{/if}}
-        th Event name
-        th Disease
-        th Host
-        th Location
-        th EID id
-        th Start Date
+        {{#each fields}}
+          th {{label}}
+        {{/each}}
     tbody
       {{#if eidEvents}}
         {{#each eidEvents}}
           tr.odd.gradeX(id='{{_id}}')
-            {{#if admin}}
-              td.edit(col='edit') Edit
-            {{/if}}
-            td(col='event_name') {{event_name}}
-            td(col='disease') {{disease}}
-            td(col='host') {{host}}
-            td(col='location') {{location}}
-            td(col='eid_id') {{eid_id}}
-            td(col='start_date') {{start_date}}
+            {{#each eventFields}}
+              td(col='{{field}}') {{values}}
+            {{/each}}
          {{/each}}
        {{/if}}
