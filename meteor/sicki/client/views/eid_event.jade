@@ -1,25 +1,48 @@
 template(name="eidEvent")
   {{#each fields}}
-    .event-field(data-field-name="{{name}}") {{label}}
-      {{#each proposals}}
-        .proposal(data-proposal-id="{{proposalId}}")
-          span {{value}}&nbsp;&nbsp;
-          {{#if userEmail}}
-            span Proposed by {{userEmail}} on {{date}}
-            {{#if canAccept}}
-              button.accept-button Accept
+    {{#if isPathogen}}
+      .event-field(data-field-name="{{name}}") {{label}}
+        {{#each proposals}}
+          .proposal(data-proposal-id="{{proposalId}}")
+            span {{pathogen.reported_name}}&nbsp;&nbsp;
+            {{#if userEmail}}
+              span Proposed by {{userEmail}} on {{date}}
+              {{#if canAccept}}
+                button.accept-button Accept
+              {{/if}}
             {{/if}}
-          {{/if}}
-      {{/each}}
-      .add-proposal
-        span Value:&nbsp;
-        input.add-proposal-value(type="text")
-        span &nbsp;
-        span References:&nbsp;
-        span.reference-list(data-reference-ids="")
-        input.add-proposal-references(type="text")
-        span &nbsp;
-        button.add-proposal-button Add Proposal
+        {{/each}}
+        .add-proposal
+          span Value:&nbsp;
+          input.add-pathogen-value(type="text")
+          span &nbsp;
+          span References:&nbsp;
+          span.reference-list(data-reference-ids="")
+          input.add-proposal-references(type="text")
+          span &nbsp;
+          button.add-proposal-button Add Proposal
+    {{else}}
+      .event-field(data-field-name="{{name}}") {{label}}
+        {{#each proposals}}
+          .proposal(data-proposal-id="{{proposalId}}")
+            span {{value}}&nbsp;&nbsp;
+            {{#if userEmail}}
+              span Proposed by {{userEmail}} on {{date}}
+              {{#if canAccept}}
+                button.accept-button Accept
+              {{/if}}
+            {{/if}}
+        {{/each}}
+        .add-proposal
+          span Value:&nbsp;
+          input.add-pathogen-value(type="text")
+          span &nbsp;
+          span References:&nbsp;
+          span.reference-list(data-reference-ids="")
+          input.add-proposal-references(type="text")
+          span &nbsp;
+          button.add-proposal-button Add Proposal
+    {{/if}}
   {{/each}}
 
 
