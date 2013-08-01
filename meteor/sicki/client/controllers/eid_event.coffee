@@ -37,6 +37,9 @@ Meteor.startup () ->
           proposal.canAccept = Meteor.user()?.admin and !proposal.accepted
           proposal.proposalId = proposal._id.toHexString()
 
+          refs = (References.findOne({_id: refId}) for refId in (proposal.references or []))
+          proposal.refList = ("#{ref.date} #{ref.creators?[0]?.lastName}" for ref in refs).join(',')
+
           if field is 'pathogen'
             proposal.pathogen = Pathogens.findOne({_id: proposal.value})
         eventField.proposals = if proposals then proposals else []
@@ -55,7 +58,7 @@ Meteor.startup () ->
         value = $(event.target).siblings('.add-proposal-value').val()
 
       referenceIdList = $(event.target).siblings('.reference-list').attr('data-reference-ids')
-      refIds = referenceIdList.split(',')
+      refIds = (id for id in referenceIdList.split(',') when id)
 
       id = Proposals.insert({value: value, date: new Date(), source: Meteor.userId(), references: refIds})
 

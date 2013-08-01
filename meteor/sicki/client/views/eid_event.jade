@@ -5,6 +5,7 @@ template(name="eidEvent")
         {{#each proposals}}
           .proposal(data-proposal-id="{{proposalId}}")
             span {{pathogen.reported_name}}&nbsp;&nbsp;
+            span {{refList}}&nbsp;&nbsp;
             {{#if userDisplayName}}
               span Proposed by {{userDisplayName}} on {{date}}
               {{#if canAccept}}
@@ -26,6 +27,7 @@ template(name="eidEvent")
         {{#each proposals}}
           .proposal(data-proposal-id="{{proposalId}}")
             span {{value}}&nbsp;&nbsp;
+            span {{refList}}&nbsp;&nbsp;
             {{#if userDisplayName}}
               span Proposed by {{userDisplayName}} on {{date}}
               {{#if canAccept}}
