@@ -35,39 +35,45 @@ Meteor.startup () ->
     Meteor.user()?.admin
 
   loadDataTable = () ->
-    setupEvents = () ->
-      setVal = (val,eventId,field) ->
-        changes = {}
-        changes[field] = val
-        EIDEvents.update({_id: eventId},{ $set: changes } )
+    setVal = (val,eventId,field) ->
+      changes = {}
+      changes[field] = val
+      console.log(changes)
+      #EIDEvents.update({_id: eventId},{ $set: changes } )
 
-      setter = (value,settings) ->
-        setVal(value,settings.id,settings.name)
-        value
+    setter = (value,settings) ->
+      setVal(value,settings.id,settings.name)
+      value
 
-      handleNonEditingClick = (event) ->
-        id = $(event.target).parent().attr('id')
-        Session.set('selectedEventId', id)
-        render()
+    handleNonEditingClick = (event) ->
+      id = $(event.target).parent().attr('id')
+      Session.set('selectedEventId', id)
+      render()
 
-      $('td:not(.edit)').click(handleNonEditingClick)
-
-      $('td.edit').click( (event) ->
-        if $(event.target).hasClass('editing')
-          parent = $(event.target).parent()
-          parent.children('td:not(.edit)').unbind('all').click(handleNonEditingClick)
-          $(event.target).removeClass('editing')
-          $(event.target).html('Edit')
-        else
-          parent = $(event.target).parent()
+    $('.toggle-edit').click( (event) ->
+      if $(event.target).hasClass('edit-on')
+        $('td').unbind('all').click(handleNonEditingClick)
+        $(event.target).removeClass('edit-on')
+        $(event.target).html('Turn On Edit Mode')
+      else
+        $('td').each( () ->
           id = $(this).parent().attr('id')
-          parent.children('td:not(.edit)').each( () ->
-            col = $(this).attr('col')
-            $(this).unbind('click').editable(setter , {id: id, name: col} )
-          )
-          $(event.target).addClass('editing')
-          $(event.target).html('Stop editing')
-      )
+          col = $(this).attr('col')
+          $(this).unbind('click').editable(setter , {id: id, name: col} )
+        )
+        $(event.target).addClass('edit-on')
+        $(event.target).html('Turn Off Edit Mode')
+    )
+
+    setupEvents = () ->
+      if $('.toggle-edit').hasClass('edit-on')
+        $('td').each( () ->
+          id = $(this).parent().attr('id')
+          col = $(this).attr('col')
+          $(this).unbind('click').editable(setter , {id: id, name: col} )
+        )
+      else
+        $('td').unbind('all').click(handleNonEditingClick)
 
     table = $('#eidTable').dataTable
       "sDom": "<'row-fluid'<'span6'C>><'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>"
@@ -78,7 +84,6 @@ Meteor.startup () ->
       "bAutoWidth": false
 
     table.fnSetColumnVis(i, false) for i in [5..._.keys(FIELDS).length]
-    ColVis.fnRebuild(table)
 
   @sicki.registerRenderCallback(loadDataTable)
 
