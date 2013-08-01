@@ -53,13 +53,16 @@ Meteor.startup () ->
 
       event = EIDEvents.findOne({_id: eventId})
       proposals = {}
-      proposals[field] = event[field]
+      proposals[field] = event[field] or []
       proposals[field].push(proposalId)
       EIDEvents.update({_id: eventId}, {$set: proposals})
 
     setter = (value,settings) ->
       setVal(value,settings.id,settings.name)
-      value
+      if settings.name is 'pathogen'
+        $(this).find('option:selected').text()
+      else
+        value
 
     handleNonEditingClick = (event) ->
       id = $(event.target).parent().attr('id')
@@ -75,7 +78,14 @@ Meteor.startup () ->
         $('td').each( () ->
           id = $(this).parent().attr('id')
           col = $(this).attr('col')
-          $(this).unbind('click').editable(setter , {id: id, name: col} )
+          options = {id: id, name: col}
+          if col is 'pathogen'
+            options.type = 'select'
+            pathogens = Pathogens.find().fetch()
+            options.data = {}
+            options.data[pathogen._id] = pathogen.reported_name for pathogen in pathogens
+            options.submit = 'Select'
+          $(this).unbind('click').editable(setter, options)
         )
         $(event.target).addClass('edit-on')
         $(event.target).html('Turn Off Edit Mode')
@@ -86,7 +96,14 @@ Meteor.startup () ->
         $('td').each( () ->
           id = $(this).parent().attr('id')
           col = $(this).attr('col')
-          $(this).unbind('click').editable(setter , {id: id, name: col} )
+          options = {id: id, name: col}
+          if col is 'pathogen'
+            options.type = 'select'
+            pathogens = Pathogens.find().fetch()
+            options.data = {}
+            options.data[pathogen._id] = pathogen.reported_name for pathogen in pathogens
+            options.submit = 'Select'
+          $(this).unbind('click').editable(setter, options)
         )
       else
         $('td').unbind('all').click(handleNonEditingClick)
