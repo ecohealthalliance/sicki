@@ -1,7 +1,8 @@
 template(name="eidEvent")
   {{#each fields}}
     {{#if isPathogen}}
-      .event-field(data-field-name="{{name}}") {{label}}
+      .event-field(data-field-name="{{name}}") 
+        .event-field-title {{label}}
         {{#each proposals}}
           .proposal(data-proposal-id="{{proposalId}}")
             span {{pathogen.reported_name}}&nbsp;&nbsp;
@@ -23,7 +24,8 @@ template(name="eidEvent")
           span &nbsp;
           button.add-proposal-button Add Proposal
     {{else}}
-      .event-field(data-field-name="{{name}}") {{label}}
+      .event-field(data-field-name="{{name}}")
+        .event-field-title {{label}}
         {{#each proposals}}
           .proposal(data-proposal-id="{{proposalId}}")
             span {{value}}&nbsp;&nbsp;
