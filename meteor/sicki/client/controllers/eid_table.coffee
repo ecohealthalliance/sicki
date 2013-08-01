@@ -3,6 +3,7 @@ Meteor.startup () ->
   FIELDS = @sicki.EID_EVENT_FIELDS
   EIDEvents = @sicki.EIDEvents
   Proposals = @sicki.Proposals
+  Pathogens = @sicki.Pathogens
   render = @sicki.render
 
   Meteor.subscribe('all_proposals')
@@ -25,7 +26,11 @@ Meteor.startup () ->
         if event[field]
           eventProposals = (proposals?[proposalId.toHexString()] for proposalId in event[field] when proposals[proposalId.toHexString()])
           lastAcceptedProposal = _.max(eventProposals, (p) -> p?.accepted_date or null)
-          eidEvent.eventFields.push({field: field, value: lastAcceptedProposal?.value})
+          if field is 'pathogen'
+            pathogen = Pathogens.findOne({_id: lastAcceptedProposal.value})
+            eidEvent.eventFields.push({field: field, value: pathogen?.reported_name})
+          else
+            eidEvent.eventFields.push({field: field, value: lastAcceptedProposal?.value})
         else
           eidEvent.eventFields.push({field: field, value: ""})
       eidEvents.push(eidEvent)
