@@ -110,8 +110,8 @@ Meteor.startup () ->
 
     if $('#eidTable').length
       table = $('#eidTable').dataTable
-        "sDom": "<'row-fluid'<'span6'C>><'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>"
-        "sPaginationType": "bootstrap"
+        "sDom": "<'table-controls'<'table-control-row'<'span6'l><'filter-control'f>><'table-control-row'<'column-control'C>>r>t<'row-fluid'<'span6'i><'span6'p>>"
+        "sPaginationType": "full_numbers"
         "oLanguage":
           "sLengthMenu": "_MENU_ records per page"
         "fnDrawCallback": setupEvents
