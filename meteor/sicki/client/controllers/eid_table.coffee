@@ -108,18 +108,19 @@ Meteor.startup () ->
       else
         $('td').unbind('all').click(handleNonEditingClick)
 
-    table = $('#eidTable').dataTable
-      "sDom": "<'row-fluid'<'span6'C>><'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>"
-      "sPaginationType": "bootstrap"
-      "oLanguage":
-        "sLengthMenu": "_MENU_ records per page"
-      "fnDrawCallback": setupEvents
-      "bAutoWidth": false
+    if $('#eidTable').length
+      table = $('#eidTable').dataTable
+        "sDom": "<'row-fluid'<'span6'C>><'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>"
+        "sPaginationType": "bootstrap"
+        "oLanguage":
+          "sLengthMenu": "_MENU_ records per page"
+        "fnDrawCallback": setupEvents
+        "bAutoWidth": false
 
-    table.fnSetColumnVis(i, false) for i in [5..._.keys(FIELDS).length]
+      table.fnSetColumnVis(i, false) for i in [5..._.keys(FIELDS).length]
 
-    $('.eid-table-container').show()
-    $('.loading-message').hide()
+      $('.eid-table-container').show()
+      $('.loading-message').hide()
 
   @sicki.registerRenderCallback(loadDataTable)
 
