@@ -42,10 +42,20 @@ Meteor.startup () ->
 
   loadDataTable = () ->
     setVal = (val,eventId,field) ->
-      changes = {}
-      changes[field] = val
-      console.log(changes)
-      #EIDEvents.update({_id: eventId},{ $set: changes } )
+      proposalId = Proposals.insert({
+        value: val,
+        date: new Date(),
+        source: Meteor.userId(),
+        accepted: true,
+        accepted_by: Meteor.userId(),
+        accepted_date: new Date()
+      })
+
+      event = EIDEvents.findOne({_id: eventId})
+      proposals = {}
+      proposals[field] = event[field]
+      proposals[field].push(proposalId)
+      EIDEvents.update({_id: eventId}, {$set: proposals})
 
     setter = (value,settings) ->
       setVal(value,settings.id,settings.name)
