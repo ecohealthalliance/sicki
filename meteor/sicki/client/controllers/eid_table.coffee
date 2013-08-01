@@ -23,10 +23,11 @@ Meteor.startup () ->
       eidEvent = {_id: event._id, eventFields: []}
       for field in _.keys(FIELDS)
         if event[field]
-          proposalValues = (proposals?[proposalId.toHexString()]?.value for proposalId in event[field])
-          eidEvent.eventFields.push({field: field, values: (value for value in proposalValues when value)})
+          eventProposals = (proposals?[proposalId.toHexString()] for proposalId in event[field] when proposals[proposalId.toHexString()])
+          lastAcceptedProposal = _.max(eventProposals, (p) -> p?.accepted_date or null)
+          eidEvent.eventFields.push({field: field, value: lastAcceptedProposal?.value})
         else
-          eidEvent.eventFields.push({field: field, values: []})
+          eidEvent.eventFields.push({field: field, value: ""})
       eidEvents.push(eidEvent)
     eidEvents
       

@@ -14,7 +14,7 @@ template(name="eidTable")
         {{#each eidEvents}}
           tr.odd.gradeX(id='{{_id}}')
             {{#each eventFields}}
-              td(col='{{field}}') {{values}}
+              td(col='{{field}}') {{value}}
             {{/each}}
          {{/each}}
        {{/if}}
