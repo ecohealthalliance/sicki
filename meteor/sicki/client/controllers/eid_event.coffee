@@ -71,7 +71,7 @@ Meteor.startup () ->
 
     $('.accept-button').click( (event) ->
       proposalId = new Meteor.Collection.ObjectID($(event.target).parents('.proposal').attr('data-proposal-id'))
-      Proposals.update({_id: proposalId}, {$set: {accepted: true, accepted_by: Meteor.userId()}})
+      Proposals.update({_id: proposalId}, {$set: {accepted: true, accepted_by: Meteor.userId(), accepted_date: new Date()}})
       render()
     )
 
