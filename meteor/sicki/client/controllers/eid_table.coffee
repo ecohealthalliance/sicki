@@ -3,6 +3,7 @@ Meteor.startup () ->
   FIELDS = @sicki.EID_EVENT_FIELDS
   EIDEvents = @sicki.EIDEvents
   Proposals = @sicki.Proposals
+  Pathogens = @sicki.Pathogens
   render = @sicki.render
 
   Meteor.subscribe('all_proposals')
@@ -23,10 +24,15 @@ Meteor.startup () ->
       eidEvent = {_id: event._id, eventFields: []}
       for field in _.keys(FIELDS)
         if event[field]
-          proposalValues = (proposals?[proposalId.toHexString()]?.value for proposalId in event[field])
-          eidEvent.eventFields.push({field: field, values: (value for value in proposalValues when value)})
+          eventProposals = (proposals?[proposalId.toHexString()] for proposalId in event[field] when proposals[proposalId.toHexString()])
+          lastAcceptedProposal = _.max(eventProposals, (p) -> p?.accepted_date or null)
+          if field is 'pathogen'
+            pathogen = Pathogens.findOne({_id: lastAcceptedProposal.value})
+            eidEvent.eventFields.push({field: field, value: pathogen?.reported_name})
+          else
+            eidEvent.eventFields.push({field: field, value: lastAcceptedProposal?.value})
         else
-          eidEvent.eventFields.push({field: field, values: []})
+          eidEvent.eventFields.push({field: field, value: ""})
       eidEvents.push(eidEvent)
     eidEvents
       
@@ -35,39 +41,72 @@ Meteor.startup () ->
     Meteor.user()?.admin
 
   loadDataTable = () ->
-    setupEvents = () ->
-      setVal = (val,eventId,field) ->
-        changes = {}
-        changes[field] = val
-        EIDEvents.update({_id: eventId},{ $set: changes } )
+    setVal = (val,eventId,field) ->
+      proposalId = Proposals.insert({
+        value: val,
+        date: new Date(),
+        source: Meteor.userId(),
+        accepted: true,
+        accepted_by: Meteor.userId(),
+        accepted_date: new Date()
+      })
 
-      setter = (value,settings) ->
-        setVal(value,settings.id,settings.name)
+      event = EIDEvents.findOne({_id: eventId})
+      proposals = {}
+      proposals[field] = event[field] or []
+      proposals[field].push(proposalId)
+      EIDEvents.update({_id: eventId}, {$set: proposals})
+
+    setter = (value,settings) ->
+      setVal(value,settings.id,settings.name)
+      if settings.name is 'pathogen'
+        $(this).find('option:selected').text()
+      else
         value
 
-      handleNonEditingClick = (event) ->
-        id = $(event.target).parent().attr('id')
-        Session.set('selectedEventId', id)
-        render()
+    handleNonEditingClick = (event) ->
+      id = $(event.target).parent().attr('id')
+      Session.set('selectedEventId', id)
+      render()
 
-      $('td:not(.edit)').click(handleNonEditingClick)
-
-      $('td.edit').click( (event) ->
-        if $(event.target).hasClass('editing')
-          parent = $(event.target).parent()
-          parent.children('td:not(.edit)').unbind('all').click(handleNonEditingClick)
-          $(event.target).removeClass('editing')
-          $(event.target).html('Edit')
-        else
-          parent = $(event.target).parent()
+    $('.toggle-edit').click( (event) ->
+      if $(event.target).hasClass('edit-on')
+        $('td').unbind('all').click(handleNonEditingClick)
+        $(event.target).removeClass('edit-on')
+        $(event.target).html('Turn On Edit Mode')
+      else
+        $('td').each( () ->
           id = $(this).parent().attr('id')
-          parent.children('td:not(.edit)').each( () ->
-            col = $(this).attr('col')
-            $(this).unbind('click').editable(setter , {id: id, name: col} )
-          )
-          $(event.target).addClass('editing')
-          $(event.target).html('Stop editing')
-      )
+          col = $(this).attr('col')
+          options = {id: id, name: col}
+          if col is 'pathogen'
+            options.type = 'select'
+            pathogens = Pathogens.find().fetch()
+            options.data = {}
+            options.data[pathogen._id] = pathogen.reported_name for pathogen in pathogens
+            options.submit = 'Select'
+          $(this).unbind('click').editable(setter, options)
+        )
+        $(event.target).addClass('edit-on')
+        $(event.target).html('Turn Off Edit Mode')
+    )
+
+    setupEvents = () ->
+      if $('.toggle-edit').hasClass('edit-on')
+        $('td').each( () ->
+          id = $(this).parent().attr('id')
+          col = $(this).attr('col')
+          options = {id: id, name: col}
+          if col is 'pathogen'
+            options.type = 'select'
+            pathogens = Pathogens.find().fetch()
+            options.data = {}
+            options.data[pathogen._id] = pathogen.reported_name for pathogen in pathogens
+            options.submit = 'Select'
+          $(this).unbind('click').editable(setter, options)
+        )
+      else
+        $('td').unbind('all').click(handleNonEditingClick)
 
     table = $('#eidTable').dataTable
       "sDom": "<'row-fluid'<'span6'C>><'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>"
@@ -78,7 +117,6 @@ Meteor.startup () ->
       "bAutoWidth": false
 
     table.fnSetColumnVis(i, false) for i in [5..._.keys(FIELDS).length]
-    ColVis.fnRebuild(table)
 
   @sicki.registerRenderCallback(loadDataTable)
 
