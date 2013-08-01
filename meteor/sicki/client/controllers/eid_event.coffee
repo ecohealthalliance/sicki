@@ -33,8 +33,7 @@ Meteor.startup () ->
         for proposal in proposals
           if proposal.source != 'original_data'
             user = Meteor.users.findOne({_id: proposal.source})
-            userEmail = user.emails[0].address
-            proposal.userEmail = userEmail
+            proposal.userDisplayName = user.profile?.name or user.emails?[0]?.address
           proposal.canAccept = Meteor.user()?.admin and !proposal.accepted
           proposal.proposalId = proposal._id.toHexString()
 

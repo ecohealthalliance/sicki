@@ -5,8 +5,8 @@ template(name="eidEvent")
         {{#each proposals}}
           .proposal(data-proposal-id="{{proposalId}}")
             span {{pathogen.reported_name}}&nbsp;&nbsp;
-            {{#if userEmail}}
-              span Proposed by {{userEmail}} on {{date}}
+            {{#if userDisplayName}}
+              span Proposed by {{userDisplayName}} on {{date}}
               {{#if canAccept}}
                 button.accept-button Accept
               {{/if}}
@@ -26,8 +26,8 @@ template(name="eidEvent")
         {{#each proposals}}
           .proposal(data-proposal-id="{{proposalId}}")
             span {{value}}&nbsp;&nbsp;
-            {{#if userEmail}}
-              span Proposed by {{userEmail}} on {{date}}
+            {{#if userDisplayName}}
+              span Proposed by {{userDisplayName}} on {{date}}
               {{#if canAccept}}
                 button.accept-button Accept
               {{/if}}
