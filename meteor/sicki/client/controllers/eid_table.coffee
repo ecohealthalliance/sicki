@@ -118,6 +118,9 @@ Meteor.startup () ->
 
     table.fnSetColumnVis(i, false) for i in [5..._.keys(FIELDS).length]
 
+    $('.eid-table-container').show()
+    $('.loading-message').hide()
+
   @sicki.registerRenderCallback(loadDataTable)
 
   Meteor.subscribe('all_eid_events', render)
