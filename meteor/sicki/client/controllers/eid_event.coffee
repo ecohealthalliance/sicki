@@ -64,7 +64,7 @@ Meteor.startup () ->
 
       event = EIDEvents.findOne({_id: Session.get('selectedEventId')})
       proposals = {}
-      proposals[fieldName] = event[fieldName]
+      proposals[fieldName] = event[fieldName] or []
       proposals[fieldName].push(id)
       EIDEvents.update({_id: Session.get('selectedEventId')}, {$set: proposals})
 
