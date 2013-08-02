@@ -3,13 +3,11 @@ ENTER_KEY_CODE = 13
 FIELDS =
 Meteor.startup () ->
   FIELDS = @sicki.constants.EID_EVENT_FIELDS
-  EIDEvents = @sicki.collections.EIDEvents
   Proposals = @sicki.collections.Proposals
   Pathogens = @sicki.collections.Pathogens
   References = @sicki.collections.References
   render = @sicki.render
-
-  Meteor.subscribe('EIDEvents')
+  eidEventService = @sicki.services.eidEventService
 
   Meteor.subscribe('Proposals')
 
@@ -20,7 +18,7 @@ Meteor.startup () ->
   Meteor.subscribe('userData')
 
   Template.eidEvent.fields = () ->
-    event = EIDEvents.findOne({_id: Session.get('selectedEventId')})
+    event = eidEventService.get(Session.get('selectedEventId'))
     eidEventFields = []
     for field in _.keys(FIELDS)
       eventField =
@@ -62,11 +60,11 @@ Meteor.startup () ->
 
       id = Proposals.insert({value: value, date: new Date(), source: Meteor.userId(), references: refIds})
 
-      event = EIDEvents.findOne({_id: Session.get('selectedEventId')})
+      event = eidEventService.get(Session.get('selectedEventId'))
       proposals = {}
       proposals[fieldName] = event[fieldName] or []
       proposals[fieldName].push(id)
-      EIDEvents.update({_id: Session.get('selectedEventId')}, {$set: proposals})
+      eidEventService.set(Session.get('selectedEventId'), proposals)
 
       render()
     )
