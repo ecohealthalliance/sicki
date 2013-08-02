@@ -1,20 +1,19 @@
 # wait til eidTable template loads
 Meteor.startup () ->
   FIELDS = @sicki.constants.EID_EVENT_FIELDS
-  EIDEvents = @sicki.collections.EIDEvents
-  Proposals = @sicki.collections.Proposals
-  Pathogens = @sicki.collections.Pathogens
   render = @sicki.render
+  eidEventService = @sicki.services.eidEventService
+  proposalService = @sicki.services.proposalService
+  pathogenService = @sicki.services.pathogenService
 
-  Meteor.subscribe('Proposals')
   Meteor.subscribe('userData')
 
   Template.eidTable.fields = () ->
     ({name: name, label: FIELDS[name].label} for name in _.keys(FIELDS))
 
   Template.eidTable.eidEvents = () ->
-    events = EIDEvents.find().fetch()
-    mongoProposals = Proposals.find({accepted: true}).fetch()
+    events = eidEventService.read()
+    mongoProposals = proposalService.find({accepted: true})
     proposals = {}
     for proposal in mongoProposals
       proposals[proposal._id.toHexString()] = proposal
@@ -27,7 +26,7 @@ Meteor.startup () ->
           eventProposals = (proposals?[proposalId.toHexString()] for proposalId in event[field] when proposals[proposalId.toHexString()])
           lastAcceptedProposal = _.max(eventProposals, (p) -> p?.accepted_date or null)
           if field is 'pathogen'
-            pathogen = Pathogens.findOne({_id: lastAcceptedProposal.value})
+            pathogen = pathogenService.read(lastAcceptedProposal.value)
             eidEvent.eventFields.push({field: field, value: pathogen?.reported_name})
           else
             eidEvent.eventFields.push({field: field, value: lastAcceptedProposal?.value})
@@ -42,7 +41,7 @@ Meteor.startup () ->
 
   loadDataTable = () ->
     setVal = (val,eventId,field) ->
-      proposalId = Proposals.insert({
+      proposalId = proposalService.create({
         value: val,
         date: new Date(),
         source: Meteor.userId(),
@@ -51,11 +50,11 @@ Meteor.startup () ->
         accepted_date: new Date()
       })
 
-      event = EIDEvents.findOne({_id: eventId})
+      event = eidEventService.read(eventId)
       proposals = {}
       proposals[field] = event[field] or []
       proposals[field].push(proposalId)
-      EIDEvents.update({_id: eventId}, {$set: proposals})
+      eidEventService.update(eventId, proposals)
 
     setter = (value,settings) ->
       setVal(value,settings.id,settings.name)
@@ -81,7 +80,7 @@ Meteor.startup () ->
           options = {id: id, name: col}
           if col is 'pathogen'
             options.type = 'select'
-            pathogens = Pathogens.find().fetch()
+            pathogens = pathogenService.read()
             options.data = {}
             options.data[pathogen._id] = pathogen.reported_name for pathogen in pathogens
             options.submit = 'Select'
@@ -99,7 +98,7 @@ Meteor.startup () ->
           options = {id: id, name: col}
           if col is 'pathogen'
             options.type = 'select'
-            pathogens = Pathogens.find().fetch()
+            pathogens = pathogenService.read()
             options.data = {}
             options.data[pathogen._id] = pathogen.reported_name for pathogen in pathogens
             options.submit = 'Select'

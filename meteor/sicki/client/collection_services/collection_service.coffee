@@ -17,6 +17,9 @@ class CollectionService
   create: (attributes) ->
     @collection.insert(attributes)
 
+  find: (query) ->
+    @collection.find(query).fetch()
+
 
 @sicki ?= {}
 @sicki.services ?= {}
