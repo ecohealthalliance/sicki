@@ -18,7 +18,6 @@ Meteor.startup () ->
       eventField =
         name: field
         label: FIELDS[field].label
-        isPathogen: (field is 'pathogen')
       if event[field]
         proposalIds = event[field]
         proposals = proposalService.read(proposalIds, {sort: {accepted: -1}})
@@ -44,10 +43,8 @@ Meteor.startup () ->
     $('.add-proposal-button').click( (event) ->
       fieldName = $(event.target).parents('.event-field').attr('data-field-name')
 
-      if fieldName is 'pathogen'
-        value = $(event.target).siblings('.add-pathogen-value').attr('data-pathogen-id')
-      else
-        value = $(event.target).siblings('.add-proposal-value').val()
+      valueElement = $(event.target).siblings('.add-proposal-value')
+      value = valueElement.attr('data-proposal-value') or valueElement.val()
 
       referenceIdList = $(event.target).siblings('.reference-list').attr('data-reference-ids')
       refIds = (id for id in referenceIdList.split(',') when id)
@@ -92,10 +89,10 @@ Meteor.startup () ->
         label: pathogen.reported_name,
         pathogenId: pathogen._id
       } for pathogen in pathogens)
-      $('.add-pathogen-value').autocomplete({
+      $('.event-field[data-field-name=pathogen] .add-proposal-value').autocomplete({
         source: source,
         select: (event, ui) ->
-          $(event.target).attr('data-pathogen-id', ui.item.pathogenId)
+          $(event.target).attr('data-proposal-value', ui.item.pathogenId)
       })
     )
 
