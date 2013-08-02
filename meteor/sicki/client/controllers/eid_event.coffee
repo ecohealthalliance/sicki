@@ -3,13 +3,11 @@ ENTER_KEY_CODE = 13
 FIELDS =
 Meteor.startup () ->
   FIELDS = @sicki.constants.EID_EVENT_FIELDS
-  Proposals = @sicki.collections.Proposals
   Pathogens = @sicki.collections.Pathogens
   References = @sicki.collections.References
   render = @sicki.render
   eidEventService = @sicki.services.eidEventService
-
-  Meteor.subscribe('Proposals')
+  proposalService = @sicki.services.proposalService
 
   Meteor.subscribe('Pathogens')
 
@@ -27,7 +25,7 @@ Meteor.startup () ->
         isPathogen: (field is 'pathogen')
       if event[field]
         proposalIds = event[field]
-        proposals = Proposals.find({_id: {$in: proposalIds}}, {sort: {accepted: -1}}).fetch()
+        proposals = proposalService.get(proposalIds, {sort: {accepted: -1}})
         for proposal in proposals
           if proposal.source != 'original_data'
             user = Meteor.users.findOne({_id: proposal.source})
@@ -58,7 +56,7 @@ Meteor.startup () ->
       referenceIdList = $(event.target).siblings('.reference-list').attr('data-reference-ids')
       refIds = (id for id in referenceIdList.split(',') when id)
 
-      id = Proposals.insert({value: value, date: new Date(), source: Meteor.userId(), references: refIds})
+      id = proposalService.create({value: value, date: new Date(), source: Meteor.userId(), references: refIds})
 
       event = eidEventService.get(Session.get('selectedEventId'))
       proposals = {}
@@ -71,7 +69,7 @@ Meteor.startup () ->
 
     $('.accept-button').click( (event) ->
       proposalId = new Meteor.Collection.ObjectID($(event.target).parents('.proposal').attr('data-proposal-id'))
-      Proposals.update({_id: proposalId}, {$set: {accepted: true, accepted_by: Meteor.userId(), accepted_date: new Date()}})
+      proposalService.set(proposalId, {accepted: true, accepted_by: Meteor.userId(), accepted_date: new Date()})
       render()
     )
 
