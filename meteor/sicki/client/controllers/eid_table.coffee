@@ -6,7 +6,7 @@ Meteor.startup () ->
   Pathogens = @sicki.collections.Pathogens
   render = @sicki.render
 
-  Meteor.subscribe('all_proposals')
+  Meteor.subscribe('Proposals')
   Meteor.subscribe('userData')
 
   Template.eidTable.fields = () ->
@@ -124,6 +124,6 @@ Meteor.startup () ->
 
   @sicki.registerRenderCallback(loadDataTable)
 
-  Meteor.subscribe('all_eid_events', render)
+  Meteor.subscribe('EIDEvents', render)
 
 

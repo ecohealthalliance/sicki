@@ -9,13 +9,13 @@ Meteor.startup () ->
   References = @sicki.collections.References
   render = @sicki.render
 
-  Meteor.subscribe('all_eid_events')
+  Meteor.subscribe('EIDEvents')
 
-  Meteor.subscribe('all_proposals')
+  Meteor.subscribe('Proposals')
 
-  Meteor.subscribe('all_pathogens')
+  Meteor.subscribe('Pathogens')
 
-  Meteor.subscribe('all_references')
+  Meteor.subscribe('References')
 
   Meteor.subscribe('userData')
 
