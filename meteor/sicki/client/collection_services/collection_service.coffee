@@ -1,7 +1,7 @@
 class CollectionService
 
   constructor: (@name, @collection) ->
-    Meteor.subscribe(@name)
+    @subscription = Meteor.subscribe(@name)
 
   read: (idOrIds, options = {}) ->
     if typeof idOrIds is 'string'
@@ -19,6 +19,11 @@ class CollectionService
 
   find: (query) ->
     @collection.find(query).fetch()
+
+  ready: (fn) ->
+    Deps.autorun () =>
+      if @subscription.ready()
+        fn()
 
 
 @sicki ?= {}

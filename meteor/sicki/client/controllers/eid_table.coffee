@@ -8,6 +8,7 @@ Meteor.startup () ->
 
   Meteor.subscribe('userData')
 
+
   Template.eidTable.fields = () ->
     ({name: name, label: FIELDS[name].label} for name in _.keys(FIELDS))
 
@@ -123,6 +124,8 @@ Meteor.startup () ->
 
   @sicki.registerRenderCallback(loadDataTable)
 
-  Meteor.subscribe('EIDEvents', render)
-
+  eidEventService.ready () ->
+    proposalService.ready () ->
+      pathogenService.ready () ->
+        render()
 
