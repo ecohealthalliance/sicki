@@ -1,4 +1,4 @@
-EIDEvents = @sicki.EIDEvents
+EIDEvents = @sicki.collections.EIDEvents
 
 Meteor.publish('all_eid_events', () ->
   if @userId

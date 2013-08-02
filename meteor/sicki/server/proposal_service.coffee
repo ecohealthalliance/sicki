@@ -1,4 +1,4 @@
-Proposals = @sicki.Proposals
+Proposals = @sicki.collections.Proposals
 
 Meteor.publish('all_proposals', () ->
   if @userId

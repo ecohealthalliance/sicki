@@ -1,4 +1,4 @@
-References = @sicki.References
+References = @sicki.collections.References
 
 Meteor.publish('all_references', () ->
   if @userId

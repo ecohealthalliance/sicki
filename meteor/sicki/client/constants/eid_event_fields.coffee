@@ -1,5 +1,7 @@
 Meteor.startup () ->
-  @sicki.EID_EVENT_FIELDS = 
+  @sicki.constants ?= {}
+
+  @sicki.constants.EID_EVENT_FIELDS = 
     event_name: 
       label: 'Event Name'
     pathogen: 

@@ -1,9 +1,9 @@
 # wait til eidTable template loads
 Meteor.startup () ->
-  FIELDS = @sicki.EID_EVENT_FIELDS
-  EIDEvents = @sicki.EIDEvents
-  Proposals = @sicki.Proposals
-  Pathogens = @sicki.Pathogens
+  FIELDS = @sicki.constants.EID_EVENT_FIELDS
+  EIDEvents = @sicki.collections.EIDEvents
+  Proposals = @sicki.collections.Proposals
+  Pathogens = @sicki.collections.Pathogens
   render = @sicki.render
 
   Meteor.subscribe('all_proposals')

@@ -1,4 +1,4 @@
-Pathogens = @sicki.Pathogens
+Pathogens = @sicki.collections.Pathogens
 
 Meteor.publish('all_pathogens', () ->
   if @userId

@@ -2,11 +2,11 @@ ENTER_KEY_CODE = 13
 
 FIELDS =
 Meteor.startup () ->
-  FIELDS = @sicki.EID_EVENT_FIELDS
-  EIDEvents = @sicki.EIDEvents
-  Proposals = @sicki.Proposals
-  Pathogens = @sicki.Pathogens
-  References = @sicki.References
+  FIELDS = @sicki.constants.EID_EVENT_FIELDS
+  EIDEvents = @sicki.collections.EIDEvents
+  Proposals = @sicki.collections.Proposals
+  Pathogens = @sicki.collections.Pathogens
+  References = @sicki.collections.References
   render = @sicki.render
 
   Meteor.subscribe('all_eid_events')
