@@ -3,14 +3,13 @@ class CollectionService
   constructor: (@name, @collection) ->
     Meteor.subscribe(@name)
 
-  all: () ->
-    @collection.find().fetch()
-
   read: (idOrIds, options = {}) ->
     if typeof idOrIds is 'string'
       @collection.findOne({_id: idOrIds}, options)
-    else
+    else if idOrIds
       @collection.find({_id: {$in: idOrIds}}, options).fetch()
+    else
+      @collection.find().fetch()
 
   update: (id, changes) ->
     @collection.update({_id: id}, {$set: changes})
