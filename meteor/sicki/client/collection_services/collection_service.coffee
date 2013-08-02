@@ -6,7 +6,7 @@ class CollectionService
   read: (idOrIds, options = {}) ->
     if typeof idOrIds is 'string'
       @collection.findOne({_id: idOrIds}, options)
-    else if idOrIds
+    else if _.isArray(idOrIds)
       @collection.find({_id: {$in: idOrIds}}, options).fetch()
     else
       @collection.find().fetch()

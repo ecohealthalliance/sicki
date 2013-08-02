@@ -3,13 +3,11 @@ ENTER_KEY_CODE = 13
 FIELDS =
 Meteor.startup () ->
   FIELDS = @sicki.constants.EID_EVENT_FIELDS
-  References = @sicki.collections.References
   render = @sicki.render
   eidEventService = @sicki.services.eidEventService
   proposalService = @sicki.services.proposalService
   pathogenService = @sicki.services.pathogenService
-
-  Meteor.subscribe('References')
+  referenceService = @sicki.services.referenceService
 
   Meteor.subscribe('userData')
 
@@ -31,8 +29,8 @@ Meteor.startup () ->
           proposal.canAccept = Meteor.user()?.admin and !proposal.accepted
           proposal.proposalId = proposal._id.toHexString()
 
-          refs = (References.findOne({_id: refId}) for refId in (proposal.references or []))
-          proposal.refList = ("#{ref.date} #{ref.creators?[0]?.lastName}" for ref in refs).join(',')
+          refs = referenceService.read(proposal.references or [])
+          proposal.refList = ("#{ref.creators?[0]?.lastName} #{ref.date}" for ref in refs).join(', ')
 
           if field is 'pathogen'
             proposal.pathogen = pathogenService.read(proposal.value)
@@ -72,7 +70,7 @@ Meteor.startup () ->
     )
 
     Deps.autorun( () ->
-      references = References.find().fetch()
+      references = referenceService.read()
       source = ({
         label: "#{ref.creators?[0]?.lastName} #{ref.date} #{ref.title}",
         value: "#{ref.creators?[0]?.lastName} #{ref.date}",
