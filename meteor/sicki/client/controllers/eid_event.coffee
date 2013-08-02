@@ -16,7 +16,7 @@ Meteor.startup () ->
   Meteor.subscribe('userData')
 
   Template.eidEvent.fields = () ->
-    event = eidEventService.get(Session.get('selectedEventId'))
+    event = eidEventService.read(Session.get('selectedEventId'))
     eidEventFields = []
     for field in _.keys(FIELDS)
       eventField =
@@ -25,7 +25,7 @@ Meteor.startup () ->
         isPathogen: (field is 'pathogen')
       if event[field]
         proposalIds = event[field]
-        proposals = proposalService.get(proposalIds, {sort: {accepted: -1}})
+        proposals = proposalService.read(proposalIds, {sort: {accepted: -1}})
         for proposal in proposals
           if proposal.source != 'original_data'
             user = Meteor.users.findOne({_id: proposal.source})
@@ -58,18 +58,18 @@ Meteor.startup () ->
 
       id = proposalService.create({value: value, date: new Date(), source: Meteor.userId(), references: refIds})
 
-      event = eidEventService.get(Session.get('selectedEventId'))
+      event = eidEventService.read(Session.get('selectedEventId'))
       proposals = {}
       proposals[fieldName] = event[fieldName] or []
       proposals[fieldName].push(id)
-      eidEventService.set(Session.get('selectedEventId'), proposals)
+      eidEventService.update(Session.get('selectedEventId'), proposals)
 
       render()
     )
 
     $('.accept-button').click( (event) ->
       proposalId = new Meteor.Collection.ObjectID($(event.target).parents('.proposal').attr('data-proposal-id'))
-      proposalService.set(proposalId, {accepted: true, accepted_by: Meteor.userId(), accepted_date: new Date()})
+      proposalService.update(proposalId, {accepted: true, accepted_by: Meteor.userId(), accepted_date: new Date()})
       render()
     )
 
