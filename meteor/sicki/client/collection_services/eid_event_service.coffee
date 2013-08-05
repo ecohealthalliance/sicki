@@ -14,5 +14,6 @@ Meteor.startup () ->
       proposalChanges[field] = event[field] or []
       proposalChanges[field].push(proposalId)
       @update(eventId, proposalChanges)
+      proposalId
 
   @sicki.services.eidEventService = new EIDEventService()

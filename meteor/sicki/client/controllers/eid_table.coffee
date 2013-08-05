@@ -41,21 +41,14 @@ Meteor.startup () ->
     Meteor.user()?.admin
 
   loadDataTable = () ->
-    setVal = (val,eventId,field) ->
-      proposalId = proposalService.create({
+    setVal = (val, eventId, field) ->
+      proposal =
         value: val,
         date: new Date(),
-        source: Meteor.userId(),
-        accepted: true,
-        accepted_by: Meteor.userId(),
-        accepted_date: new Date()
-      })
+        source: Meteor.userId()
 
-      event = eidEventService.read(eventId)
-      proposals = {}
-      proposals[field] = event[field] or []
-      proposals[field].push(proposalId)
-      eidEventService.update(eventId, proposals)
+      proposalId = eidEventService.addProposal(eventId, field, proposal)
+      proposalService.accept(proposalId)
 
     setter = (value,settings) ->
       setVal(value,settings.id,settings.name)
