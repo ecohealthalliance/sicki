@@ -7,24 +7,27 @@ Meteor.startup () ->
   Template.referenceTable.fields = () ->
     ({name: name, label: FIELDS[name].label} for name in _.keys(FIELDS))
 
-  Template.referenceTable.references = () ->
+  Template.referenceTable.rows = () ->
     refs = referenceService.read()
 
-    references = []
+    rows = []
     for ref in refs
-      reference = {_id: ref._id, referenceFields: []}
+      row = {_id: ref._id, data: []}
       for field in _.keys(FIELDS)
         if field is 'creators'
           creatorsList = ("#{creator.lastName}, #{creator.firstName}" for creator in ref[field]).join(', ')
           ref[field] = creatorsList
 
-        reference.referenceFields.push({field: field, value: ref[field]})
-      references.push(reference)
-    references
+        row.data.push({field: field, value: ref[field]})
+      rows.push(row)
+    rows
+
+  Template.referenceTable.renderTable = (fields, rows) ->
+    Template.table({fields: fields, rows: rows})
 
   loadDataTable = () ->
-    if $('#referenceTable').length
-      table = $('#referenceTable').dataTable
+    if $('.data-table').length
+      table = $('.data-table').dataTable
         "sDom": "<'table-controls'<'table-control-row'<'span6'l><'filter-control'f>><'table-control-row'<'column-control'C>>r>t<'row-fluid'<'span6'i><'span6'p>>"
         "sPaginationType": "full_numbers"
         "oLanguage":
@@ -33,7 +36,7 @@ Meteor.startup () ->
 
       table.fnSetColumnVis(i, false) for i in [5..._.keys(FIELDS).length]
 
-      $('.reference-table-container').show()
+      $('.table-container').show()
       $('.loading-message').hide()
 
   @sicki.registerRenderCallback(loadDataTable)

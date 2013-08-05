@@ -1,20 +1,2 @@
 template(name="referenceTable")
-  .loading-message Loading References...
-
-  .reference-table-container
-
-    table.table.table-striped.table-bordered#referenceTable(cellpadding="0", cellspacing="0", border="0")
-      thead
-        tr
-          {{#each fields}}
-            th {{label}}
-          {{/each}}
-      tbody
-        {{#if references}}
-          {{#each references}}
-            tr.odd.gradeX(id='{{_id}}')
-              {{#each referenceFields}}
-                td(col='{{field}}') {{value}}
-              {{/each}}
-           {{/each}}
-         {{/if}}
+  {{{renderTable fields rows}}}
