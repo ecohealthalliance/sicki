@@ -19,5 +19,12 @@ Meteor.startup () ->
         
       proposals
 
+    accept: (id) ->
+      changes =
+        accepted: true
+        accepted_by: Meteor.userId()
+        accepted_date: new Date()
+      @update(id, changes)
+
 
   @sicki.services.proposalService = new ProposalService()
