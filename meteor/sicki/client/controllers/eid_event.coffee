@@ -20,11 +20,8 @@ Meteor.startup () ->
         label: FIELDS[field].label
       if event[field]
         proposalIds = event[field]
-        proposals = proposalService.read(proposalIds, {sort: {accepted: -1}})
+        proposals = proposalService.getWithUsers(proposalIds, {sort: {accepted: -1}})
         for proposal in proposals
-          if proposal.source != 'original_data'
-            user = Meteor.users.findOne({_id: proposal.source})
-            proposal.userDisplayName = user.profile?.name or user.emails?[0]?.address
           proposal.canAccept = Meteor.user()?.admin and !proposal.accepted
           proposal.proposalId = proposal._id.toHexString()
 

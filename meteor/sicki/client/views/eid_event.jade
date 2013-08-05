@@ -10,11 +10,11 @@ template(name="eidEvent")
             span {{value}}&nbsp;&nbsp;
           {{/if}}
           span {{refList}}&nbsp;&nbsp;
-          {{#if userDisplayName}}
-            span Proposed by {{userDisplayName}} on {{date}}
-            {{#if canAccept}}
-              button.accept-button Accept
-            {{/if}}
+          {{#if user.displayName}}
+            span Proposed by {{user.displayName}} on {{date}}
+          {{/if}}
+          {{#if canAccept}}
+            button.accept-button Accept
           {{/if}}
       {{/each}}
       .add-proposal
