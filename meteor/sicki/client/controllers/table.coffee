@@ -19,7 +19,7 @@ class TableController
   constructor: (@template) ->
 
   start: () ->
-    renderField = @template.renderField or (value) -> value
+    renderField = @template.renderField or (field, value) -> value
 
     @template.renderTable = (fields, rows) ->
       Template.table({tableId: Session.get('selectedTable'), fields: fields, rows: rows, renderField: renderField})

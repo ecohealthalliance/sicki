@@ -7,19 +7,15 @@ Meteor.startup () ->
     ({name: name, label: FIELDS[name].label} for name in _.keys(FIELDS))
 
   Template.referenceTable.rows = () ->
-    refs = referenceService.read()
+    ({
+      _id: ref._id
+      data: ({field: field, value: ref[field]} for field in _.keys(FIELDS))
+    } for ref in referenceService.read())
 
-    rows = []
-    for ref in refs
-      row = {_id: ref._id, data: []}
-      for field in _.keys(FIELDS)
-        if field is 'creators'
-          creatorsList = ("#{creator.lastName}, #{creator.firstName}" for creator in ref[field]).join(', ')
-          ref[field] = creatorsList
-
-        row.data.push({field: field, value: ref[field]})
-      rows.push(row)
-    rows
+  Template.referenceTable.renderField = (field, value) ->
+    switch field
+      when 'creators' then ("#{creator.lastName}, #{creator.firstName}" for creator in value)
+      else value
 
   controller = new TableController(Template.referenceTable)
   controller.start()

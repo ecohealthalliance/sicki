@@ -14,7 +14,7 @@ template(name="table")
           {{#each rows}}
             tr.odd.gradeX('data-id'='{{_id}}')
               {{#each data}}
-                td(col='{{field}}') {{../../renderField value}}
+                td(col='{{field}}') {{../../renderField field value}}
               {{/each}}
           {{/each}}
         {{/if}}
