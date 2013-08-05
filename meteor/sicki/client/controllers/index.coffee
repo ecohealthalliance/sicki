@@ -5,20 +5,14 @@ Meteor.startup () ->
   Template.contentIfLoggedIn.user = () ->
     Meteor.user()
 
-  Template.editPage.eidTable = () ->
-    Session.equals('selectedTable', 'eidEvents')
+  Template.selectedTable.renderSelectedTable = () ->
+    switch Session.get('selectedTable')
+      when 'eidEvents' then Template.eidTable()
+      when 'references' then Template.referenceTable()
+      when 'users' then Template.userTable()
 
-  Template.table.eidTable = () ->
-    Session.equals('selectedTable', 'eidEvents')
+  Template.selectedEditPage.renderSelectedEditPage = () ->
+    switch Session.get('selectedTable')
+      when 'eidEvents' then Template.eidEvent()
 
-  Template.editPage.referenceTable = () ->
-    Session.equals('selectedTable', 'references')
 
-  Template.table.referenceTable = () ->
-    Session.equals('selectedTable', 'references')
-
-  Template.editPage.userTable = () ->
-    Session.equals('selectedTable', 'users')
-
-  Template.table.userTable = () ->
-    Session.equals('selectedTable', 'users')

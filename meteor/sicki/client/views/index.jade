@@ -12,31 +12,15 @@ template(name="contentIfLoggedIn")
 
 template(name="content")
   {{#if selectedId}}
-    {{> editPage}}
+    {{> selectedEditPage}}
   {{else}}
-    {{> table}}
+    {{> selectedTable}}
   {{/if}}
 
 
-template(name="editPage")
-  {{#if eidTable}}
-    {{> eidEvent}}
-  {{/if}}
-  {{#if referenceTable}}
-    {{> reference}}
-  {{/if}}
-  {{#if userTable}}
-    {{> user}}
-  {{/if}}
+template(name="selectedEditPage")
+  {{{renderSelectedEditPage}}}
 
 
-template(name="table")
-  {{#if eidTable}}
-    {{> eidTable}}
-  {{/if}}
-  {{#if referenceTable}}
-    {{> referenceTable}}
-  {{/if}}
-  {{#if userTable}}
-    {{> userTable}}
-  {{/if}}
+template(name="selectedTable")
+  {{{renderSelectedTable}}}
