@@ -15,6 +15,10 @@ template(name="userTable")
             tr.odd.gradeX(id='{{_id}}')
               {{#each userFields}}
                 td(col='{{field}}') {{value}}
+                  {{#if canChangeAdmin}}
+                    span
+                      button.change-admin Change
+                  {{/if}}
               {{/each}}
            {{/each}}
          {{/if}}
