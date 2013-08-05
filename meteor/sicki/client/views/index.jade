@@ -11,8 +11,25 @@ template(name="contentIfLoggedIn")
   {{/if}}
 
 template(name="content")
-  {{#if selectedEventId}}
-    {{> eidEvent}}
+  {{#if selectedId}}
+    {{> editPage}}
   {{else}}
+    {{> table}}
+  {{/if}}
+
+
+template(name="editPage")
+  {{#if eidTable}}
+    {{> eidEvent}}
+  {{/if}}
+  {{#if referenceTable}}
+    {{> reference}}
+  {{/if}}
+
+template(name="table")
+  {{#if eidTable}}
     {{> eidTable}}
+  {{/if}}
+  {{#if referenceTable}}
+    {{> referenceTable}}
   {{/if}}

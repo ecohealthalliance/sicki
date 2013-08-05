@@ -59,7 +59,7 @@ Meteor.startup () ->
 
     handleNonEditingClick = (event) ->
       id = $(event.target).parent().attr('id')
-      Session.set('selectedEventId', id)
+      Session.set('selectedId', id)
       render()
 
     $('.toggle-edit').click( (event) ->

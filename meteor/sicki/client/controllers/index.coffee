@@ -1,7 +1,18 @@
 Meteor.startup () ->
-  Template.content.selectedEventId = () ->
-    Session.get('selectedEventId')
+  Template.content.selectedId = () ->
+    Session.get('selectedId')
 
   Template.contentIfLoggedIn.user = () ->
     Meteor.user()
 
+  Template.editPage.eidTable = () ->
+    Session.equals('selectedTable', 'eidEvents')
+
+  Template.table.eidTable = () ->
+    Session.equals('selectedTable', 'eidEvents')
+
+  Template.editPage.referenceTable = () ->
+    Session.equals('selectedTable', 'references')
+
+  Template.table.referenceTable = () ->
+    Session.equals('selectedTable', 'references')
