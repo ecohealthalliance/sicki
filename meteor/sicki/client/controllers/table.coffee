@@ -19,8 +19,10 @@ class TableController
   constructor: (@template) ->
 
   start: () ->
+    renderField = @template.renderField or (value) -> value
+
     @template.renderTable = (fields, rows) ->
-      Template.table({tableId: Session.get('selectedTable'), fields: fields, rows: rows})
+      Template.table({tableId: Session.get('selectedTable'), fields: fields, rows: rows, renderField: renderField})
 
     window.sicki.registerRenderCallback( () -> loadDataTable(Session.get('selectedTable')))
 
