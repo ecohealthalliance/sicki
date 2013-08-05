@@ -1,6 +1,7 @@
-@sicki = {}
+@sicki ?= {}
+@sicki.collections ?= {}
 
-@sicki.Proposals = new Meteor.Collection('proposal', {idGeneration: 'MONGO'})
-@sicki.EIDEvents = new Meteor.Collection('eid')
-@sicki.Pathogens = new Meteor.Collection('pathogen')
-@sicki.References = new Meteor.Collection('reference')
+@sicki.collections.Proposals = new Meteor.Collection('proposal')
+@sicki.collections.EIDEvents = new Meteor.Collection('eid')
+@sicki.collections.Pathogens = new Meteor.Collection('pathogen')
+@sicki.collections.References = new Meteor.Collection('reference')

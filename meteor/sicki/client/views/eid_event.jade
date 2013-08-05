@@ -1,52 +1,31 @@
 template(name="eidEvent")
   {{#each fields}}
-    {{#if isPathogen}}
-      .event-field(data-field-name="{{name}}") 
-        .event-field-title {{label}}
-        {{#each proposals}}
-          .proposal(data-proposal-id="{{proposalId}}")
+    .event-field(data-field-name="{{name}}") 
+      .event-field-title {{label}}
+      {{#each proposals}}
+        .proposal(data-proposal-id="{{_id}}")
+          {{#if pathogen}}
             span {{pathogen.reported_name}}&nbsp;&nbsp;
-            span {{refList}}&nbsp;&nbsp;
-            {{#if userDisplayName}}
-              span Proposed by {{userDisplayName}} on {{date}}
-              {{#if canAccept}}
-                button.accept-button Accept
-              {{/if}}
-            {{/if}}
-        {{/each}}
-        .add-proposal
-          span Value:&nbsp;
-          input.add-pathogen-value(type="text")
-          span &nbsp;
-          span References:&nbsp;
-          span.reference-list(data-reference-ids="")
-          input.add-proposal-references(type="text")
-          span &nbsp;
-          button.add-proposal-button Add Proposal
-    {{else}}
-      .event-field(data-field-name="{{name}}")
-        .event-field-title {{label}}
-        {{#each proposals}}
-          .proposal(data-proposal-id="{{proposalId}}")
+          {{else}}
             span {{value}}&nbsp;&nbsp;
-            span {{refList}}&nbsp;&nbsp;
-            {{#if userDisplayName}}
-              span Proposed by {{userDisplayName}} on {{date}}
-              {{#if canAccept}}
-                button.accept-button Accept
-              {{/if}}
-            {{/if}}
-        {{/each}}
-        .add-proposal
-          span Value:&nbsp;
-          input.add-proposal-value(type="text")
-          span &nbsp;
-          span References:&nbsp;
-          span.reference-list(data-reference-ids="")
-          input.add-proposal-references(type="text")
-          span &nbsp;
-          button.add-proposal-button Add Proposal
-    {{/if}}
+          {{/if}}
+          span {{refList}}&nbsp;&nbsp;
+          {{#if user.displayName}}
+            span Proposed by {{user.displayName}} on {{date}}
+          {{/if}}
+          {{#if canAccept}}
+            button.accept-button Accept
+          {{/if}}
+      {{/each}}
+      .add-proposal
+        span Value:&nbsp;
+        input.add-proposal-value(type="text")
+        span &nbsp;
+        span References:&nbsp;
+        span.reference-list(data-reference-ids="")
+        input.add-proposal-references(type="text")
+        span &nbsp;
+        button.add-proposal-button Add Proposal
   {{/each}}
 
 
