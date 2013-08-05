@@ -25,6 +25,10 @@ template(name="editPage")
   {{#if referenceTable}}
     {{> reference}}
   {{/if}}
+  {{#if userTable}}
+    {{> user}}
+  {{/if}}
+
 
 template(name="table")
   {{#if eidTable}}
@@ -32,4 +36,7 @@ template(name="table")
   {{/if}}
   {{#if referenceTable}}
     {{> referenceTable}}
+  {{/if}}
+  {{#if userTable}}
+    {{> userTable}}
   {{/if}}

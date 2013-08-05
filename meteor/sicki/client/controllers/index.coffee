@@ -16,3 +16,9 @@ Meteor.startup () ->
 
   Template.table.referenceTable = () ->
     Session.equals('selectedTable', 'references')
+
+  Template.editPage.userTable = () ->
+    Session.equals('selectedTable', 'users')
+
+  Template.table.userTable = () ->
+    Session.equals('selectedTable', 'users')

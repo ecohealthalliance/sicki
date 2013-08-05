@@ -14,6 +14,11 @@ showRefs = () ->
   clearState()
   Session.set('selectedTable', 'references')
   @sicki.render()
+
+showUsers = () ->
+  clearState()
+  Session.set('selectedTable', 'users')
+  @sicki.render()
     
 
 Meteor.startup () ->
@@ -25,4 +30,5 @@ Meteor.startup () ->
   Template.nav.events(
     'click #nav-events' : (event) -> showTable()
     'click #nav-refs' : (event) -> showRefs()
+    'click #nav-users' : (event) -> showUsers()
   )

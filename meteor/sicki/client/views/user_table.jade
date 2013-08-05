@@ -1,0 +1,20 @@
+template(name="userTable")
+  .loading-message Loading Users...
+
+  .user-table-container
+
+    table.table.table-striped.table-bordered#userTable(cellpadding="0", cellspacing="0", border="0")
+      thead
+        tr
+          {{#each fields}}
+            th {{label}}
+          {{/each}}
+      tbody
+        {{#if users}}
+          {{#each users}}
+            tr.odd.gradeX(id='{{_id}}')
+              {{#each userFields}}
+                td(col='{{field}}') {{value}}
+              {{/each}}
+           {{/each}}
+         {{/if}}
