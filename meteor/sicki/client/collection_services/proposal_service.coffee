@@ -10,7 +10,7 @@ Meteor.startup () ->
       super 'Proposals', Proposals
 
     getWithUsersAndReferences: (idOrIds, options) ->
-      proposals = this.read(idOrIds, options)
+      proposals = @read(idOrIds, options)
       for proposal in proposals
         if proposal.source isnt ORIGINAL_DATA_SOURCE
           proposal.user = Meteor.users.findOne({_id: proposal.source})

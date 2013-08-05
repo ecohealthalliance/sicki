@@ -46,13 +46,13 @@ Meteor.startup () ->
       referenceIdList = $(event.target).siblings('.reference-list').attr('data-reference-ids')
       refIds = (id for id in referenceIdList.split(',') when id)
 
-      id = proposalService.create({value: value, date: new Date(), source: Meteor.userId(), references: refIds})
+      proposal =
+        value: value
+        date: new Date()
+        source: Meteor.userId()
+        references: refIds
 
-      event = eidEventService.read(Session.get('selectedEventId'))
-      proposals = {}
-      proposals[fieldName] = event[fieldName] or []
-      proposals[fieldName].push(id)
-      eidEventService.update(Session.get('selectedEventId'), proposals)
+      eidEventService.addProposal(Session.get('selectedEventId'), fieldName, proposal)
 
       render()
     )
