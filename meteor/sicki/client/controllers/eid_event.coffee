@@ -23,7 +23,6 @@ Meteor.startup () ->
         proposals = proposalService.getWithUsers(proposalIds, {sort: {accepted: -1}})
         for proposal in proposals
           proposal.canAccept = Meteor.user()?.admin and !proposal.accepted
-          proposal.proposalId = proposal._id.toHexString()
 
           refs = referenceService.read(proposal.references or [])
           proposal.refList = ("#{ref.creators?[0]?.lastName} #{ref.date}" for ref in refs).join(', ')
@@ -58,7 +57,7 @@ Meteor.startup () ->
     )
 
     $('.accept-button').click( (event) ->
-      proposalId = new Meteor.Collection.ObjectID($(event.target).parents('.proposal').attr('data-proposal-id'))
+      proposalId = $(event.target).parents('.proposal').attr('data-proposal-id')
       proposalService.update(proposalId, {accepted: true, accepted_by: Meteor.userId(), accepted_date: new Date()})
       render()
     )

@@ -3,7 +3,7 @@ template(name="eidEvent")
     .event-field(data-field-name="{{name}}") 
       .event-field-title {{label}}
       {{#each proposals}}
-        .proposal(data-proposal-id="{{proposalId}}")
+        .proposal(data-proposal-id="{{_id}}")
           {{#if pathogen}}
             span {{pathogen.reported_name}}&nbsp;&nbsp;
           {{else}}

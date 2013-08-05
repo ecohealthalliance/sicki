@@ -17,14 +17,14 @@ Meteor.startup () ->
     mongoProposals = proposalService.find({accepted: true})
     proposals = {}
     for proposal in mongoProposals
-      proposals[proposal._id.toHexString()] = proposal
+      proposals[proposal._id] = proposal
 
     eidEvents = []
     for event in events
       eidEvent = {_id: event._id, eventFields: []}
       for field in _.keys(FIELDS)
         if event[field]
-          eventProposals = (proposals?[proposalId.toHexString()] for proposalId in event[field] when proposals[proposalId.toHexString()])
+          eventProposals = (proposals?[proposalId] for proposalId in event[field] when proposals[proposalId])
           lastAcceptedProposal = _.max(eventProposals, (p) -> p?.accepted_date or null)
           if field is 'pathogen'
             pathogen = pathogenService.read(lastAcceptedProposal.value)
