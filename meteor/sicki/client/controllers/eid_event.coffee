@@ -20,11 +20,12 @@ Meteor.startup () ->
         label: FIELDS[field].label
       if event[field]
         proposalIds = event[field]
-        proposals = proposalService.getWithUsers(proposalIds, {sort: {accepted: -1}})
+        proposals = proposalService.getWithUsersAndReferences(proposalIds, {sort: {accepted: -1}})
         for proposal in proposals
+          proposal.user?.displayName = proposal.user?.profile?.name or proposal.user?.emails?[0]?.address
           proposal.canAccept = Meteor.user()?.admin and !proposal.accepted
 
-          refs = referenceService.read(proposal.references or [])
+          refs = proposal.references
           proposal.refList = ("#{ref.creators?[0]?.lastName} #{ref.date}" for ref in refs).join(', ')
 
           if field is 'pathogen'
