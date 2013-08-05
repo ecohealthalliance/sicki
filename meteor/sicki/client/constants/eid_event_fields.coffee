@@ -1,16 +1,16 @@
 Meteor.startup () ->
   @sicki.constants ?= {}
 
-  @sicki.constants.EID_EVENT_FIELDS = 
-    event_name: 
+  @sicki.constants.EID_EVENT_FIELDS =
+    event_name:
       label: 'Event Name'
-    pathogen: 
+    pathogen:
       label: 'Pathogen'
     location:
       label: 'Location'
     host:
       label: 'Host'
-    disease: 
+    disease:
       label: 'Disease'
     start_date:
       label: 'Start Date'
