@@ -116,9 +116,3 @@ Meteor.startup () ->
       $('.loading-message').hide()
 
   @sicki.registerRenderCallback(loadDataTable)
-
-  eidEventService.ready () ->
-    proposalService.ready () ->
-      pathogenService.ready () ->
-        render()
-

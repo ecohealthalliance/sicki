@@ -16,3 +16,13 @@ Meteor.startup () ->
       when 'eidEvents' then Template.eidEvent()
 
 
+  initialRender = _.once @sicki.render
+
+  Deps.autorun () =>
+    allDataLoaded = _.all @sicki.services, (service) ->
+      if service.ready then service.ready() else true
+
+    if allDataLoaded
+      initialRender()
+    
+
