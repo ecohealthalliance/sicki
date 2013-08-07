@@ -1,7 +1,7 @@
-Session.set('selectedId', null)
 Session.set('selectedTable', 'eidEvents')
 
 clearState = () ->
+  Session.set('selectedField', null)
   Session.set('selectedId', null)
   Session.set('selectedTable', null)
 

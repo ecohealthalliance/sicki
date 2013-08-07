@@ -1,31 +1,34 @@
 template(name="eidEvent")
-  {{#each fields}}
-    .event-field(data-field-name="{{name}}") 
-      .event-field-title {{label}}
-      {{#each proposals}}
-        .proposal(data-proposal-id="{{_id}}")
-          {{#if pathogen}}
-            span {{pathogen.reported_name}}&nbsp;&nbsp;
-          {{else}}
-            span {{value}}&nbsp;&nbsp;
-          {{/if}}
-          span {{refList}}&nbsp;&nbsp;
-          {{#if user.displayName}}
-            span Proposed by {{user.displayName}} on {{date}}
-          {{/if}}
-          {{#if canAccept}}
-            button.accept-button Accept
-          {{/if}}
-      {{/each}}
-      .add-proposal
-        span Value:&nbsp;
-        input.add-proposal-value(type="text")
-        span &nbsp;
-        span References:&nbsp;
-        span.reference-list(data-reference-ids="")
-        input.add-proposal-references(type="text")
-        span &nbsp;
-        button.add-proposal-button Add Proposal
-  {{/each}}
+  .event-fields
+    {{#each fields}}
+      .event-field(data-field-name="{{name}}") 
+        .event-field-title {{label}}:&nbsp;&nbsp;
+          span.top-proposal {{topProposalValue}}
+        .proposal-list
+          {{#each proposals}}
+            .proposal(data-proposal-id="{{_id}}")
+              {{#if pathogen}}
+                span {{pathogen.reported_name}}&nbsp;&nbsp;
+              {{else}}
+                span {{value}}&nbsp;&nbsp;
+              {{/if}}
+              span {{refList}}&nbsp;&nbsp;
+              {{#if user.displayName}}
+                span Proposed by {{user.displayName}} on {{date}}
+              {{/if}}
+              {{#if canAccept}}
+                button.accept-button Accept
+              {{/if}}
+          {{/each}}
+          .add-proposal
+            span {{label}}:&nbsp;
+            input.add-proposal-value(type="text")
+            span &nbsp;
+            span References:&nbsp;
+            span.reference-list(data-reference-ids="")
+            input.add-proposal-references(type="text")
+            span &nbsp;
+            button.add-proposal-button Add Proposal
+    {{/each}}
 
 
