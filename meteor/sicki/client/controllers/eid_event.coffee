@@ -20,7 +20,7 @@ Meteor.startup () ->
         label: FIELDS[field].label
       if event[field]
         proposalIds = event[field]
-        proposals = proposalService.getWithUsersAndReferences(proposalIds, {sort: {accepted: -1}})
+        proposals = proposalService.getWithUsersAndReferences(proposalIds, {sort: {accepted: -1, accepted_date: -1}})
         for proposal in proposals
           proposal.user?.displayName = proposal.user?.profile?.name or proposal.user?.emails?[0]?.address
           proposal.canAccept = Meteor.user()?.admin and !proposal.accepted
