@@ -1,5 +1,6 @@
 Meteor.startup () ->
   FIELDS = @sicki.constants.USER_FIELDS
+  render = @sicki.render
   TableController = @sicki.controllers.TableController
 
 
@@ -25,13 +26,13 @@ Meteor.startup () ->
 
   setupEvents = () ->
     $('.change-admin').click( (event) ->
-      id = $(this).parents('tr').attr('id')
+      id = $(this).parents('tr').attr('data-id')
       isAdmin = Meteor.users.findOne({_id: id}).admin
       Meteor.users.update(id, {$set: {admin: !isAdmin}})
       render()
     )
 
-  controller = new TableController(Template.userTable, setupEvents)
+  controller = new TableController('users', Template.userTable, setupEvents)
   controller.start()
 
 

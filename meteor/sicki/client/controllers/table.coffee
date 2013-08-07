@@ -19,15 +19,21 @@ loadDataTable = (tableId, renderCallback) ->
 
 class TableController
 
-  constructor: (@template, @setupEvents) ->
+  constructor: (@name, @template, @setupEvents) ->
 
   start: () ->
-    selectedTable = Session.get('selectedTable')
-
+    selectedTable = @name
+    renderHeader = @template.renderHeader or () ->
     renderField = @template.renderField or (field, value) -> value
 
     @template.renderTable = (fields, rows) ->
-      Template.table({tableId: selectedTable, fields: fields, rows: rows, renderField: renderField})
+      Template.table({
+        tableId: selectedTable
+        fields: fields
+        rows: rows
+        renderHeader: renderHeader
+        renderField: renderField
+      })
 
     renderCallback = @setupEvents or () ->
 

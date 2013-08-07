@@ -17,5 +17,5 @@ Meteor.startup () ->
       when 'creators' then ("#{creator.lastName}, #{creator.firstName}" for creator in value)
       else value
 
-  controller = new TableController(Template.referenceTable)
+  controller = new TableController('references', Template.referenceTable)
   controller.start()
