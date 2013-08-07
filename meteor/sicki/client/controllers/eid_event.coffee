@@ -31,12 +31,22 @@ Meteor.startup () ->
           if field is 'pathogen'
             proposal.pathogen = pathogenService.read(proposal.value)
         eventField.proposals = if proposals then proposals else []
+        eventField.topProposalValue = proposals[0]?.pathogen?.reported_name or proposals[0]?.value
 
       eidEventFields.push(eventField)
 
     eidEventFields
 
   setupEvents = () ->
+    selectedFieldIndex = _.indexOf _.keys(FIELDS), Session.get('selectedField')
+
+    $('.event-fields').accordion({
+      active: selectedFieldIndex
+      collapsible: true
+      header: '.event-field-title'
+      heightStyle: 'content'
+    })
+
     $('.add-proposal-button').click( (event) ->
       fieldName = $(event.target).parents('.event-field').attr('data-field-name')
 
@@ -54,12 +64,16 @@ Meteor.startup () ->
 
       eidEventService.addProposal(Session.get('selectedId'), fieldName, proposal)
 
+      Session.set('selectedField', fieldName)
       render()
     )
 
     $('.accept-button').click( (event) ->
       proposalId = $(event.target).parents('.proposal').attr('data-proposal-id')
       proposalService.accept(proposalId)
+
+      fieldName = $(event.target).parents('.event-field').attr('data-field-name')
+      Session.set('selectedField', fieldName)
       render()
     )
 
