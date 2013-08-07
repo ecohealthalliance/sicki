@@ -1,0 +1,21 @@
+template(name="table")
+  .loading-message Loading table...
+
+  .table-container
+    {{{renderHeader}}}
+
+    table.table.table-striped.table-bordered(id='{{tableId}}-table', cellpadding="0", cellspacing="0", border="0")
+      thead
+        tr
+          {{#each fields}}
+            th {{label}}
+          {{/each}}
+      tbody
+        {{#if rows}}
+          {{#each rows}}
+            tr.odd.gradeX('data-id'='{{_id}}')
+              {{#each data}}
+                td(col='{{field}}') {{{../../renderField field value}}}
+              {{/each}}
+          {{/each}}
+        {{/if}}

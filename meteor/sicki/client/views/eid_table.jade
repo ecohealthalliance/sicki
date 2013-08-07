@@ -1,23 +1,7 @@
 template(name="eidTable")
-  .loading-message Loading EID Events...
+  {{{renderTable fields rows}}}
 
-  .eid-table-container
-    {{#if admin}}
-      button.toggle-edit Turn On Edit Mode
-    {{/if}}
-
-    table.table.table-striped.table-bordered#eidTable(cellpadding="0", cellspacing="0", border="0")
-      thead
-        tr
-          {{#each fields}}
-            th {{label}}
-          {{/each}}
-      tbody
-        {{#if eidEvents}}
-          {{#each eidEvents}}
-            tr.odd.gradeX(id='{{_id}}')
-              {{#each eventFields}}
-                td(col='{{field}}') {{value}}
-              {{/each}}
-           {{/each}}
-         {{/if}}
+template(name="eidTableHeader")
+  {{#if admin}}
+    button.toggle-edit Turn On Edit Mode
+  {{/if}}

@@ -1,9 +1,25 @@
-Session.set('selectedEventId', null)
+Session.set('selectedId', null)
+Session.set('selectedTable', 'eidEvents')
+
+clearState = () ->
+  Session.set('selectedId', null)
+  Session.set('selectedTable', null)
 
 showTable = () ->
-  if Session.get('selectedEventId') != null
-    Session.set('selectedEventId', null)
-    @sicki.render()
+  clearState()
+  Session.set('selectedTable', 'eidEvents')
+  @sicki.render()
+
+showRefs = () ->
+  clearState()
+  Session.set('selectedTable', 'references')
+  @sicki.render()
+
+showUsers = () ->
+  clearState()
+  Session.set('selectedTable', 'users')
+  @sicki.render()
+    
 
 Meteor.startup () ->
   Meteor.subscribe('userData')
@@ -12,5 +28,7 @@ Meteor.startup () ->
     Meteor.user() and Meteor.user().admin
 
   Template.nav.events(
-    'click #nav-list' : (event) -> showTable()
+    'click #nav-events' : (event) -> showTable()
+    'click #nav-refs' : (event) -> showRefs()
+    'click #nav-users' : (event) -> showUsers()
   )

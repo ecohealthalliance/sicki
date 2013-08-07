@@ -20,10 +20,8 @@ class CollectionService
   find: (query) ->
     @collection.find(query).fetch()
 
-  ready: (fn) ->
-    Deps.autorun () =>
-      if @subscription.ready()
-        fn()
+  ready: () ->
+    @subscription.ready()
 
 
 @sicki ?= {}

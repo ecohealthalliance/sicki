@@ -12,7 +12,7 @@ Meteor.startup () ->
   Meteor.subscribe('userData')
 
   Template.eidEvent.fields = () ->
-    event = eidEventService.read(Session.get('selectedEventId'))
+    event = eidEventService.read(Session.get('selectedId'))
     eidEventFields = []
     for field in _.keys(FIELDS)
       eventField =
@@ -52,7 +52,7 @@ Meteor.startup () ->
         source: Meteor.userId()
         references: refIds
 
-      eidEventService.addProposal(Session.get('selectedEventId'), fieldName, proposal)
+      eidEventService.addProposal(Session.get('selectedId'), fieldName, proposal)
 
       render()
     )
