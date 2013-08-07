@@ -1,0 +1,9 @@
+template(name="userTable")
+  {{{renderTable fields rows}}}
+
+template(name="userTableAdminField")
+  span {{value}}
+  {{#if canChange}}
+    button.change-admin Change
+  {{/if}}
+    
