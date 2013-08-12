@@ -15,7 +15,7 @@ Meteor.startup () ->
         if proposal.source isnt ORIGINAL_DATA_SOURCE
           proposal.user = Meteor.users.findOne({_id: proposal.source})
         
-        proposal.references = services.referenceService.read(proposal.references or [])
+        proposal.references = services.referenceService.getTopProposals(proposal.references or [])
         
       proposals
 

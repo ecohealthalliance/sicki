@@ -1,6 +1,5 @@
 ENTER_KEY_CODE = 13
 
-FIELDS =
 Meteor.startup () ->
   FIELDS = @sicki.constants.EID_EVENT_FIELDS
   render = @sicki.render
@@ -78,7 +77,7 @@ Meteor.startup () ->
     )
 
     Deps.autorun( () ->
-      references = referenceService.read()
+      references = referenceService.getTopProposals()
       source = ({
         label: "#{ref.creators?[0]?.lastName} #{ref.date} #{ref.title}",
         value: "#{ref.creators?[0]?.lastName} #{ref.date}",
