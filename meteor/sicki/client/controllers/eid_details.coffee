@@ -11,7 +11,7 @@ Meteor.startup () ->
 
   Meteor.subscribe('userData')
 
-  Template.eidEvent.fields = () ->
+  Template.eidDetails.fields = () ->
     event = eidEventService.read(Session.get('selectedId'))
     eidEventFields = []
     for field in _.keys(FIELDS)
