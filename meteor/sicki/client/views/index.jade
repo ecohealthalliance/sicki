@@ -12,14 +12,14 @@ template(name="contentIfLoggedIn")
 
 template(name="content")
   {{#if selectedId}}
-    {{> selectedEditPage}}
+    {{> selectedDetailsPage}}
   {{else}}
     {{> selectedTable}}
   {{/if}}
 
 
-template(name="selectedEditPage")
-  {{{renderSelectedEditPage}}}
+template(name="selectedDetailsPage")
+  {{{renderSelectedDetailsPage}}}
 
 
 template(name="selectedTable")
