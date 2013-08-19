@@ -7,6 +7,15 @@ Meteor.startup () ->
     constructor: () ->
       super 'References', References
 
+    addProposal: (referenceId, field, proposal) ->
+      proposalId = services.proposalService.create(proposal)
+      event = @read(referenceId)
+      proposalChanges = {}
+      proposalChanges[field] = event[field] or []
+      proposalChanges[field].push(proposalId)
+      @update(referenceId, proposalChanges)
+      proposalId
+
     getTopProposals: (referenceIds) ->
       mongoProposals = services.proposalService.read()
       proposals = {}

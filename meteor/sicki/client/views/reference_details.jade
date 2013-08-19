@@ -1,18 +1,17 @@
-template(name="eidDetails")
-  .event-fields.fields
+template(name="referenceDetails")
+  .reference-fields.fields
     {{#each fields}}
-      .event-field.field(data-field-name="{{name}}") 
+      .reference-field.field(data-field-name="{{name}}") 
         .field-title {{label}}:&nbsp;&nbsp;
           span.top-proposal {{topProposalValue}}
         .proposal-list
           {{#each proposals}}
             .proposal(data-proposal-id="{{_id}}")
-              {{#if pathogen}}
-                span {{pathogen.reported_name}}&nbsp;&nbsp;
+              {{#if creatorList}}
+                span {{creatorList}}&nbsp;&nbsp;
               {{else}}
                 span {{value}}&nbsp;&nbsp;
               {{/if}}
-              span {{refList}}&nbsp;&nbsp;
               {{#if user.displayName}}
                 span Proposed by {{user.displayName}} on {{date}}
               {{/if}}
@@ -23,10 +22,6 @@ template(name="eidDetails")
           .add-proposal
             span {{label}}:&nbsp;
             input.add-proposal-value(type="text")
-            span &nbsp;
-            span References:&nbsp;
-            span.reference-list(data-reference-ids="")
-            input.add-proposal-references(type="text")
             span &nbsp;
             button.add-proposal-button Add Proposal
     {{/each}}
