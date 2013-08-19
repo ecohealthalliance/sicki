@@ -9,14 +9,17 @@ Meteor.startup () ->
     constructor: () ->
       super 'Proposals', Proposals
 
-    getWithUsersAndReferences: (idOrIds, options) ->
+    getWithUsers: (idOrIds, options) ->
       proposals = @read(idOrIds, options)
       for proposal in proposals
         if proposal.source isnt ORIGINAL_DATA_SOURCE
           proposal.user = Meteor.users.findOne({_id: proposal.source})
-        
+      proposals
+
+    getWithUsersAndReferences: (idOrIds, options) ->
+      proposals = @getWithUsers(idOrIds, options)
+      for proposal in proposals
         proposal.references = services.referenceService.getTopProposals(proposal.references or [])
-        
       proposals
 
     accept: (id) ->

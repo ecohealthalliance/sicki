@@ -1,5 +1,6 @@
 Meteor.startup () ->
   FIELDS = @sicki.constants.REFERENCE_FIELDS
+  render = @sicki.render
   referenceService = @sicki.services.referenceService
   proposalService = @sicki.services.proposalService
   TableController = @sicki.controllers.TableController
@@ -32,5 +33,12 @@ Meteor.startup () ->
       when 'creators' then ("#{creator.lastName}, #{creator.firstName}" for creator in value)
       else value
 
-  controller = new TableController('references', Template.referenceTable)
+  setupEvents = () ->
+    $('td').click( () ->
+      id = $(event.target).parent().attr('data-id')
+      Session.set('selectedId', id)
+      render()
+    )
+
+  controller = new TableController('references', Template.referenceTable, setupEvents)
   controller.start()

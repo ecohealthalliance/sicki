@@ -42,11 +42,11 @@ Meteor.startup () ->
     $('.event-fields').accordion({
       active: selectedFieldIndex
       collapsible: true
-      header: '.event-field-title'
+      header: '.field-title'
       heightStyle: 'content'
     })
 
-    $('.add-proposal-button').click( (event) ->
+    $('.event-fields .add-proposal-button').click( (event) ->
       fieldName = $(event.target).parents('.event-field').attr('data-field-name')
 
       valueElement = $(event.target).siblings('.add-proposal-value')
@@ -67,7 +67,7 @@ Meteor.startup () ->
       render()
     )
 
-    $('.accept-button').click( (event) ->
+    $('.event-fields .accept-button').click( (event) ->
       proposalId = $(event.target).parents('.proposal').attr('data-proposal-id')
       proposalService.accept(proposalId)
 
@@ -83,7 +83,7 @@ Meteor.startup () ->
         value: "#{ref.creators?[0]?.lastName} #{ref.date}",
         referenceId: ref._id
       } for ref in references)
-      $('.add-proposal-references').autocomplete({
+      $('.event-fields .add-proposal-references').autocomplete({
         source: source,
         select: (event, ui) ->
           refList = $(event.target).siblings('.reference-list')

@@ -14,7 +14,7 @@ Meteor.startup () ->
   Template.selectedDetailsPage.renderSelectedDetailsPage = () ->
     switch Session.get('selectedTable')
       when 'eidEvents' then Template.eidDetails()
-
+      when 'references' then Template.referenceDetails()
 
   initialRender = _.once @sicki.render
 
