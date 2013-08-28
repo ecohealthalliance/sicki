@@ -25,4 +25,4 @@ Meteor.startup () ->
     if allDataLoaded
       initialRender()
     
-
+  window.onbeforeunload = () -> "You are about to leave sicki."
